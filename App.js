@@ -4,14 +4,14 @@ import {connect} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import Login from './src/User/Login';
 import Signup from './src/User/Signup';
-import Summary from './src/Transactions/Components/Summary';
+import Homepage from './src/Homepage/index.js';
+import AddTransaction from './src/Transactions/components/AddTransaction'
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
 class App extends React.Component {
   render() {
-    console.log(this.props.user)
     return (
       <NavigationContainer>
           <Stack.Navigator>
@@ -29,11 +29,18 @@ class App extends React.Component {
               />
             </>
             ) : (
-            <Stack.Screen
-              name="Summary"
-              component={Summary}
-              options={{title: 'Summary'}}
-            />
+            <>
+              <Stack.Screen
+                name="Homepage"
+                component={Homepage}
+                options={{title: 'Summary'}}
+              />
+              <Stack.Screen
+                name="AddTransaction"
+                component={AddTransaction}
+                options={{title: 'Add Transaction'}}
+              />
+            </>
             )
           }
           </Stack.Navigator>
