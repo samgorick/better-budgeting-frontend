@@ -1,21 +1,52 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import indexReducer from './indexReducers'
-import Login from './src/User/Login'
+import {connect} from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import Login from './src/User/Login';
+import Signup from './src/User/Signup';
+import Summary from './src/Transactions/Components/Summary';
+import {createStackNavigator} from '@react-navigation/stack';
 
-const store = createStore(indexReducer, applyMiddleware(thunk))
+const Stack = createStackNavigator();
 
-export default class App extends React.Component {
-  render(){
+class App extends React.Component {
+  render() {
+    console.log(this.props.user)
     return (
-      <Provider store={store}>
-        <Login />
-      </Provider>
-    )
+      <NavigationContainer>
+          <Stack.Navigator>
+            {!this.props.user ? (
+            <>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{title: 'Login'}}
+              />
+              <Stack.Screen
+                name="Signup"
+                component={Signup}
+                options={{title: 'Signup'}}
+              />
+            </>
+            ) : (
+            <Stack.Screen
+              name="Summary"
+              component={Summary}
+              options={{title: 'Summary'}}
+            />
+            )
+          }
+          </Stack.Navigator>
+      </NavigationContainer>
+    );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {user: state.user}
+}
+
+export default connect(mapStateToProps)(App)
 
 /**
  * Sample React Native App

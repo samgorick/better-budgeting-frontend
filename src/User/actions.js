@@ -1,19 +1,42 @@
-  
-export function loginUser(username) {
+  export function loginUser(state) {
   return dispatch => {
     dispatch({ type: "START_USER_LOGIN" });
-    fetch("http://localhost:3000/users", {
+    fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "content-type": "application/json"
       },
-      body: JSON.stringify({ username: username })
+      body: JSON.stringify(state)
     })
       .then(resp => resp.json())
       .then(userData => {
-        dispatch({ type: "LOGIN_USER", userData})
-        dispatch({ type: "SET_NOTES", notes: userData.notes})
-        history.push('/notes')
+        if (userData.error) {
+          alert(userData.error)
+        } else {
+          dispatch({ type: 'LOGIN_USER', user: userData})
+        }
+      });
+  };
+}
+
+export function signUpUser(state) {
+  return dispatch => {
+    dispatch({ type: "START_USER_SIGNUP" });
+    fetch("http://localhost:3000/signup", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(state)
+    })
+      .then(resp => resp.json())
+      .then(userData => {
+        if (userData.error) {
+          alert(userData.error)
+        } else {
+          dispatch({ type: 'LOGIN_USER', user: userData})
+          this.props.navigation.navigate('TransactionSummary')
+        }
       });
   };
 }

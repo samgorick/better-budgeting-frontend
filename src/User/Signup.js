@@ -1,19 +1,20 @@
 import React from 'react';
 import {View, TextInput, Image, StyleSheet, Text} from 'react-native';
 import {connect} from 'react-redux';
-import {loginUser} from './actions';
+import {signUpUser} from './actions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const mapDispatchToProps = dispatch => {
   return {
-    loginUser: username => dispatch(loginUser(username)),
+    signUpUser: userObj => dispatch(signUpUser(userObj)),
   };
 };
 
-class Login extends React.Component {
+class Signup extends React.Component {
   state = {
     email: '',
     password: '',
+    passwordConfirmation: '',
   };
 
   handleEmail = e => {
@@ -28,11 +29,25 @@ class Login extends React.Component {
     });
   };
 
-  handleLogin = () => {
-    this.props.loginUser(this.state);
+  handlePasswordConfirmation = e => {
+    this.setState({
+      passwordConfirmation: e.nativeEvent.text,
+    });
+  };
+
+  handleSignup = () => {
+    if (this.state.password === this.state.passwordConfirmation) {
+      this.props.signUpUser({
+        email: this.state.email,
+        password: this.state.password,
+      });
+    } else {
+      alert('Sorry, password does not match.');
+    }
     this.setState({
       username: '',
       password: '',
+      passwordConfirmation: '',
     });
   };
 
@@ -62,18 +77,26 @@ class Login extends React.Component {
           />
           <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}/>
         </View>
-        <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={this.handleLogin}>
-          <Text style={styles.loginText}>Login</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputs}
+            name="password confirmation"
+            placeholder="Confirm Password"
+            secureTextEntry={true}
+            onChange={this.handlePasswordConfirmation}
+          />
+          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}/>
+        </View>
+        <TouchableOpacity style={[styles.buttonContainer, styles.signupButton]} onPress={this.handleSignup}>
+          <Text style={styles.signupText}>Sign Up</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Signup')}>
-          <Text style={styles.btnText}>New User? Sign up here</Text>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={styles.btnText}>I've already signed up</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
-
-export default connect(null, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   container: {
@@ -130,10 +153,10 @@ const styles = StyleSheet.create({
     borderRadius:30,
     backgroundColor:'transparent'
   },
-  loginButton: {
+  signupButton: {
     backgroundColor: "#00b5ec",
   },
-  loginText: {
+  signupText: {
     color: 'white',
     textTransform: 'uppercase'
   },
@@ -142,3 +165,8 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   }
 });
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Signup);
