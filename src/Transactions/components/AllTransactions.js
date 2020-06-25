@@ -16,17 +16,20 @@ class AllTransactions extends React.Component {
           style={styles.notificationList}
           data={this.props.transactions}
           keyExtractor={item => {
-            return item.id;
+            return item.id.toString();
           }}
           renderItem={({item}) => {
-            return <Transaction item={item} />;
+            return <Transaction item={item} navigation={this.props.navigation}/>;
           }}
         />
-        <TouchableOpacity
+        <View style={styles.extraContainer}>
+          <TouchableOpacity
           style={[styles.buttonContainer, styles.loginButton]}
           onPress={() => this.props.navigation.navigate('AddTransaction')}>
-          <Text style={styles.buttonText}>+</Text>
+          <Text style={styles.buttonText}>Add Transaction</Text>
         </TouchableOpacity>
+        </View>
+        
       </View>
     );
   }
@@ -40,34 +43,6 @@ const styles = StyleSheet.create({
   formContent: {
     flexDirection: 'row',
     marginTop: 30,
-  },
-  inputContainer: {
-    borderBottomColor: '#F5FCFF',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 30,
-    borderBottomWidth: 1,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    margin: 10,
-  },
-  icon: {
-    width: 30,
-    height: 30,
-  },
-  iconBtnSearch: {
-    alignSelf: 'center',
-  },
-  inputs: {
-    height: 45,
-    marginLeft: 16,
-    borderBottomColor: '#FFFFFF',
-    flex: 1,
-  },
-  inputIcon: {
-    marginLeft: 15,
-    justifyContent: 'center',
   },
   notificationList: {
     marginTop: 20,
@@ -116,9 +91,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 50,
+    width: 150,
     height: 50,
-    borderRadius: 100,
+    marginTop: 8,
+    marginBottom: 8,
+    borderRadius: 25,
+    alignSelf: 'center',
     backgroundColor: 'transparent',
   },
   loginButton: {
@@ -131,7 +109,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
-
     textAlign: 'center',
   }
 });

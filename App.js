@@ -6,6 +6,7 @@ import Login from './src/User/Login';
 import Signup from './src/User/Signup';
 import Homepage from './src/Homepage/index.js';
 import AddTransaction from './src/Transactions/components/AddTransaction'
+import EditTransaction from './src/Transactions/components/EditTransaction'
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
@@ -39,6 +40,11 @@ class App extends React.Component {
                 name="AddTransaction"
                 component={AddTransaction}
                 options={{title: 'Add Transaction'}}
+              />
+              <Stack.Screen
+                name="EditTransaction"
+                component={EditTransaction}
+                options={{title: 'Update Transaction'}}
               />
             </>
             )
