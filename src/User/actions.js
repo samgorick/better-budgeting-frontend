@@ -13,7 +13,8 @@
         if (userData.error) {
           alert(userData.error)
         } else {
-          dispatch({ type: 'LOGIN_USER', user: userData})
+          dispatch({ type: 'LOGIN_USER', user: {id: userData.id, email: userData.email} })
+          dispatch({ type: 'SET_TRANSACTIONS', transactions: userData.transactions})
         }
       });
   };

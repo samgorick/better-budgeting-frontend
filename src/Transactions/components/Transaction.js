@@ -1,27 +1,61 @@
-import React from "react";
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import moment from 'moment'
+import moment from 'moment';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Transaction = props => (
-  <View style={styles.container}>
-    <Text style={styles.text}>{moment(props.transaction.created_at).format('Do MMM')}</Text>
-    <Text style={styles.text}>{props.transaction.merchant}</Text>
-    <Text style={styles.text}>${props.transaction.amount}</Text>
-  </View>
+  <TouchableOpacity style={styles.card}>
+    <View style={styles.cardContent}>
+      <Text style={styles.name}>{moment(props.item.created_at).format('MMM Do')}</Text>
+    </View>
+    <View style={[styles.cardContent, styles.tagsContent]}>
+      <Text style={styles.name}>{props.item.merchant}</Text>
+      <Text style={styles.name}>{props.item.spending_category}</Text>
+      <Text style={styles.name}>${props.item.amount}</Text>
+    </View>
+  </TouchableOpacity>
+);
 
-)
-
-export default Transaction
+export default Transaction;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderColor: 'black'
+  card: {
+    height: null,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: 5,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'column',
+    borderTopWidth: 10,
+    borderTopColor: '#00b5ec',
+    marginBottom: 20,
   },
-  text: {
-    paddingLeft: 5,
-    paddingRight: 5,
-    fontSize: 25
-  }
-})
+  cardContent: {
+    flexDirection: 'row',
+    marginLeft: 10,
+  },
+  imageContent: {
+    marginTop: -40,
+  },
+  tagsContent: {
+    marginTop: 10,
+    flexWrap: 'wrap',
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  name: {
+    fontSize: 18,
+    marginLeft: 10,
+    alignSelf: 'center'
+  },
+  btnColor: {
+    padding: 10,
+    borderRadius: 40,
+    marginHorizontal: 3,
+    backgroundColor: '#eee',
+    marginTop: 5,
+  },
+});

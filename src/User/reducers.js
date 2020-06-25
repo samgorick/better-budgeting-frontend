@@ -2,9 +2,7 @@ export default function userReducer(state=null, action) {
   switch (action.type) {
     case 'LOGIN_USER':
       return action.user
-    
-    case 'ADD_TRANSACTION_SUCCESS':
-      return {...state, transactions: [...state.transactions, action.transaction]}
+
     default:
       return state;
   }
