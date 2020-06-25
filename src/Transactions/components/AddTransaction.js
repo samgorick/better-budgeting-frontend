@@ -3,18 +3,21 @@ import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import addTransaction from '../actions';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Dropdown} from 'react-native-material-dropdown';
+
+const mapStateToProps = state => {
+  return { user: state.user}
+}
 
 const mapDispatchToProps = dispatch => {
   return {
-    addTransaction: transaction => dispatch(addTransaction(transaction)),
+    addTransaction: (transaction, navigation) => dispatch(addTransaction(transaction, navigation)),
   };
 };
 
 class AddTransaction extends React.Component {
   state = {
     merchant: '',
-    category: null,
+    category: '',
     amount: 0,
   };
 
@@ -30,8 +33,21 @@ class AddTransaction extends React.Component {
     });
   };
 
+  handleCategory = e => {
+    this.setState({
+      category: e.nativeEvent.text
+    });
+  };
+
   handleSubmit = () => {
-    console.log(this.state);
+    const txnObj = {...this.state, user_id: this.props.user.id}
+    console.log(this.props)
+    this.props.addTransaction(txnObj, this.props.navigation)
+    this.setState({
+      merchant: '',
+      category: '',
+      amount: 0,
+    })
   };
 
   render() {
@@ -39,7 +55,6 @@ class AddTransaction extends React.Component {
       <View style={styles.container}>
         <Text style={styles.header}>Add Transaction</Text>
         <View style={styles.inputContainer}>
-          <Text>Merchant</Text>
           <TextInput
             style={styles.inputs}
             name="merchant"
@@ -53,13 +68,25 @@ class AddTransaction extends React.Component {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text>Amount ($)</Text>
+          <TextInput
+              style={styles.inputs}
+              name="category"
+              placeholder="Enter category..."
+              onChange={this.handleCategory}
+              value={this.state.category}
+            />
+        </View>
+        <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
             name="amount"
-            placeholder="Enter Amount"
+            placeholder="Enter Amount..."
             onChange={this.handleAmount}
             value={this.state.amount}
+          />
+          <Image
+            style={styles.inputIcon}
+            source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
           />
         </View>
         <TouchableOpacity
@@ -73,7 +100,7 @@ class AddTransaction extends React.Component {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(AddTransaction);
 
@@ -83,6 +110,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#DCDCDC',
+  },
+  dropdown: {
+    paddingHorizontal: 125,
   },
   header: {
     fontSize: 45,

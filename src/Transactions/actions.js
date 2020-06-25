@@ -1,7 +1,7 @@
-export function addTransaction(transaction) {
+export default function addTransaction(transaction, navigation) {
   return dispatch => {
-    dispatch({ type: "START_USER_LOGIN" });
-    fetch("http://localhost:3000/login", {
+    dispatch({ type: "START_ADD_TRANSACTION" });
+    fetch("http://localhost:3000/transactions", {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -9,12 +9,10 @@ export function addTransaction(transaction) {
       body: JSON.stringify(transaction)
     })
       .then(resp => resp.json())
-      .then(userData => {
-        if (userData.error) {
-          alert(userData.error)
-        } else {
-          dispatch({ type: 'LOGIN_USER', user: userData})
+      .then(txnData => {
+        dispatch({ type: "ADD_TRANSACTION_SUCCESS", transaction: txnData})
+        navigation.navigate('Transactions')
         }
-      });
+      );
   };
 }
