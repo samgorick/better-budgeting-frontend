@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AllTransactions from '../Transactions/components/AllTransactions'
-import Summary from '../Homepage/components/Summary'
+import Summary from './components/Summary'
 import Savings from '../Savings/components/SavingsSummary'
 
 const Tab = createBottomTabNavigator();

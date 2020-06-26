@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import editTransaction from '../actions';
+import { editTransaction, deleteTransaction } from '../actions';
 import {Picker} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -12,6 +12,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     editTransaction: (transaction, navigation) => dispatch(editTransaction(transaction, navigation)),
+    deleteTransaction: (transactionId, navigation) => dispatch(deleteTransaction(transactionId, navigation))
   };
 };
 
@@ -52,10 +53,18 @@ class EditTransaction extends React.Component {
     });
   };
 
+  handleDelete = () => {
+    this.props.deleteTransaction(this.state.id, this.props.navigation)
+  }
+
   handleSubmit = () => {
-    const txnObj = {...this.state, user_id: this.props.user.id}
-    this.props.addTransaction(txnObj, this.props.navigation)
     this.setState({
+      amount: parseInt(this.state.amount, 10)
+    })
+    const txnObj = {...this.state, user_id: this.props.user.id}
+    this.props.editTransaction(txnObj, this.props.navigation)
+    this.setState({
+      id: '',
       merchant: '',
       category: '',
       amount: ''
@@ -63,8 +72,6 @@ class EditTransaction extends React.Component {
   };
 
   render() {
-    console.log(this.state)
-    console.log(this.props.route.params.item)
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Update Transaction</Text>
@@ -119,7 +126,12 @@ class EditTransaction extends React.Component {
         <TouchableOpacity
           style={[styles.buttonContainer, styles.loginButton]}
           onPress={this.handleSubmit}>
-          <Text style={styles.loginText}>Update Transaction</Text>
+          <Text style={styles.btnText}>Update Transaction</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.buttonContainer, styles.deleteButton]}
+          onPress={this.handleDelete}>
+          <Text style={styles.btnText}>Delete Transaction</Text>
         </TouchableOpacity>
       </View>
     );
@@ -193,6 +205,9 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: '#00b5ec',
+  },
+  deleteButton: {
+    backgroundColor: 'red',
   },
   btnText: {
     color: 'white',

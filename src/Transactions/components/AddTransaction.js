@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import addTransaction from '../actions';
+import { addTransaction } from '../actions';
 import {Picker} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 

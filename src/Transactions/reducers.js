@@ -6,6 +6,12 @@ export default function userReducer(state=null, action) {
     case 'ADD_TRANSACTION_SUCCESS':
       return sorted([...state, action.transaction])
 
+    case 'EDIT_TRANSACTION_SUCCESS':
+      return sorted(state.map(transaction => transaction.id === action.transaction.id ? action.transaction : transaction))
+
+    case 'DELETE_TRANSACTION_SUCCESS':
+      return sorted(state.filter(transaction => transaction.id !== action.transactionId))
+
     default:
       return state;
   }
