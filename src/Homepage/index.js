@@ -3,6 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AllTransactions from '../Transactions/components/AllTransactions'
 import Summary from './components/Summary'
 import Savings from '../Savings/components/SavingsSummary'
+import AddBudget from '../Budgets/components/AddBudget'
+import EditBudget from '../Budgets/components/EditBudget'
+import { connect } from 'react-redux'
 
 const Tab = createBottomTabNavigator();
 
@@ -11,6 +14,11 @@ class Homepage extends React.Component {
     return (
         <Tab.Navigator>
           <Tab.Screen name="Summary" component={Summary} />
+          {this.props.budget ? (
+            <Tab.Screen name="Edit Budget" component={EditBudget} />
+          ) : (
+            <Tab.Screen name="Add Budget" component={AddBudget} />
+          )}
           <Tab.Screen name="Transactions" component={AllTransactions} />
           <Tab.Screen name="Savings" component={Savings} />
         </Tab.Navigator>
@@ -18,4 +26,8 @@ class Homepage extends React.Component {
   }
 }
 
-export default Homepage;
+const mapStateToProps = state => {
+  return { budget: state.budget}
+}
+
+export default connect(mapStateToProps)(Homepage);

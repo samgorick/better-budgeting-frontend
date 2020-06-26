@@ -99,10 +99,11 @@ const getTotal = (transactions) => {
 }
 
 // Expenses vs Income This Month (Progress Bar)
-const progressDataCalc = transactions => {
+const progressDataCalc = (transactions, budget) => {
   const total = getTotal(transactions)
-  const final = total / (total * 1.5); //This will be replaced by the budgeted income
-  return {labels: ['Expenses'], data: [final]};
+  const income = budget.find(category => category.spending_category === "Income")
+  const final = total / income.amount; //This will be replaced by the budgeted income
+  return {labels: [''], data: [final]};
 };
 // Pie-Chart - top 4 spending categories plus other
 const pieDataCalc = transactions => {
@@ -132,22 +133,19 @@ const pieDataCalc = transactions => {
 };
 
 const Summary = props => (
-  <ScrollView>
-    {props.transactions ? (
+  <ScrollView contentContainerStyle={styles.container}>
+    {props.transactions && props.budget ? (
       <>
-        <Text>You have spent ${getTotal(props.transactions)} so far this month</Text>
+        <Text style={styles.header}>You have spent ${Math.round(getTotal(props.transactions))} so far this month</Text>
         <ProgressChart
-          data={progressDataCalc(props.transactions)}
+          data={progressDataCalc(props.transactions, props.budget)}
           width={screenWidth}
           height={220}
           strokeWidth={26}
           radius={64}
           chartConfig={chartConfig}
           hideLegend={false}
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
+          style={styles.chart}
         />
         {/* <Text>Bezier Line Chart</Text>
         <LineChart
@@ -164,7 +162,7 @@ const Summary = props => (
             borderRadius: 16,
           }}
         /> */}
-        <Text>Here's how your spending breaks down this month</Text>
+        <Text style={styles.header}>Here's how your spending breaks down this month</Text>
         <PieChart
           data={pieDataCalc(props.transactions)}
           width={screenWidth}
@@ -173,25 +171,19 @@ const Summary = props => (
           accessor="amount"
           backgroundColor="white"
           paddingLeft="15"
-          style={{
-            marginVertical: 8,
-            borderRadius: 16
-          }}
+          style={styles.chart}
         />
-        <Text>Bar Chart</Text>
+        <Text style={styles.header}>Here's Your Spending Against Your Budget</Text>
       <BarChart
         data={barDataCalc(props.transactions)}
         width={screenWidth}
         height={440}
         yAxisLabel="$"
         chartConfig={chartConfig}
-        verticalLabelRotation={70}
+        verticalLabelRotation={80}
         showValuesOnTopOfBars={true}
         fromZero={true}
-        style={{
-          marginVertical: 8,
-          borderRadius: 16
-        }}
+        style={styles.chart}
       />
         {/* <Text>Horizontal Bar Chart</Text>
         <BarChart
@@ -217,22 +209,25 @@ const Summary = props => (
         /> */}
       </>
     ) : (
-      <Text>Loading</Text>
+      <Text style={styles.header}>Loading</Text>
     )}
   </ScrollView>
 );
 
 const styles = StyleSheet.create({
-  container: {
-    
-  },
   header: {
-
+    textAlign: 'center',
+    fontSize: 18,
+    marginVertical: 18,
+    marginHorizontal: 10
+  },
+  chart: {
+    borderRadius: 16,
   }
 })
 
 const mapStateToProps = state => {
-  return {transactions: state.transactions};
+  return {transactions: state.transactions, budget: state.budget};
 };
 
 export default connect(mapStateToProps)(Summary);

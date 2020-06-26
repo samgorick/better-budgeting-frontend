@@ -15,6 +15,7 @@
         } else {
           dispatch({ type: 'LOGIN_USER', user: {id: userData.id, email: userData.email} })
           dispatch({ type: 'SET_TRANSACTIONS', transactions: userData.transactions})
+          dispatch({ type: 'SET_BUDGET', budget: userData.budgets})
         }
       });
   };

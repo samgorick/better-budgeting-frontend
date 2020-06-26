@@ -1,17 +1,19 @@
 import React from 'react';
 import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import { addTransaction } from '../actions';
+import {addTransaction} from '../actions';
+import {SpendingCategories} from '../../constants/SpendingCategories';
 import {Picker} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const mapStateToProps = state => {
-  return { user: state.user}
-}
+  return {user: state.user};
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    addTransaction: (transaction, navigation) => dispatch(addTransaction(transaction, navigation)),
+    addTransaction: (transaction, navigation) =>
+      dispatch(addTransaction(transaction, navigation)),
   };
 };
 
@@ -36,18 +38,18 @@ class AddTransaction extends React.Component {
 
   handleCategory = e => {
     this.setState({
-      category: e.nativeEvent.text
+      category: e.nativeEvent.text,
     });
   };
 
   handleSubmit = () => {
-    const txnObj = {...this.state, user_id: this.props.user.id}
-    this.props.addTransaction(txnObj, this.props.navigation)
+    const txnObj = {...this.state, user_id: this.props.user.id};
+    this.props.addTransaction(txnObj, this.props.navigation);
     this.setState({
       merchant: '',
       category: '',
-      amount: 0
-    })
+      amount: 0,
+    });
   };
 
   render() {
@@ -85,22 +87,15 @@ class AddTransaction extends React.Component {
           <Picker
             selectedValue={this.state.category}
             style={{width: 200}}
-            itemStyle={{fontSize:16}}
+            itemStyle={{fontSize: 16}}
             onValueChange={(itemValue, itemIndex) =>
               this.setState({category: itemValue})
             }>
-            <Picker.Item label="Bills" value="Bills"/>
-            <Picker.Item label="Eating/Drinking Out" value="Eating/Drinking Out" />
-            <Picker.Item label="Groceries" value="Groceries" />
-            <Picker.Item label="Holiday" value="Holiday" />
-            <Picker.Item label="Housing" value="Housing" />
-            <Picker.Item label="Leisure" value="Leisure" />
-            <Picker.Item label="Personal Care" value="Personal Care" />
-            <Picker.Item label="Savings" value="Savings" />
-            <Picker.Item label="Shopping" value="Shopping" />
-            <Picker.Item label="Transport" value="Transport" />
+            {SpendingCategories.map(cat => (
+              <Picker.Item label={cat} value={cat} />
+            ))}
           </Picker>
-          </View>
+        </View>
         <TouchableOpacity
           style={[styles.buttonContainer, styles.loginButton]}
           onPress={this.handleSubmit}>
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     borderColor: 'black',
-    borderWidth: 1
+    borderWidth: 1,
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',
