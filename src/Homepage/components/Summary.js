@@ -1,22 +1,23 @@
 import React from 'react';
-import {Text, Dimensions} from 'react-native';
+import {Text, Dimensions, StyleSheet} from 'react-native';
 import {
   LineChart,
-  // BarChart,
+  BarChart,
   PieChart,
   ProgressChart,
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
-import {BarChart, Grid} from 'react-native-svg-charts';
+// import {BarChart, Grid} from 'react-native-svg-charts';
 import {ScrollView} from 'react-native-gesture-handler';
+import {connect} from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 
 const chartConfig = {
   backgroundGradientFrom: 'white',
   backgroundGradientTo: 'white',
-  decimalPlaces: 2, // optional, defaults to 2dp
+  decimalPlaces: 0, // optional, defaults to 2dp
   color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
   style: {
@@ -29,11 +30,6 @@ const chartConfig = {
   },
 };
 
-const progressData = {
-  labels: ['Expenses'], // optional
-  data: [0.85],
-};
-
 const lineData = {
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
   datasets: [
@@ -43,25 +39,23 @@ const lineData = {
   ],
 };
 
-const barData = {
-  labels: [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-  ],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43, 20, 45, 28, 80]
-    },
-  ],
-};
+const barDataCalc = transactions => {
+  const labels = []
+  const data = []
+  const groupedTransactions = sorted(groupTransactions(transactions))
+  groupedTransactions.forEach(transaction => {
+    labels.push(transaction.spending_category)
+    data.push(transaction.amount)
+  })
+  return {
+    labels: labels,
+    datasets: [
+      {
+        data: data
+      }
+    ]
+  }
+}
 
 const stackedData = {
   labels: ['Test1', 'Test2'],
@@ -70,54 +64,80 @@ const stackedData = {
   barColors: ['#dfe4ea', '#ced6e0', '#a4b0be'],
 };
 
-const pieData = [
-  {
-    name: 'Seoul',
-    population: 21500000,
-    color: 'rgba(131, 167, 234, 1)',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-  {
-    name: 'Toronto',
-    population: 2800000,
-    color: '#F00',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-  {
-    name: 'Beijing',
-    population: 527612,
-    color: 'red',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-  {
-    name: 'New York',
-    population: 8538000,
-    color: '#ffffff',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-  {
-    name: 'Moscow',
-    population: 11920000,
-    color: 'rgb(0, 0, 255)',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-];
-
 const fill = 'rgb(134, 65, 244)';
-const newBarData = [20, 45, 28, 80, 99, 43, 20, 45, 28, 80]
+const newBarData = [20, 45, 28, 80, 99, 43, 20, 45, 28, 80];
 
-class Summary extends React.Component {
-  render() {
-    return (
-      <ScrollView>
-        <Text>Progress Chart</Text>
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+const sorted = transactionsArray => {
+  return transactionsArray.sort((a, b) => (a.amount < b.amount ? 1 : -1));
+}
+
+// Group transactions by spending_category
+const groupTransactions = transactions => {
+  const holder = {};
+  const groupedTransactions = [];
+  transactions.forEach(function(d) {
+    if (holder.hasOwnProperty(d.spending_category)) {
+      holder[d.spending_category] = holder[d.spending_category] + d.amount;
+    } else {
+      holder[d.spending_category] = d.amount;
+    }
+  });
+
+  for (let txn in holder) {
+    groupedTransactions.push({
+      spending_category: txn,
+      amount: holder[txn],
+    });
+  }
+  return groupedTransactions;
+};
+
+const getTotal = (transactions) => {
+  return groupTransactions(transactions).map(txn => txn.amount).reduce(reducer)
+}
+
+// Expenses vs Income This Month (Progress Bar)
+const progressDataCalc = transactions => {
+  const total = getTotal(transactions)
+  const final = total / (total * 1.5); //This will be replaced by the budgeted income
+  return {labels: ['Expenses'], data: [final]};
+};
+// Pie-Chart - top 4 spending categories plus other
+const pieDataCalc = transactions => {
+  const colors = ['#0835ff', '#e200be', '#ff0074', '#ff5c36']
+  
+  const groupedTransactions = groupTransactions(transactions);
+  const total = groupedTransactions.map(txn => txn.amount).reduce(reducer);
+  const topFour = sorted(groupedTransactions).slice(0, 4);
+  const totalTopFour = topFour.map(txn => txn.amount).reduce(reducer);
+  const otherAmount = total - totalTopFour;
+  const other = {
+    name: 'Other',
+    amount: otherAmount,
+    color: '#ffa600',
+    legendFontColor: '#ffa600',
+    legendFontSize: 15,
+  };
+  const pieData = topFour.map((obj, index) => ({
+    name: obj.spending_category,
+    amount: obj.amount,
+    color: colors[index],
+    legendFontColor: colors[index],
+    legendFontSize: 15,
+  }));
+  pieData.push(other);
+  return pieData;
+};
+
+const Summary = props => (
+  <ScrollView>
+    {props.transactions ? (
+      <>
+        <Text>You have spent ${getTotal(props.transactions)} so far this month</Text>
         <ProgressChart
-          data={progressData}
+          data={progressDataCalc(props.transactions)}
           width={screenWidth}
           height={220}
           strokeWidth={26}
@@ -129,7 +149,7 @@ class Summary extends React.Component {
             borderRadius: 16,
           }}
         />
-        <Text>Bezier Line Chart</Text>
+        {/* <Text>Bezier Line Chart</Text>
         <LineChart
           data={lineData}
           width={screenWidth} // from react-native
@@ -143,41 +163,47 @@ class Summary extends React.Component {
             marginVertical: 8,
             borderRadius: 16,
           }}
-        />
-        <Text>Pie Chart</Text>
+        /> */}
+        <Text>Here's how your spending breaks down this month</Text>
         <PieChart
-          data={pieData}
+          data={pieDataCalc(props.transactions)}
           width={screenWidth}
           height={220}
           chartConfig={chartConfig}
-          accessor="population"
-          backgroundColor="transparent"
+          accessor="amount"
+          backgroundColor="white"
           paddingLeft="15"
+          style={{
+            marginVertical: 8,
+            borderRadius: 16
+          }}
         />
-        {/* <Text>Bar Chart</Text>
+        <Text>Bar Chart</Text>
       <BarChart
-        data={barData}
+        data={barDataCalc(props.transactions)}
         width={screenWidth}
-        height={220}
+        height={440}
         yAxisLabel="$"
         chartConfig={chartConfig}
-        verticalLabelRotation={30}
+        verticalLabelRotation={70}
+        showValuesOnTopOfBars={true}
+        fromZero={true}
         style={{
           marginVertical: 8,
           borderRadius: 16
         }}
-      /> */}
-        <Text>Horizontal Bar Chart</Text>
+      />
+        {/* <Text>Horizontal Bar Chart</Text>
         <BarChart
           style={{height: 500}}
           data={newBarData}
           svg={{fill}}
           horizontal={true}
-          spacingInner={'0.5'}
+          // spacingInner={'0.5'}
           contentInset={{top: 30, bottom: 30}}>
           <Grid />
-        </BarChart>
-        <Text>Stacked Bar</Text>
+        </BarChart> */}
+        {/* <Text>Stacked Bar</Text>
         <StackedBarChart
           data={stackedData}
           width={screenWidth}
@@ -188,10 +214,25 @@ class Summary extends React.Component {
             marginVertical: 8,
             borderRadius: 16,
           }}
-        />
-      </ScrollView>
-    );
-  }
-}
+        /> */}
+      </>
+    ) : (
+      <Text>Loading</Text>
+    )}
+  </ScrollView>
+);
 
-export default Summary;
+const styles = StyleSheet.create({
+  container: {
+    
+  },
+  header: {
+
+  }
+})
+
+const mapStateToProps = state => {
+  return {transactions: state.transactions};
+};
+
+export default connect(mapStateToProps)(Summary);
