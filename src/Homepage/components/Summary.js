@@ -57,13 +57,6 @@ const barDataCalc = transactions => {
   }
 }
 
-const stackedData = {
-  labels: ['Test1', 'Test2'],
-  legend: ['L1', 'L2', 'L3'],
-  data: [[60, 60, 60], [30, 30, 60]],
-  barColors: ['#dfe4ea', '#ced6e0', '#a4b0be'],
-};
-
 const fill = 'rgb(134, 65, 244)';
 const newBarData = [20, 45, 28, 80, 99, 43, 20, 45, 28, 80];
 
@@ -132,6 +125,35 @@ const pieDataCalc = transactions => {
   return pieData;
 };
 
+const stackedBarCalc = (transactions, budget) => {
+  const groupedTransactions = groupTransactions(transactions);
+  //TODO: more elegant algorithm for matching transactions to budget
+  const alphabeticalTransactions = spendingTransactions.sort((a, b) => (a.spending_category > b.spending_category ? 1: -1))
+  // Need to remove income from spending categories
+  const spendingBudget = budget.filter(cat => cat.spending_category !== 'Income')
+  const alphabeticalBudget = spendingBudget.sort((a, b) => a.spending_category > b.spending_category ? 1: -1)
+
+  const labels = alphabeticalTransactions.map(txn => txn.spending_category)
+
+  const data = []
+  // This only works if user has a budget for each category, and if they have not exceeded this budget
+  for(let i=0; i < alphabeticalTransactions.length; i++){
+    let spending = Math.round(alphabeticalTransactions[i].amount)
+    let budget = Math.round(alphabeticalBudget[i].amount)
+    let remainingBudget = budget - spending
+    let figure = remainingBudget < 0 ? 0 : remainingBudget // App breaks if remainingBudget is < 0
+    let holder = [spending, figure]
+    data.push(holder)
+  }
+  
+  const stackedData = {
+    labels: labels,
+    data: data,
+    barColors: ['#33cc33', '#ced6e0'],
+  };
+  return stackedData
+}
+
 const Summary = props => (
   <ScrollView contentContainerStyle={styles.container}>
     {props.transactions && props.budget ? (
@@ -194,19 +216,20 @@ const Summary = props => (
           // spacingInner={'0.5'}
           contentInset={{top: 30, bottom: 30}}>
           <Grid />
-        </BarChart> */}
-        {/* <Text>Stacked Bar</Text>
+        </BarChart>*/}
+        <Text>Stacked Bar</Text>
         <StackedBarChart
-          data={stackedData}
+          data={stackedBarCalc(props.transactions, props.budget)}
           width={screenWidth}
           height={220}
           yAxisLabel="$"
+          showLegend={false}
           chartConfig={chartConfig}
           style={{
             marginVertical: 8,
             borderRadius: 16,
           }}
-        /> */}
+        />
       </>
     ) : (
       <Text style={styles.header}>Loading</Text>
