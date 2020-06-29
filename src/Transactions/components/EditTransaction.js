@@ -3,6 +3,7 @@ import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import { editTransaction, deleteTransaction } from '../actions';
 import {Picker} from 'react-native';
+import {SpendingCategories} from '../../constants/SpendingCategories';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const mapStateToProps = state => {
@@ -22,7 +23,7 @@ class EditTransaction extends React.Component {
     id: '',
     merchant: '',
     category: '',
-    amount: 0,
+    amount: '',
   }; 
 
   componentDidMount(){
@@ -47,20 +48,11 @@ class EditTransaction extends React.Component {
     });
   };
 
-  handleCategory = e => {
-    this.setState({
-      category: e.nativeEvent.text
-    });
-  };
-
   handleDelete = () => {
     this.props.deleteTransaction(this.state.id, this.props.navigation)
   }
 
   handleSubmit = () => {
-    this.setState({
-      amount: parseInt(this.state.amount, 10)
-    })
     const txnObj = {...this.state, user_id: this.props.user.id}
     this.props.editTransaction(txnObj, this.props.navigation)
     this.setState({
@@ -111,16 +103,9 @@ class EditTransaction extends React.Component {
             onValueChange={(itemValue, itemIndex) =>
               this.setState({category: itemValue})
             }>
-            <Picker.Item label="Bills" value="Bills"/>
-            <Picker.Item label="Eating/Drinking Out" value="Eating/Drinking Out" />
-            <Picker.Item label="Groceries" value="Groceries" />
-            <Picker.Item label="Holiday" value="Holiday" />
-            <Picker.Item label="Housing" value="Housing" />
-            <Picker.Item label="Leisure" value="Leisure" />
-            <Picker.Item label="Personal Care" value="Personal Care" />
-            <Picker.Item label="Savings" value="Savings" />
-            <Picker.Item label="Shopping" value="Shopping" />
-            <Picker.Item label="Transport" value="Transport" />
+            {SpendingCategories.map(cat => (
+              <Picker.Item label={cat} value={cat} />
+            ))}
           </Picker>
           </View>
         <TouchableOpacity

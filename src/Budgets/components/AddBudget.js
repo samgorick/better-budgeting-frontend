@@ -31,12 +31,12 @@ class AddBudget extends React.Component {
         initialValues={{
           Income: '',
           Bills: '',
-          eatingDrinkingOut: '',
+          Dining: '',
           Groceries: '',
           Holiday: '',
           Housing: '',
           Leisure: '',
-          personalCare: '',
+          Personal: '',
           Savings: '',
           Shopping: '',
           Transport: '',
@@ -44,85 +44,96 @@ class AddBudget extends React.Component {
         onSubmit={values => this.createBudget(values)}>
         {({handleChange, handleBlur, handleSubmit, values}) => (
           <View>
-            <TextInput
-              onChangeText={handleChange('Income')}
-              onBlur={handleBlur('Income')}
-              value={values.Income}
-              placeholder="Enter Income..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Bills')}
-              onBlur={handleBlur('Bills')}
-              value={values.Bills}
-              placeholder="Enter Bills..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('eatingDrinkingOut')}
-              onBlur={handleBlur('eatingDrinkingOut')}
-              value={values.eatingDrinkingOut}
-              placeholder="Enter Eating / Drinking Out..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Groceries')}
-              onBlur={handleBlur('Groceries')}
-              value={values.Groceries}
-              placeholder="Enter Groceries..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Holiday')}
-              onBlur={handleBlur('Holiday')}
-              value={values.Holiday}
-              placeholder="Enter Holiday..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Housing')}
-              onBlur={handleBlur('Housing')}
-              value={values.Housing}
-              placeholder="Enter Housing..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Leisure')}
-              onBlur={handleBlur('Leisure')}
-              value={values.Leisure}
-              placeholder="Enter Leisure..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('personalCare')}
-              onBlur={handleBlur('personalCare')}
-              value={values.personalCare}
-              placeholder="Enter Personal Care..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Savings')}
-              onBlur={handleBlur('Savings')}
-              value={values.Savings}
-              placeholder="Enter Savings..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Shopping')}
-              onBlur={handleBlur('Shopping')}
-              value={values.Shopping}
-              placeholder="Enter Shopping..."
-              style={styles.inputContainer}
-            />
-            <TextInput
-              onChangeText={handleChange('Transport')}
-              onBlur={handleBlur('Transport')}
-              value={values.Transport}
-              placeholder="Enter Transport..."
-              style={styles.inputContainer}
-            />
-            <Button onPress={handleSubmit} title="Submit" />
-          </View>
+          <Text>Income</Text>
+          <TextInput
+            onChangeText={handleChange('Income')}
+            onBlur={handleBlur('Income')}
+            value={values.Income}
+            placeholder="Enter Income..."
+            style={styles.inputContainer}
+          />
+          <Text>Bills</Text>
+          <TextInput
+            onChangeText={handleChange('Bills')}
+            onBlur={handleBlur('Bills')}
+            value={values.Bills}
+            placeholder="Enter Bills..."
+            style={styles.inputContainer}
+          />
+          <Text>Dining</Text>
+          <TextInput
+            onChangeText={handleChange('Dining')}
+            onBlur={handleBlur('Dining')}
+            value={values.Dining}
+            placeholder="Enter Dining..."
+            style={styles.inputContainer}
+          />
+          <Text>Groceries</Text>
+          <TextInput
+            onChangeText={handleChange('Groceries')}
+            onBlur={handleBlur('Groceries')}
+            value={values.Groceries}
+            placeholder="Enter Groceries..."
+            style={styles.inputContainer}
+          />
+          <Text>Holiday</Text>
+          <TextInput
+            onChangeText={handleChange('Holiday')}
+            onBlur={handleBlur('Holiday')}
+            value={values.Holiday}
+            placeholder="Enter Holiday..."
+            style={styles.inputContainer}
+          />
+          <Text>Housing</Text>
+          <TextInput
+            onChangeText={handleChange('Housing')}
+            onBlur={handleBlur('Housing')}
+            value={values.Housing}
+            placeholder="Enter Housing..."
+            style={styles.inputContainer}
+          />
+          <Text>Leisure</Text>
+          <TextInput
+            onChangeText={handleChange('Leisure')}
+            onBlur={handleBlur('Leisure')}
+            value={values.Leisure}
+            placeholder="Enter Leisure..."
+            style={styles.inputContainer}
+          />
+          <Text>Personal</Text>
+          <TextInput
+            onChangeText={handleChange('Personal')}
+            onBlur={handleBlur('Personal')}
+            value={values.Personal}
+            placeholder="Enter Personal Spend..."
+            style={styles.inputContainer}
+          />
+          <Text>Savings</Text>
+          <TextInput
+            onChangeText={handleChange('Savings')}
+            onBlur={handleBlur('Savings')}
+            value={values.Savings}
+            placeholder="Enter Savings..."
+            style={styles.inputContainer}
+          />
+          <Text>Shopping</Text>
+          <TextInput
+            onChangeText={handleChange('Shopping')}
+            onBlur={handleBlur('Shopping')}
+            value={values.Shopping}
+            placeholder="Enter Shopping..."
+            style={styles.inputContainer}
+          />
+          <Text>Transport</Text>
+          <TextInput
+            onChangeText={handleChange('Transport')}
+            onBlur={handleBlur('Transport')}
+            value={values.Transport}
+            placeholder="Enter Transport..."
+            style={styles.inputContainer}
+          />
+          <Button onPress={handleSubmit} title="Submit" />
+        </View>
         )}
       </Formik>
       </ScrollView>

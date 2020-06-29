@@ -7,6 +7,7 @@ import Signup from './src/User/Signup';
 import Homepage from './src/Homepage/index.js';
 import AddTransaction from './src/Transactions/components/AddTransaction'
 import EditTransaction from './src/Transactions/components/EditTransaction'
+import AddSavings from './src/Savings/components/AddSavings'
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
@@ -34,7 +35,7 @@ class App extends React.Component {
               <Stack.Screen
                 name="Homepage"
                 component={Homepage}
-                options={{title: 'Summary'}}
+                options={{title: 'Your Budget Summary'}}
               />
               <Stack.Screen
                 name="AddTransaction"
@@ -45,6 +46,11 @@ class App extends React.Component {
                 name="EditTransaction"
                 component={EditTransaction}
                 options={{title: 'Update Transaction'}}
+              />
+              <Stack.Screen
+                name="AddSavings"
+                component={AddSavings}
+                options={{title: 'Add Savings'}}
               />
             </>
             )

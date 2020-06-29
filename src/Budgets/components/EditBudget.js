@@ -3,36 +3,101 @@ import {View, Text, Button, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {SpendingCategories} from '../../constants/SpendingCategories';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
-import {Formik} from 'formik';
-import { addBudget } from '../actions'
+import {Picker} from 'react-native';
+import { editBudget } from '../actions'
 
-// const mapStateToProps = state => {
-//   return {user: state.user};
-// };
+const mapStateToProps = state => {
+  return {user: state.user, budget: state.budget};
+};
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     addBudget: (budgetObj, navigation) =>
-//       dispatch(addBudget(budgetObj, navigation)),
-//   };
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    editBudget: (budgetObj, navigation) =>
+      dispatch(editBudget(budgetObj, navigation)),
+  };
+};
 
 class EditBudget extends React.Component {
 
-  // createBudget = (values) => {
-  //   const budgetObj = {budget: values, user_id: this.props.user.id}
-  //   this.props.addBudget(budgetObj, this.props.navigation)
-  // };
+  state = {
+    id: '',
+    category: '',
+    amount: '',
+  }; 
+
+  updateBudget = () => {
+    this.props.editBudget(this.state, this.props.navigation)
+    this.setState({
+      id: '',
+      category: '',
+      amount: ''
+    })
+  };
+
+  componentDidMount(){
+    const bills = this.props.budget.find(cat => cat.spending_category === 'Bills')
+    const { id, spending_category, amount } = bills
+    this.setState({
+      id: id,
+      category: spending_category,
+      amount: amount.toString()
+    })
+  }
+
+  handleAmount = e => {
+    this.setState({
+      amount: e.nativeEvent.text,
+    });
+  };
 
   render() {
     return (
-      <Text>Edit page!</Text>
-      
+      <View style={styles.container}>
+        <Text style={styles.header}>Update Budget</Text>
+        <View>
+          <Text style={{textAlign: 'center'}}>Select Category...</Text>
+          <Picker
+            selectedValue={this.state.category}
+            style={{width: 200}}
+            itemStyle={{fontSize:16}}
+            onValueChange={(itemValue, itemIndex) => {
+              const match = this.props.budget.find(cat => cat.spending_category === itemValue)
+              this.setState({id: match.id, category: itemValue, amount: match.amount.toString()})
+              }
+            }
+            >
+            {SpendingCategories.map(cat => (
+              <Picker.Item label={cat} value={cat} />
+            ))}
+          </Picker>
+          </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputs}
+            name="amount"
+            placeholder="Enter Amount..."
+            onChange={this.handleAmount}
+            keyboardType='numeric'
+            value={this.state.amount}
+          />
+          <Image
+            style={styles.inputIcon}
+            source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
+          />
+        </View>
+        <TouchableOpacity
+          style={[styles.buttonContainer, styles.loginButton]}
+          onPress={this.updateBudget}>
+          <Text style={styles.btnText}>Update Budget</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
 
 export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
 )(EditBudget);
 
 const styles = StyleSheet.create({
@@ -40,16 +105,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: '#DCDCDC',
   },
+
   header: {
     fontSize: 45,
     marginBottom: 100,
     textAlign: 'center',
   },
-  category: {
-    fontSize: 15,
-    marginBottom: 10,
-    textAlign: 'left',
+  dropdownContainer: {
+    borderColor: 'black',
+    borderWidth: 1
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',

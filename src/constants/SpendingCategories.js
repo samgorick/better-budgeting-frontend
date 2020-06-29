@@ -1,11 +1,11 @@
 export const SpendingCategories = [
   'Bills',
-  'Eating/Drinking Out',
+  'Dining',
   'Groceries',
   'Holiday',
   'Housing',
   'Leisure',
-  'Personal Care',
+  'Personal',
   'Savings',
   'Shopping',
   'Transport',

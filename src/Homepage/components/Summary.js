@@ -148,11 +148,11 @@ const newPieDataCalc = transactions => {
   const otherAmount = total - totalTopFour;
   const other = {
     x: 'Other',
-    y: otherAmount
+    y: otherAmount,
   };
   const pieData = topFour.map((obj, index) => ({
     x: obj.spending_category,
-    y: obj.amount
+    y: obj.amount,
   }));
   pieData.push(other);
   return pieData;
@@ -244,6 +244,29 @@ const Summary = props => (
   <ScrollView contentContainerStyle={styles.container}>
     {props.transactions && props.budget ? (
       <>
+      <Text style={styles.header}>
+          You have spent ${Math.round(getTotal(props.transactions))} so far this
+          month
+        </Text>
+        <VictoryPie
+          data={newProgressDataCalc(props.transactions, props.budget)}
+          innerRadius={120}
+          style={{
+            data: {
+              fill: ({datum}) => {
+                return datum.x === 'Spent' ? 'green' : 'grey';
+              },
+            },
+          }}
+        />
+        <Text style={styles.header}>
+          Here's how your spending breaks down this month
+        </Text>
+        <VictoryPie
+          data={newPieDataCalc(props.transactions)}
+          colorScale={'cool'}
+          innerRadius={50}
+        />
         <Text style={styles.header}>
           You have spent ${Math.round(getTotal(props.transactions))} so far this
           month in these categories:
@@ -274,10 +297,6 @@ const Summary = props => (
             />
           </VictoryStack>
         </VictoryChart>
-        <Text style={styles.header}>
-          You have spent ${Math.round(getTotal(props.transactions))} so far this
-          month
-        </Text>
         <ProgressChart
           data={progressDataCalc(props.transactions, props.budget)}
           width={screenWidth}
@@ -288,17 +307,7 @@ const Summary = props => (
           hideLegend={false}
           style={styles.chart}
         />
-        <VictoryPie
-          data={newProgressDataCalc(props.transactions, props.budget)}
-          innerRadius={120}
-          style={{
-            data: {
-              fill: ({datum}) => {
-                return datum.x === 'Spent' ? 'green' : 'grey';
-              },
-            },
-          }}
-          />       
+        
         {/* <Text>Bezier Line Chart</Text>
         <LineChart
           data={lineData}
@@ -314,9 +323,7 @@ const Summary = props => (
             borderRadius: 16,
           }}
         /> */}
-        <Text style={styles.header}>
-          Here's how your spending breaks down this month
-        </Text>
+        
         <PieChart
           data={pieDataCalc(props.transactions)}
           width={screenWidth}
@@ -327,11 +334,7 @@ const Summary = props => (
           paddingLeft="15"
           style={styles.chart}
         />
-        <VictoryPie
-          data={newPieDataCalc(props.transactions)}
-          colorScale={"cool"}
-          innerRadius={50}
-          /> 
+        
         <Text style={styles.header}>
           Here's Your Spending Against Your Budget
         </Text>

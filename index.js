@@ -23,4 +23,7 @@ class MyApp extends React.Component {
   }
 }
 
+// To demo app without warnings
+// console.disableYellowBox = true;
+
 AppRegistry.registerComponent(appName, () => MyApp);
