@@ -3,6 +3,7 @@ import {View, TextInput, Image, StyleSheet, Text} from 'react-native';
 import {connect} from 'react-redux';
 import {loginUser} from './actions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Container, Header, Content, Button } from 'native-base';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -38,6 +39,8 @@ class Login extends React.Component {
 
   render() {
     return (
+      <>
+
       <View style={styles.container}>
         <Text style={styles.header}>BETTER BUDGETING</Text>
         <View style={styles.inputContainer}>
@@ -69,6 +72,7 @@ class Login extends React.Component {
           <Text style={styles.btnText}>New User? Sign up here</Text>
         </TouchableOpacity>
       </View>
+      </>
     );
   }
 }
