@@ -1,9 +1,8 @@
 import React from 'react';
-import {View, TextInput, Image, StyleSheet, Text} from 'react-native';
+import {View, TextInput, Image, Text, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {loginUser} from './actions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Container, Header, Content, Button } from 'native-base';
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -39,10 +38,9 @@ class Login extends React.Component {
 
   render() {
     return (
-      <>
-
       <View style={styles.container}>
         <Text style={styles.header}>BETTER BUDGETING</Text>
+        <Image style={styles.logo} source={require('./logo.png')}></Image>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
@@ -69,10 +67,9 @@ class Login extends React.Component {
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Signup')}>
-          <Text style={styles.btnText}>New User? Sign up here</Text>
+          <Text style={styles.signUpText}>New User? Sign up here</Text>
         </TouchableOpacity>
-      </View>
-      </>
+        </View>
     );
   }
 }
@@ -81,24 +78,24 @@ export default connect(null, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#f5f9ff',
   },
   header: {
-    fontSize: 45,
-    marginBottom: 100,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 50,
+    marginTop: 10,
+    marginBottom: 50,
+    color: '#00b5ec'
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',
     backgroundColor: '#FFFFFF',
     borderRadius:30,
-    borderBottomWidth: 1,
     width:300,
     height:45,
-    marginBottom:20,
+    marginBottom:25,
     flexDirection: 'row',
     alignItems:'center',
 
@@ -108,9 +105,13 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
+    shadowRadius: 4,
     elevation: 5,
+  },
+  logo: {
+    width: 100, 
+    height: 100,
+    marginBottom: 50
   },
   inputs:{
     height:45,
@@ -129,8 +130,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:300,
+    marginBottom: 150,
+    width: 300,
     borderRadius:30,
     backgroundColor:'transparent'
   },
@@ -141,8 +142,9 @@ const styles = StyleSheet.create({
     color: 'white',
     textTransform: 'uppercase'
   },
-  btnText:{
-    color:"white",
-    fontWeight:'bold'
+  signUpText:{
+    color: "grey",
+    fontWeight:'bold',
+    textTransform: 'uppercase'
   }
 });
