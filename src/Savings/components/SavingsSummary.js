@@ -46,7 +46,7 @@ class SavingsSummary extends React.Component {
           innerRadius={50}
         />
         {this.props.savings.map(saving => {
-          return <Saving item={saving} key={saving.id.toString()} />
+          return <Saving item={saving} key={saving.id.toString()} navigation={this.props.navigation}/>
         })}
         </ScrollView>
         <View style={styles.extraContainer}>

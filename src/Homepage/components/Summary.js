@@ -297,7 +297,7 @@ const Summary = props => (
             />
           </VictoryStack>
         </VictoryChart>
-        <ProgressChart
+        {/* <ProgressChart
           data={progressDataCalc(props.transactions, props.budget)}
           width={screenWidth}
           height={220}
@@ -306,7 +306,7 @@ const Summary = props => (
           chartConfig={chartConfig}
           hideLegend={false}
           style={styles.chart}
-        />
+        /> */}
         
         {/* <Text>Bezier Line Chart</Text>
         <LineChart
@@ -323,7 +323,7 @@ const Summary = props => (
             borderRadius: 16,
           }}
         /> */}
-        
+{/*         
         <PieChart
           data={pieDataCalc(props.transactions)}
           width={screenWidth}
@@ -348,7 +348,7 @@ const Summary = props => (
           showValuesOnTopOfBars={true}
           fromZero={true}
           style={styles.chart}
-        />
+        /> */}
         {/* <Text>Horizontal Bar Chart</Text>
         <BarChart
           style={{height: 500}}

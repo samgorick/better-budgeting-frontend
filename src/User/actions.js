@@ -34,7 +34,6 @@ export function signUpUser(state) {
     })
       .then(resp => resp.json())
       .then(userData => {
-        console.log(userData)
         if (userData.error) {
           alert(userData.error)
         } else {

@@ -8,6 +8,7 @@ import Homepage from './src/Homepage/index.js';
 import AddTransaction from './src/Transactions/components/AddTransaction'
 import EditTransaction from './src/Transactions/components/EditTransaction'
 import AddSavings from './src/Savings/components/AddSavings'
+import ShowSavings from './src/Savings/components/ShowSavings'
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
@@ -51,6 +52,11 @@ class App extends React.Component {
                 name="AddSavings"
                 component={AddSavings}
                 options={{title: 'Add Savings'}}
+              />
+              <Stack.Screen
+                name="ShowSavings"
+                component={ShowSavings}
+                options={{title: 'Savings'}}
               />
             </>
             )

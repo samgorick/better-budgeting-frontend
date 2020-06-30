@@ -9,7 +9,7 @@ const findFirst = values => {
 }
 
 const Saving = props => (
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity style={styles.card} onPress={() => props.navigation.navigate('ShowSavings', {...props})}>
         <View style={styles.cardContent}>
         <Text style={styles.name}>{props.item.name}</Text>
         </View>

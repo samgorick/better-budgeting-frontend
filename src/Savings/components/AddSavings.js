@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import { SavingsCategories } from '../../constants/SavingsCategories'
+import {SavingsCategories} from '../../constants/SavingsCategories';
 import {Picker} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
-import {addSaving} from '../actions'
+import {addSaving} from '../actions';
 
 const mapStateToProps = state => {
   return {user: state.user};
@@ -13,83 +13,85 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addSaving: (saving, navigation) =>
-      dispatch(addSaving(saving, navigation)),
+    addSaving: (saving, navigation) => dispatch(addSaving(saving, navigation)),
   };
 };
 
 class AddSavings extends React.Component {
-
-  createSavings = (values) => {
+  createSavings = values => {
     const savingsObj = {...values, user_id: this.props.user.id};
     this.props.addSaving(savingsObj, this.props.navigation);
   };
 
   render() {
     return (
-      <Formik initialValues={{
-        name: '',
-        category: 'pension',
-        balance: ''
-      }}
-      onSubmit={values => this.createSavings(values)}>
-      {({handleChange, handleBlur, handleSubmit, values}) => (
-        <View style={styles.container}>
-        <Text style={styles.header}>Add Savings</Text>
-        <View style={styles.inputContainer}>
-        <TextInput
-            onChangeText={handleChange('name')}
-            onBlur={handleBlur('name')}
-            value={values.name}
-            placeholder="Enter name..."
-            style={styles.inputContainer}
-          />
-          <Image
-            style={styles.inputIcon}
-            source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            onChangeText={handleChange('balance')}
-            onBlur={handleBlur('balance')}
-            value={values.balance}
-            placeholder="Enter balance..."
-            style={styles.inputContainer}
-          />
-          <Image
-            style={styles.inputIcon}
-            source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
-          />
-        </View>
-        <View>
-          <Text style={{textAlign: 'center'}}>Select Category...</Text>
-          <Picker
-            selectedValue={values.category}
-            style={{width: 200}}
-            itemStyle={{fontSize: 16}}
-            onValueChange={handleChange('category')}
-            >
-              <Picker.Item label={"Choose a category"} value={"Choose a category"}/>
-            {SavingsCategories.map(cat => (
-              <Picker.Item label={cat} value={cat} />
-            ))}
-          </Picker>
-        </View>
-        <TouchableOpacity
-          style={[styles.buttonContainer, styles.loginButton]}
-          onPress={handleSubmit}>
-          <Text style={styles.btnText}>Add Transaction</Text>
-        </TouchableOpacity>
-      </View>
-      )}
+      <Formik
+        initialValues={{
+          name: '',
+          category: 'pension',
+          balance: '',
+        }}
+        onSubmit={values => this.createSavings(values)}>
+        {({handleChange, handleBlur, handleSubmit, values}) => (
+          <View style={styles.container}>
+            <Text style={styles.header}>Add Savings</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+                value={values.name}
+                placeholder="Enter name..."
+                style={styles.inputContainer}
+              />
+              <Image
+                style={styles.inputIcon}
+                source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={handleChange('balance')}
+                onBlur={handleBlur('balance')}
+                value={values.balance}
+                placeholder="Enter balance..."
+                style={styles.inputContainer}
+              />
+              <Image
+                style={styles.inputIcon}
+                source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
+              />
+            </View>
+            <View>
+              <Text style={{textAlign: 'center'}}>Select Category...</Text>
+              <Picker
+                selectedValue={values.category}
+                style={{width: 200}}
+                itemStyle={{fontSize: 16}}
+                onValueChange={handleChange('category')}>
+                <Picker.Item
+                  label={'Choose a category'}
+                  value={'Choose a category'}
+                />
+                {SavingsCategories.map(cat => (
+                  <Picker.Item label={cat} value={cat} />
+                ))}
+              </Picker>
+            </View>
+            <TouchableOpacity
+              style={[styles.buttonContainer, styles.loginButton]}
+              onPress={handleSubmit}>
+              <Text style={styles.btnText}>Add Transaction</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </Formik>
     );
   }
 }
 
 export default connect(
-  mapStateToProps, mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps,
 )(AddSavings);
 
 const styles = StyleSheet.create({
