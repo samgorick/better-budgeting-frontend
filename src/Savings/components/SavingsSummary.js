@@ -69,7 +69,6 @@ class SavingsSummary extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
         <Container style={styles.nativeContainer}>
           {this.props.savings ? (

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Text, Dimensions, StyleSheet} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {Text, Dimensions} from 'react-native';
+import {Container, Content} from 'native-base'
 import {connect} from 'react-redux';
 import {
   VictoryBar,
@@ -10,7 +10,10 @@ import {
   VictoryStack,
   VictoryLabel,
   VictoryPie,
+  VictoryTooltip
 } from 'victory-native';
+import numeral from 'numeral'
+import styles from '../../../Styles/styles';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -138,6 +141,7 @@ const remainingBudgetCalc = (transactions, budget) => {
 };
 
 const progressDataCalc = (transactions, budget) => {
+  console.log('progress', transactions, budget)
   const total = getTotal(transactions);
   const income = budget.find(
     category => category.spending_category === 'Income',
@@ -149,21 +153,64 @@ const progressDataCalc = (transactions, budget) => {
   ];
 };
 
-class Summary extends React.Component {
+class CustomLabel extends React.Component {
+
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <>
+        <VictoryLabel {...this.props}/>
+        <VictoryTooltip
+          {...this.props}
+          x={screenWidth/2} y={200}
+          orientation="middle"
+          pointerLength={0}
+          cornerRadius={60}
+          flyoutWidth={120}
+          flyoutHeight={120}
+          flyoutStyle={{ fill: "white", borderWidth: 0 }}
+        />
+      </>
+    )
+  }
+}
+
+CustomLabel.defaultEvents = VictoryTooltip.defaultEvents;
+
+class Summary extends React.Component {
+
+  state = {
+    progressData: [{x: 'Spent', y: 0}, {x: 'Remaining', y: 100}]
+  }
+
+  componentDidUpdate(prevProps){
+    console.log('mount', this.props)
+    if(this.props.budget !== prevProps.budget){
+      console.log('in if mount')
+          this.setState({
+      progressData: progressDataCalc(
+        this.props.transactions,
+        this.props.budget,
+      )
+    })
+  }
+  }
+
+  render() {
+    console.log(this.state)
+    return (
+      <Container contentContainerStyle={styles.container}>
         {this.props.transactions && this.props.budget ? (
-          <>
+          <Content>
             <Text style={styles.header}>
-              You have spent ${Math.round(getTotal(this.props.transactions))} so
-              far this month
+              {numeral(Math.round(getTotal(this.props.transactions))).format('$0,0')}
             </Text>
+            <Text style={styles.chartHeader}> spent so
+              far this month</Text>
             <VictoryPie
-              data={progressDataCalc(
-                this.props.transactions,
-                this.props.budget,
-              )}
+              data={this.state.progressData}
+              labelComponent={<CustomLabel />}
+              animate={{delay: 1000, duration: 1000}}
+              labelRadius={160}
               innerRadius={120}
               style={{
                 data: {
@@ -173,49 +220,20 @@ class Summary extends React.Component {
                 },
               }}
             />
-            <Text style={styles.header}>
+            <Text style={styles.chartHeader}>
               Here's how your spending breaks down this month
             </Text>
             <VictoryPie
               data={pieDataCalc(this.props.transactions)}
               colorScale={'cool'}
               innerRadius={120}
+              labelComponent={<CustomLabel />}
+              labelRadius={400}
             />
-            <Text style={styles.header}>
+            <Text style={styles.chartHeader}>
               You have spent ${Math.round(getTotal(this.props.transactions))} so
               far this month in these categories:
             </Text>
-            <VictoryChart
-              padding={{left: 65, right: 30, bottom: 30, top: 10}}
-              width={screenWidth}
-              theme={VictoryTheme.material}
-              domainPadding={20}>
-              <VictoryAxis style={{tickLabels: {angle: -50}}} />
-              <VictoryAxis
-                dependentAxis
-                tickFormat={x => `$${x / 1000}k`}
-                style={{
-                  grid: {stroke: ({tick}) => (tick > 0.5 ? 'grey' : 'grey')},
-                }}
-              />
-              <VictoryStack colorScale={['red', 'green']}>
-                <VictoryBar
-                  data={barDataCalc(this.props.transactions)}
-                  x="spendingCategory"
-                  y="amount"
-                  horizontal={true}
-                />
-                <VictoryBar
-                  data={remainingBudgetCalc(
-                    this.props.transactions,
-                    this.props.budget,
-                  )}
-                  x="spendingCategory"
-                  y="amount"
-                  horizontal={true}
-                />
-              </VictoryStack>
-            </VictoryChart>
             <VictoryChart
               padding={{left: 65, right: 30, bottom: 30, top: 10}}
               width={screenWidth}
@@ -250,29 +268,61 @@ class Summary extends React.Component {
                 />
               </VictoryStack>
             </VictoryChart>
-          </>
+          </Content>
         ) : (
           <Text style={styles.header}>Loading</Text>
         )}
-      </ScrollView>
+      </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  header: {
-    textAlign: 'center',
-    fontSize: 18,
-    marginVertical: 18,
-    marginHorizontal: 10,
-  },
-  chart: {
-    borderRadius: 16,
-  },
-});
+// const styles = StyleSheet.create({
+//   header: {
+//     textAlign: 'center',
+//     fontSize: 18,
+//     marginVertical: 18,
+//     marginHorizontal: 10,
+//   },
+//   chart: {
+//     borderRadius: 16,
+//   },
+// });
 
 const mapStateToProps = state => {
   return {transactions: state.transactions, budget: state.budget};
 };
 
 export default connect(mapStateToProps)(Summary);
+
+{/* <VictoryChart
+padding={{left: 65, right: 30, bottom: 30, top: 10}}
+width={screenWidth}
+theme={VictoryTheme.material}
+domainPadding={20}>
+<VictoryAxis style={{tickLabels: {angle: -50}}} />
+<VictoryAxis
+  dependentAxis
+  tickFormat={x => `$${x / 1000}k`}
+  style={{
+    grid: {stroke: ({tick}) => (tick > 0.5 ? 'grey' : 'grey')},
+  }}
+/>
+<VictoryStack colorScale={['red', 'green']}>
+  <VictoryBar
+    data={barDataCalc(this.props.transactions)}
+    x="spendingCategory"
+    y="amount"
+    horizontal={true}
+  />
+  <VictoryBar
+    data={remainingBudgetCalc(
+      this.props.transactions,
+      this.props.budget,
+    )}
+    x="spendingCategory"
+    y="amount"
+    horizontal={true}
+  />
+</VictoryStack>
+</VictoryChart> */}
