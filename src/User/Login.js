@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, TextInput, Image, Text, StyleSheet} from 'react-native';
+import {View, TextInput, Image, Text} from 'react-native';
+import styles from '../../Styles/styles'
 import {connect} from 'react-redux';
 import {loginUser} from './actions';
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import LottieView from 'lottie-react-native';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -36,14 +38,28 @@ class Login extends React.Component {
     });
   };
 
+  componentDidMount() {
+    this.animation.play();
+  }
+  resetAnimation = () => {
+    this.animation.reset();
+    this.animation.play();
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>BETTER BUDGETING</Text>
-        <Image style={styles.logo} source={require('./logo.png')}></Image>
+        <LottieView
+          ref={(animation) => {
+            this.animation = animation;
+          }}
+          style={styles.animation}
+          source={require('./appLogo.json')}
+        />
         <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputs}
+        <TextInput
+            style={styles.input}
             name="email"
             placeholder="Enter email..."
             keyboardType="email-address"
@@ -55,7 +71,7 @@ class Login extends React.Component {
         </View>
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.inputs}
+            style={styles.input}
             name="password"
             placeholder="Enter Password"
             secureTextEntry={true}
@@ -64,10 +80,10 @@ class Login extends React.Component {
           <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}/>
         </View>
         <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={this.handleLogin}>
-          <Text style={styles.loginText}>Login</Text>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Signup')}>
-          <Text style={styles.signUpText}>New User? Sign up here</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
+          <Text style={{marginTop: 20, textTransform: 'uppercase', color: '#00b5ec'}}>New User? Sign up here</Text>
         </TouchableOpacity>
         </View>
     );
@@ -76,75 +92,4 @@ class Login extends React.Component {
 
 export default connect(null, mapDispatchToProps)(Login);
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#f5f9ff',
-  },
-  header: {
-    textAlign: 'center',
-    fontSize: 50,
-    marginTop: 10,
-    marginBottom: 50,
-    color: '#00b5ec'
-  },
-  inputContainer: {
-    borderBottomColor: '#F5FCFF',
-    backgroundColor: '#FFFFFF',
-    borderRadius:30,
-    width:300,
-    height:45,
-    marginBottom:25,
-    flexDirection: 'row',
-    alignItems:'center',
 
-    shadowColor: "#808080",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  logo: {
-    width: 100, 
-    height: 100,
-    marginBottom: 50
-  },
-  inputs:{
-    height:45,
-    marginLeft:16,
-    borderBottomColor: '#FFFFFF',
-    flex:1,
-  },
-  inputIcon:{
-    width:30,
-    height:30,
-    marginRight:15,
-    justifyContent: 'center'
-  },
-  buttonContainer: {
-    height:45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 150,
-    width: 300,
-    borderRadius:30,
-    backgroundColor:'transparent'
-  },
-  loginButton: {
-    backgroundColor: "#00b5ec",
-  },
-  loginText: {
-    color: 'white',
-    textTransform: 'uppercase'
-  },
-  signUpText:{
-    color: "grey",
-    fontWeight:'bold',
-    textTransform: 'uppercase'
-  }
-});

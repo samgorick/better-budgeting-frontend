@@ -13,6 +13,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
+// Add to StackNavigator to remove header: screenOptions={{ title: "", headerShown: false }}
+
 class App extends React.Component {
   render() {
     return (
@@ -24,6 +26,7 @@ class App extends React.Component {
                 name="Login"
                 component={Login}
                 options={{title: 'Login'}}
+                
               />
               <Stack.Screen
                 name="Signup"

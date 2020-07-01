@@ -4,6 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import Saving from './Saving';
 import {VictoryPie} from 'victory-native';
+import {Container, Content, List, Fab, Icon} from 'native-base';
 
 const mapStateToProps = state => {
   return {savings: state.savings};
@@ -45,9 +46,11 @@ class SavingsSummary extends React.Component {
           colorScale={'cool'}
           innerRadius={50}
         />
+        <List>
         {this.props.savings.map(saving => {
           return <Saving item={saving} key={saving.id.toString()} navigation={this.props.navigation}/>
         })}
+        </List>
         </ScrollView>
         <View style={styles.extraContainer}>
           <TouchableOpacity
