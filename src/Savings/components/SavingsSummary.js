@@ -34,6 +34,7 @@ const pieDataCalc = savings => {
 const screenWidth = Dimensions.get('window').width;
 
 class CustomLabel extends React.Component {
+
   render() {
     return (
       <>
@@ -56,9 +57,21 @@ class CustomLabel extends React.Component {
 CustomLabel.defaultEvents = VictoryTooltip.defaultEvents;
 
 class SavingsSummary extends React.Component {
+
+  state = {
+    data: [{x: 0, y: 0}]
+  }
+
+  componentDidMount(){
+    this.setState({
+      data: pieDataCalc(this.props.savings)
+    })
+  }
+
   render() {
+    console.log(this.state)
     return (
-        <Container style={{backgroundColor: '#f5f9ff'}}>
+        <Container style={styles.nativeContainer}>
           {this.props.savings ? (
             <>
         <Content>
@@ -71,9 +84,10 @@ class SavingsSummary extends React.Component {
             Here's how your portfolio breaks down
           </Text>
           <VictoryPie
-            data={pieDataCalc(this.props.savings)}
+            data={this.state.data}
             height={400}
             width={screenWidth}
+            animate={{ duration: 2000 }}
             labelComponent={<CustomLabel />}
             colorScale={'cool'}
             innerRadius={120}

@@ -1,8 +1,7 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import moment from 'moment';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {ListItem, Body, Right, Text} from 'native-base';
+import numeral from 'numeral'
 
 const findFirst = values => {
   const order = values.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
@@ -23,7 +22,7 @@ const Saving = props => (
     </Body>
     <Right>
       <Text note style={{color: 'blue'}}>
-        ${findFirst(props.item.saving_values).value}
+        {numeral(findFirst(props.item.saving_values).value).format('$0,0')}
       </Text>
     </Right>
   </ListItem>

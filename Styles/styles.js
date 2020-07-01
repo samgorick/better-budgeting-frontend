@@ -8,6 +8,9 @@ export default StyleSheet.create({
     backgroundColor: theme.PRIMARY_COLOR,
     flex: 1
   },
+  nativeContainer: {
+    backgroundColor: '#f5f9ff'
+  },
   header: {
     textAlign: 'center',
     fontSize: theme.FONT_SIZE_HEADER,

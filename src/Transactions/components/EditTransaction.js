@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {editTransaction, deleteTransaction} from '../actions';
 import {SpendingCategories} from '../../constants/SpendingCategories';
