@@ -70,5 +70,10 @@ export default StyleSheet.create({
   },
   picker: {
     marginBottom: theme.STANDARD_SPACING
+  },
+  chartHeader: {
+    textAlign: 'center',
+    fontSize: theme.FONT_SIZE_STANDARD,
+    marginBottom: theme.STANDARD_SPACING
   }
 });
