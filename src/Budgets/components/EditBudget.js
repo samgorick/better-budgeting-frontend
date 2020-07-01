@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text, Button, TextInput, Image, StyleSheet} from 'react-native';
+import {View, Text, Button, TextInput, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {SpendingCategories} from '../../constants/SpendingCategories';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import {Picker} from 'react-native';
 import { editBudget } from '../actions'
+import styles from '../../../Styles/styles'
 
 const mapStateToProps = state => {
   return {user: state.user, budget: state.budget};
@@ -52,8 +53,7 @@ class EditBudget extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.header}>Update Budget</Text>
+      <View style={{...styles.container, justifyContent: 'center'}}>
         <View>
           <Text style={{textAlign: 'center'}}>Select Category...</Text>
           <Picker
@@ -73,7 +73,7 @@ class EditBudget extends React.Component {
           </View>
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.inputs}
+            style={styles.input}
             name="amount"
             placeholder="Enter Amount..."
             onChange={this.handleAmount}
@@ -82,13 +82,13 @@ class EditBudget extends React.Component {
           />
           <Image
             style={styles.inputIcon}
-            source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
+            source={{uri: 'https://img.icons8.com/ios/50/000000/money.png'}}
           />
         </View>
         <TouchableOpacity
-          style={[styles.buttonContainer, styles.loginButton]}
+          style={styles.buttonContainer}
           onPress={this.updateBudget}>
-          <Text style={styles.btnText}>Update Budget</Text>
+          <Text style={styles.buttonText}>Update Budget</Text>
         </TouchableOpacity>
       </View>
     );
@@ -99,72 +99,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(EditBudget);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#DCDCDC',
-  },
-
-  header: {
-    fontSize: 45,
-    marginBottom: 100,
-    textAlign: 'center',
-  },
-  dropdownContainer: {
-    borderColor: 'black',
-    borderWidth: 1
-  },
-  inputContainer: {
-    borderBottomColor: '#F5FCFF',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 30,
-    borderBottomWidth: 1,
-    width: 300,
-    height: 45,
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    shadowColor: '#808080',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  inputs: {
-    height: 45,
-    marginLeft: 16,
-    borderBottomColor: '#FFFFFF',
-    flex: 1,
-  },
-  inputIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 15,
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    height: 45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    width: 300,
-    borderRadius: 30,
-    backgroundColor: 'transparent',
-  },
-  loginButton: {
-    backgroundColor: '#00b5ec',
-  },
-  btnText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
