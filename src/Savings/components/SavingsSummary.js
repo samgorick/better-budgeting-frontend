@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Saving from './Saving';
-import {Dimensions} from 'react-native'
-import {VictoryPie, VictoryContainer, VictoryLabel, VictoryTooltip} from 'victory-native';
+import { Dimensions } from 'react-native'
+import { VictoryPie, VictoryLabel, VictoryTooltip } from 'victory-native';
 import {Container, Content, List, Fab, Icon, Text} from 'native-base';
 import styles from '../../../Styles/styles';
+import numeral from 'numeral'
 
 const mapStateToProps = state => {
   return {savings: state.savings};
@@ -25,34 +26,61 @@ const pieDataCalc = savings => {
     const order = saving.saving_values.sort((a, b) =>
       a.created_at < b.created_at ? 1 : -1,
     );
-    return {x: saving.name, y: order[0].value, label: `${saving.name}\n $${order[0].value}`};
+    const value = numeral(order[0].value).format('$0,0')
+    return {x: saving.name, y: value, label: `${saving.name}\n ${value}`};
   });
 };
 
 const screenWidth = Dimensions.get('window').width;
 
+class CustomLabel extends React.Component {
+  render() {
+    return (
+      <>
+        <VictoryLabel {...this.props}/>
+        <VictoryTooltip
+          {...this.props}
+          x={screenWidth/2} y={200}
+          orientation="middle"
+          pointerLength={0}
+          cornerRadius={60}
+          flyoutWidth={120}
+          flyoutHeight={120}
+          flyoutStyle={{ fill: "white", borderWidth: 0 }}
+        />
+      </>
+    )
+  }
+}
+
+CustomLabel.defaultEvents = VictoryTooltip.defaultEvents;
+
 class SavingsSummary extends React.Component {
   render() {
     return (
-      <Container style={{backgroundColor: '#f5f9ff'}}>
+        <Container style={{backgroundColor: '#f5f9ff'}}>
+          {this.props.savings ? (
+            <>
         <Content>
           <Text style={{...styles.header, marginBottom: 0}}>
-            ${totalInvested(this.props.savings)}
+          {numeral(totalInvested(this.props.savings)).format('$0,0')}
           </Text>
           <Text style={{...styles.chartHeader}}>invested in total</Text>
           <Text
-            style={{...styles.chartHeader, marginTop: 20, marginBottom: 10}}>
+            style={{...styles.chartHeader, marginTop: 20, marginBottom: -20}}>
             Here's how your portfolio breaks down
           </Text>
           <VictoryPie
             data={pieDataCalc(this.props.savings)}
             height={400}
             width={screenWidth}
-            labelRadius={160}
+            labelComponent={<CustomLabel />}
             colorScale={'cool'}
-            innerRadius={50}
+            innerRadius={120}
+            labelRadius={400}
+            style={{labels: { fill: '#00b5ec', fontSize: 20 } }}
           />
-          <List>
+          <List style={{marginTop: -30}}>
             {this.props.savings.map(saving => {
               return (
                 <Saving
@@ -69,6 +97,10 @@ class SavingsSummary extends React.Component {
           onPress={() => this.props.navigation.navigate('AddSavings')}>
           <Icon name="add" />
         </Fab>
+        </>
+      ) : (
+        <Text>Loading!</Text>
+      )}
       </Container>
     );
   }
