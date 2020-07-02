@@ -62,17 +62,24 @@ class SavingsSummary extends React.Component {
     data: [{x: 0, y: 0}]
   }
 
-  componentDidMount(){
+  componentDidUpdate(){
     this.setState({
       data: pieDataCalc(this.props.savings)
     })
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.savings !== prevProps.savings) {
+      this.setState({
+        data: pieDataCalc(this.props.savings)
+      });
+    }
+  }
+
   render() {
     return (
         <Container style={styles.nativeContainer}>
-          {this.props.savings ? (
-            <>
+          {this.props.savings.length > 0 ? (
         <Content>
           <Text style={{...styles.header, marginBottom: 0}}>
           {numeral(totalInvested(this.props.savings)).format('$0,0')}
@@ -105,15 +112,13 @@ class SavingsSummary extends React.Component {
             })}
           </List>
         </Content>
+        ) : ( null
+      )}
         <Fab
           style={styles.fab}
           onPress={() => this.props.navigation.navigate('AddSavings')}>
           <Icon name="add" />
         </Fab>
-        </>
-      ) : (
-        <Text>Loading!</Text>
-      )}
       </Container>
     );
   }

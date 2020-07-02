@@ -1,4 +1,4 @@
-export default function transactionsReducer(state=null, action) {
+export default function transactionsReducer(state=[], action) {
   switch (action.type) {
     case 'SET_TRANSACTIONS':
       return sorted(action.transactions)

@@ -14,7 +14,7 @@ class Homepage extends React.Component {
     return (
         <Tab.Navigator>
           <Tab.Screen name="Summary" component={Summary} />
-          {this.props.budget ? (
+          {this.props.budget.length > 0 ? (
             <Tab.Screen name="Edit Budget" component={EditBudget} />
           ) : (
             <Tab.Screen name="Add Budget" component={AddBudget} />

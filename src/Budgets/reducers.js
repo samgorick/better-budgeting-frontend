@@ -1,4 +1,4 @@
-export default function budgetReducer(state=null, action) {
+export default function budgetReducer(state=[], action) {
   switch (action.type) {
     case 'SET_BUDGET':
       return action.budget

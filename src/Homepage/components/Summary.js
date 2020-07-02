@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, Dimensions} from 'react-native';
 import {Container, Content} from 'native-base';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import {
   VictoryBar,
@@ -141,7 +142,6 @@ const remainingBudgetCalc = (transactions, budget) => {
 };
 
 const progressDataCalc = (transactions, budget) => {
-  console.log('progress', transactions, budget);
   const total = getTotal(transactions);
   const income = budget.find(
     category => category.spending_category === 'Income',
@@ -182,7 +182,7 @@ class Summary extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.budget !== prevProps.budget) {
+    if (this.props.budget !== prevProps.budget && this.props.budget.length > 0) {
       this.setState({
         progressData: progressDataCalc(
           this.props.transactions,
@@ -195,16 +195,31 @@ class Summary extends React.Component {
   render() {
     return (
       <Container>
-        {this.props.transactions && this.props.budget ? (
+        {this.props.transactions.length > 0 && this.props.budget.length > 0 ? (
           <Content style={styles.nativeContainer}>
             <Text style={styles.header}>
               {numeral(Math.round(getTotal(this.props.transactions))).format(
                 '$0,0',
               )}
             </Text>
-            <Text style={{...styles.chartHeader, marginTop: -20}}>spent over the last month</Text>
-            <Text style={styles.header}>{progressDataCalc(this.props.transactions, this.props.budget)[0].y}%</Text>
-            <Text style={{...styles.chartHeader, marginTop: -20, marginBottom: -40}}>total budget</Text>
+            <Text style={{...styles.chartHeader, marginTop: -20}}>
+              spent over the last month
+            </Text>
+            <Text style={styles.header}>
+              {
+                progressDataCalc(this.props.transactions, this.props.budget)[0]
+                  .y
+              }
+              %
+            </Text>
+            <Text
+              style={{
+                ...styles.chartHeader,
+                marginTop: -20,
+                marginBottom: -40,
+              }}>
+              total budget
+            </Text>
             <VictoryPie
               data={this.state.progressData}
               labelComponent={<CustomLabel />}
@@ -239,7 +254,7 @@ class Summary extends React.Component {
               width={screenWidth}
               theme={VictoryTheme.material}
               domainPadding={20}>
-              <VictoryAxis  />
+              <VictoryAxis />
               <VictoryAxis
                 dependentAxis
                 tickFormat={x => `${x * 100}%`}
@@ -270,7 +285,27 @@ class Summary extends React.Component {
             </VictoryChart>
           </Content>
         ) : (
-          <Text style={styles.header}>Loading</Text>
+          <Content contentContainerStyle={styles.container}>
+            <Text style={styles.header}>Welcome!</Text>
+            <Text style={styles.chartHeader}>
+              Get started by clicking an option below:
+            </Text>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Add Budget')}
+              style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Add Budget</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('AddTransaction')}
+              style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Add Transaction</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('AddSavings')}
+              style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Add Savings</Text>
+            </TouchableOpacity>
+          </Content>
         )}
       </Container>
     );

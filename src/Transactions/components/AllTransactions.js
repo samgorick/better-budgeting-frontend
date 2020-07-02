@@ -10,13 +10,19 @@ const mapStateToProps = state => {
 
 const AllTransactions = props => (
   <Container style={{backgroundColor: '#f5f9ff'}}>
-    <Content>
-      <List>
-        {props.transactions.map(txn => (
-          <Transaction item={txn} key={txn.id} navigation={props.navigation} />
-        ))}
-      </List>
-    </Content>
+    {props.transactions ? (
+      <Content>
+        <List>
+          {props.transactions.map(txn => (
+            <Transaction
+              item={txn}
+              key={txn.id}
+              navigation={props.navigation}
+            />
+          ))}
+        </List>
+      </Content>
+    ) : null}
     <Fab
       style={styles.fab}
       onPress={() => props.navigation.navigate('AddTransaction')}>
