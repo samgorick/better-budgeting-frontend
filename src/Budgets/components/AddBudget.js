@@ -30,24 +30,24 @@ class AddBudget extends React.Component {
       <ScrollView>
         <Formik
           initialValues={{
-            Income: '',
-            Bills: '',
-            Dining: '',
-            Groceries: '',
-            Holiday: '',
-            Housing: '',
-            Leisure: '',
-            Personal: '',
-            Savings: '',
-            Shopping: '',
-            Transport: '',
+            Income: '0',
+            Bills: '0',
+            Dining: '0',
+            Groceries: '0',
+            Holiday: '0',
+            Housing: '0',
+            Leisure: '0',
+            Personal: '0',
+            Savings: '0',
+            Shopping: '0',
+            Transport: '0',
           }}
           onSubmit={values => this.createBudget(values)}>
           {({handleChange, handleBlur, handleSubmit, values}) => (
             <View style={{...styles.container, justifyContent: 'center'}}>
-              {IncomeCategories.map(category => {
+              {IncomeCategories.map((category, index) => {
                 return (
-                  <>
+                  <View key={index}>
                     <Text style={{...styles.chartHeader, marginTop: 10, marginBottom: 5}}>{category}</Text>
                     <TextInput
                       onChangeText={handleChange(`${category}`)}
@@ -56,12 +56,12 @@ class AddBudget extends React.Component {
                       placeholder={`Enter ${category}...`}
                       style={styles.inputContainer}
                     />
-                  </>
+                  </View>
                 );
               })}
-              {SpendingCategories.map(category => {
+              {SpendingCategories.map((category, index) => {
                 return (
-                  <>
+                  <View key={index}>
                     <Text style={{...styles.chartHeader, marginBottom: 5}}>{category}</Text>
                     <TextInput
                       onChangeText={handleChange(`${category}`)}
@@ -70,7 +70,7 @@ class AddBudget extends React.Component {
                       placeholder={`Enter ${category}...`}
                       style={styles.inputContainer}
                     />
-                  </>
+                  </View>
                 );
               })}
               <TouchableOpacity
