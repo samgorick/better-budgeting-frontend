@@ -26,6 +26,7 @@ const sorted = transactionsArray => {
 
 // Group transactions by spending_category
 const groupTransactions = transactions => {
+  if(transactions.length > 0){
   const holder = {};
   const groupedTransactions = [];
   transactions.forEach(function(d) {
@@ -43,6 +44,8 @@ const groupTransactions = transactions => {
     });
   }
   return groupedTransactions;
+  }
+
 };
 
 const getTotal = transactions => {
@@ -95,7 +98,7 @@ const percentBudgetSpent = (transactions, budget) => {
       txn => txn.spendingCategory === budgetItem.spending_category,
     );
     const spend = txn ? txn.amount / budgetItem.amount : 0
-    return {spendingCategory: budgetItem.spendingCategory, percent: spend};
+    return {spendingCategory: budgetItem.spending_category, percent: spend};
   });
   const alphabetical = data.sort((a, b) =>
     a.spendingCategory < b.spendingCategory ? 1 : -1,
@@ -182,7 +185,7 @@ class Summary extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.budget !== prevProps.budget && this.props.budget.length > 0) {
+    if (this.props.transactions !== prevProps.transactions && this.props.budget.length > 0 && this.props.transactions.length > 0) {
       this.setState({
         progressData: progressDataCalc(
           this.props.transactions,
@@ -193,6 +196,7 @@ class Summary extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <Container>
         {this.props.transactions.length > 0 && this.props.budget.length > 0 ? (
@@ -254,7 +258,8 @@ class Summary extends React.Component {
               width={screenWidth}
               theme={VictoryTheme.material}
               domainPadding={20}>
-              <VictoryAxis />
+              <VictoryAxis 
+              />
               <VictoryAxis
                 dependentAxis
                 tickFormat={x => `${x * 100}%`}
@@ -313,7 +318,7 @@ class Summary extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {transactions: state.transactions, budget: state.budget};
+  return {transactions: state.transactions, budget: state.budget };
 };
 
 export default connect(mapStateToProps)(Summary);
