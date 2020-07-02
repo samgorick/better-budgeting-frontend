@@ -6,7 +6,7 @@ import {
   Separator,
   ListItem,
   Body,
-  Right,
+  Right, Fab
 } from 'native-base';
 import {connect} from 'react-redux';
 import {TouchableOpacity} from 'react-native-gesture-handler';
