@@ -27,7 +27,7 @@ const pieDataCalc = savings => {
       a.created_at < b.created_at ? 1 : -1,
     );
     const value = numeral(order[0].value).format('$0,0')
-    return {x: saving.name, y: value, label: `${saving.name}\n ${value}`};
+    return {x: saving.name, y: order[0].value, label: `${saving.name}\n ${value}`};
   });
 };
 
@@ -62,18 +62,18 @@ class SavingsSummary extends React.Component {
     data: [{x: 0, y: 0}]
   }
 
-  componentDidUpdate(){
-    this.setState({
-      data: pieDataCalc(this.props.savings)
-    })
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.savings !== prevProps.savings) {
+  componentDidMount() {
       this.setState({
         data: pieDataCalc(this.props.savings)
       });
     }
+
+  componentDidUpdate(prevProps){
+    if(this.props.savings !== prevProps.savings){
+      this.setState({
+        data: pieDataCalc(this.props.savings)
+      })
+    } 
   }
 
   render() {
