@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Form, Item, Picker, Icon, Fab} from 'native-base';
 import {editBudget} from '../actions';
 import styles from '../../../Styles/styles';
+import numeral from 'numeral';
 
 const mapStateToProps = state => {
   return {user: state.user, budget: state.budget};
@@ -52,10 +53,23 @@ class EditBudget extends React.Component {
     });
   };
 
+  remaining = () => {
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const income = this.props.budget.find(
+      budg => budg.spending_category === 'Income',
+    );
+    const spendingBudget = this.props.budget.filter(
+      cat => cat.spending_category !== 'Income',
+    );
+    const total = spendingBudget.map(budg => budg.amount).reduce(reducer);
+
+    return income.amount - total;
+  };
+
   render() {
     return (
       <View style={{...styles.container, justifyContent: 'center'}}>
-                <Fab
+        <Fab
           style={{backgroundColor: 'transparent'}}
           position={'topLeft'}
           onPress={() => this.props.navigation.navigate('Summary')}>
@@ -103,6 +117,9 @@ class EditBudget extends React.Component {
           onPress={this.updateBudget}>
           <Text style={styles.buttonText}>Update Budget</Text>
         </TouchableOpacity>
+        <Text style={styles.chartHeader}>
+          {numeral(this.remaining()).format('$0,0')} income still to assign
+        </Text>
       </View>
     );
   }

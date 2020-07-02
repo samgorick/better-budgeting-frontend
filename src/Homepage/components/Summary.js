@@ -62,10 +62,12 @@ const pieDataCalc = transactions => {
   const other = {
     x: 'Other',
     y: otherAmount,
+    label: `Other\n${numeral(otherAmount).format('$0,0')}`
   };
   const pieData = topFour.map((obj, index) => ({
     x: obj.spending_category,
     y: obj.amount,
+    label: `${obj.spending_category}\n${numeral(obj.amount).format('$0,0')}`
   }));
   pieData.push(other);
   return pieData;
@@ -170,7 +172,6 @@ class Summary extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <Container>
         {this.props.transactions.length > 0 && this.props.budget.length > 0 ? (

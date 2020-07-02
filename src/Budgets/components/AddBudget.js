@@ -76,7 +76,6 @@ class AddBudget extends React.Component {
               })}
               <TouchableOpacity
                 onPress={handleSubmit}
-                disabled={true}
                 style={styles.buttonContainer}
               >
                 <Text style={styles.buttonText}>Add Budget</Text>
