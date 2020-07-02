@@ -45,7 +45,6 @@ const groupTransactions = transactions => {
   }
   return groupedTransactions;
   }
-
 };
 
 const getTotal = transactions => {
@@ -117,31 +116,6 @@ const percentBudgetRemaining = (transactions, budget) => {
           percent: 1 - category.percent,
         },
   );
-};
-
-const remainingBudgetCalc = (transactions, budget) => {
-  const spendingBudget = budget.filter(
-    cat => cat.spending_category !== 'Income',
-  );
-  const txnData = barDataCalc(transactions); // [{spendingCategory: 'housing', amount: 500}]
-  const data = spendingBudget.map(budgetItem => {
-    // find the matching txn in txnData
-    let txn = txnData.find(
-      txn => txn.spendingCategory === budgetItem.spending_category,
-    );
-    // Calculate remaining budget or return 0 if exceeded
-    let remainingBudget =
-      budgetItem.amount - txn.amount > 0 ? budgetItem.amount - txn.amount : 0;
-    // return an object with the category and remaining budget
-    return {
-      spendingCategory: budgetItem.spending_category,
-      amount: remainingBudget,
-    };
-  });
-  const alphabetical = data.sort((a, b) =>
-    a.spendingCategory < b.spendingCategory ? 1 : -1,
-  );
-  return alphabetical;
 };
 
 const progressDataCalc = (transactions, budget) => {

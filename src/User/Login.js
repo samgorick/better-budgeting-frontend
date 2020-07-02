@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, TextInput, Image, Text} from 'react-native';
+import {SafeAreaView, View, TextInput, Image, Text} from 'react-native';
 import styles from '../../Styles/styles'
 import {connect} from 'react-redux';
 import {loginUser} from './actions';
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import LottieView from 'lottie-react-native';
 
 const mapDispatchToProps = dispatch => {
@@ -48,7 +49,8 @@ class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>BETTER BUDGETING</Text>
         <LottieView
           ref={(animation) => {
@@ -85,7 +87,8 @@ class Login extends React.Component {
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
           <Text style={{marginTop: 20, textTransform: 'uppercase', color: '#00b5ec'}}>New User? Sign up here</Text>
         </TouchableOpacity>
-        </View>
+        </KeyboardAwareScrollView>
+        </SafeAreaView>
     );
   }
 }

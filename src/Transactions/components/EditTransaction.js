@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {editTransaction, deleteTransaction} from '../actions';
 import {SpendingCategories} from '../../constants/SpendingCategories';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Form, Item, Picker, Icon} from 'native-base';
+import {Form, Item, Picker, Icon, Fab} from 'native-base';
 import styles from '../../../Styles/styles';
 
 const mapStateToProps = state => {
@@ -73,6 +73,12 @@ class EditTransaction extends React.Component {
   render() {
     return (
       <View style={{...styles.container, justifyContent: 'center'}}>
+        <Fab
+          style={{backgroundColor: 'transparent'}}
+          position={'topLeft'}
+          onPress={() => this.props.navigation.navigate('Transactions')}>
+          <Text style={{color: 'gray', marginTop: 20}}>Back</Text>
+        </Fab>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}

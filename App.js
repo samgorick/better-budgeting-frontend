@@ -19,7 +19,7 @@ class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator screenOptions={{ title: "", headerShown: false }}>
             {!this.props.user ? (
             <>
               <Stack.Screen

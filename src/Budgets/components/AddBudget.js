@@ -3,7 +3,8 @@ import {View, Text, Button, TextInput, Image, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {SpendingCategories} from '../../constants/SpendingCategories';
 import {IncomeCategories} from '../../constants/IncomeCategories';
-import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {Formik} from 'formik';
 import {addBudget} from '../actions';
 import styles from '../../../Styles/styles';
@@ -27,7 +28,7 @@ class AddBudget extends React.Component {
 
   render() {
     return (
-      <ScrollView>
+      <KeyboardAwareScrollView>
         <Formik
           initialValues={{
             Income: '0',
@@ -75,6 +76,7 @@ class AddBudget extends React.Component {
               })}
               <TouchableOpacity
                 onPress={handleSubmit}
+                disabled={true}
                 style={styles.buttonContainer}
               >
                 <Text style={styles.buttonText}>Add Budget</Text>
@@ -82,7 +84,7 @@ class AddBudget extends React.Component {
             </View>
           )}
         </Formik>
-      </ScrollView> 
+      </KeyboardAwareScrollView> 
     );
   }
 }
