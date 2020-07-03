@@ -82,11 +82,11 @@ class ShowSavings extends React.Component {
           style={{backgroundColor: 'transparent'}}
           position={'topLeft'}
           onPress={() => this.props.navigation.navigate('Savings')}>
-          <Text style={{color: 'gray', marginTop: 20}}>Back</Text>
+          <Text style={{color: 'gray', marginTop: 20, marginBottom: 10}}>Back</Text>
         </Fab>
         <Content>
           <Text style={styles.header}>{`${name}\n (${saving_category})`}</Text>
-          <VictoryChart theme={VictoryTheme.material}>
+          <VictoryChart theme={VictoryTheme.material}> 
             <VictoryLine
               style={{
                 data: {stroke: '#c43a31'},

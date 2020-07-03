@@ -1,4 +1,4 @@
-  export function loginUser(state) {
+  export function loginUser(user, navigation) {
   return dispatch => {
     dispatch({ type: "START_USER_LOGIN" });
     fetch("http://localhost:3000/login", {
@@ -6,12 +6,13 @@
       headers: {
         "content-type": "application/json"
       },
-      body: JSON.stringify(state)
+      body: JSON.stringify(user)
     })
       .then(resp => resp.json())
       .then(userData => {
         if (userData.error) {
-          alert(userData.error)
+          dispatch({ type: 'LOGIN_ERROR', error: userData.error})
+          navigation.navigate('Login')
         } else {
           dispatch({ type: 'LOGIN_USER', user: {id: userData.id, email: userData.email} })
           dispatch({ type: 'SET_BUDGET', budget: userData.budgets})

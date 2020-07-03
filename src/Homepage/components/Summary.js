@@ -141,7 +141,7 @@ class CustomLabel extends React.Component {
           {...this.props}
           x={screenWidth / 2}
           y={200}
-          orientation="middle"
+          orientation="center"
           pointerLength={0}
           cornerRadius={60}
           flyoutWidth={120}
@@ -270,16 +270,33 @@ class Summary extends React.Component {
             <Text style={styles.chartHeader}>
               Get started by clicking an option below:
             </Text>
-            <TouchableOpacity
+            {this.props.budget.length === 0 ? (
+              <TouchableOpacity
               onPress={() => this.props.navigation.navigate('Add Budget')}
               style={styles.buttonContainer}>
               <Text style={styles.buttonText}>Add Budget</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('AddTransaction')}
-              style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>Add Transaction</Text>
+            ): (
+              <TouchableOpacity
+              disabled={true}
+              style={{...styles.buttonContainer, backgroundColor: 'green'}}>
+              <Text style={styles.buttonText}>Budget Added</Text>
             </TouchableOpacity>
+            )}
+            {this.props.transactions.length === 0 ? (
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('AddTransaction')}
+                style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>Add Transaction</Text>
+              </TouchableOpacity>
+            ): (
+              <TouchableOpacity
+              disabled={true}
+              style={{...styles.buttonContainer, backgroundColor: 'green'}}>
+              <Text style={styles.buttonText}>Transaction Added</Text>
+            </TouchableOpacity>
+            )}
+            
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('AddSavings')}
               style={styles.buttonContainer}>

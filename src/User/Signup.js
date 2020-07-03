@@ -2,10 +2,11 @@ import React from 'react';
 import {View, TextInput, Image, SafeAreaView, Text} from 'react-native';
 import {connect} from 'react-redux';
 import {signUpUser} from './actions';
-import styles from '../../Styles/styles'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import styles from '../../Styles/styles';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LottieView from 'lottie-react-native';
+import {Formik} from 'formik';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -48,7 +49,7 @@ class Signup extends React.Component {
       alert('Sorry, password does not match.');
     }
     this.setState({
-      username: '',
+      email: '',
       password: '',
       passwordConfirmation: '',
     });
@@ -65,54 +66,88 @@ class Signup extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.header}>BETTER BUDGETING</Text>
-        <LottieView
-          ref={(animation) => {
-            this.animation = animation;
-          }}
-          style={styles.animation}
-          source={require('./appLogo.json')}
-        />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            name="email"
-            placeholder="Enter email..."
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChange={this.handleEmail}
-            value={this.state.email}
+        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.header}>BETTER BUDGETING</Text>
+          <LottieView
+            ref={animation => {
+              this.animation = animation;
+            }}
+            style={styles.animation}
+            source={require('./appLogo.json')}
           />
-          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/nolan/40/000000/email.png'}}/>
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            name="password"
-            placeholder="Enter Password"
-            secureTextEntry={true}
-            onChange={this.handlePassword}
-          />
-          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}/>
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            name="password confirmation"
-            placeholder="Confirm Password"
-            secureTextEntry={true}
-            onChange={this.handlePasswordConfirmation}
-          />
-          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}/>
-        </View>
-        <TouchableOpacity style={[styles.buttonContainer, styles.signupButton]} onPress={this.handleSignup}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={{marginTop: 20, textTransform: 'uppercase', color: '#00b5ec'}}>I've already signed up</Text>
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
+          {this.state.email.length === 0 ? (
+            <Text style={{...styles.chartHeader, color: 'red'}}>Email cannot be blank</Text>
+          ) : null}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              name="email"
+              placeholder="Enter email..."
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChange={this.handleEmail}
+              value={this.state.email}
+            />
+            <Image
+              style={styles.inputIcon}
+              source={{uri: 'https://img.icons8.com/nolan/40/000000/email.png'}}
+            />
+          </View>
+          {this.state.password.length === 0 ? (
+            <Text style={{...styles.chartHeader, color: 'red'}}>Password cannot be blank</Text>
+          ) : null}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              name="password"
+              placeholder="Enter Password"
+              secureTextEntry={true}
+              onChange={this.handlePassword}
+            />
+            <Image
+              style={styles.inputIcon}
+              source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
+            />
+          </View>
+          {this.state.password !== this.state.passwordConfirmation ? (
+            <Text style={{...styles.chartHeader, color: 'red'}}>Password must match</Text>
+          ) : null}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              name="password confirmation"
+              placeholder="Confirm Password"
+              secureTextEntry={true}
+              onChange={this.handlePasswordConfirmation}
+            />
+            <Image
+              style={styles.inputIcon}
+              source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
+            />
+          </View>
+          <TouchableOpacity
+            style={[styles.buttonContainer, styles.signupButton]}
+            onPress={this.handleSignup}
+            disabled={
+              this.state.password === this.state.passwordConfirmation &&
+              this.state.password.length > 0
+                ? false
+                : true
+            }>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Login')}>
+            <Text
+              style={{
+                marginTop: 20,
+                textTransform: 'uppercase',
+                color: '#00b5ec',
+              }}>
+              I've already signed up
+            </Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     );
   }
