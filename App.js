@@ -10,16 +10,42 @@ import EditTransaction from './src/Transactions/components/EditTransaction'
 import AddSavings from './src/Savings/components/AddSavings'
 import ShowSavings from './src/Savings/components/ShowSavings'
 import {createStackNavigator} from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
+import {getCurrentUser} from './src/User/actions'
 
 const Stack = createStackNavigator();
 
 // Add to StackNavigator to remove header: screenOptions={{ title: "", headerShown: false }}
 
 class App extends React.Component {
+
+
+
+  componentDidMount(){
+
+    getData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('jwt')
+        if(token !== null) {
+          return token
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    }
+
+    const token = getData()
+    console.log(token)
+    if(token){
+      getCurrentUser(token, this.props.navigation)
+    }
+  }
+
   render() {
     return (
       <NavigationContainer>
           <Stack.Navigator screenOptions={{ title: "", headerShown: false }}>
+            {console.log('in render')}
             {!this.props.user ? (
             <>
               <Stack.Screen
@@ -74,4 +100,10 @@ const mapStateToProps = (state) => {
   return {user: state.user}
 }
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = dispatch => {
+  return {
+    getCurrentUser: (token, navigation) => dispatch(loginUser(token, navigation)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

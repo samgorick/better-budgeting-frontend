@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-community/async-storage';
+  
   export function loginUser(user, navigation) {
   return dispatch => {
     dispatch({ type: "START_USER_LOGIN" });
@@ -14,6 +16,7 @@
           dispatch({ type: 'LOGIN_ERROR', error: userData.error})
           navigation.navigate('Login')
         } else {
+          storeData(userData.jwt)
           dispatch({ type: 'LOGIN_USER', user: {id: userData.id, email: userData.email} })
           dispatch({ type: 'SET_BUDGET', budget: userData.budgets})
           dispatch({ type: 'SET_TRANSACTIONS', transactions: userData.transactions})
@@ -21,6 +24,41 @@
         }
       });
   };
+}
+
+export function getCurrentUser(token, navigation) {
+  return dispatch => {
+    console.log(token)
+    dispatch({ type: "START_GET_USER" });
+    fetch("http://localhost:3000/login", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+      .then(resp => resp.json())
+      .then(userData => {
+        console.log(userData)
+        if (userData.error) {
+          dispatch({ type: 'LOGIN_ERROR', error: userData.error})
+          navigation.navigate('Login')
+        } else {
+          dispatch({ type: 'LOGIN_USER', user: {id: userData.id, email: userData.email} })
+          dispatch({ type: 'SET_BUDGET', budget: userData.budgets})
+          dispatch({ type: 'SET_TRANSACTIONS', transactions: userData.transactions})
+          dispatch({ type: 'SET_SAVINGS', savings: userData.savings})
+        }
+      });
+  };
+}
+
+const storeData = async (value) => {
+  try {
+    console.log(value)
+    await AsyncStorage.setItem('jwt', value)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export function signUpUser(state) {
@@ -38,6 +76,7 @@ export function signUpUser(state) {
         if (userData.error) {
           alert(userData.error)
         } else {
+          storeData(userData.jwt)
           dispatch({ type: 'LOGIN_USER', user: userData})
         }
       });

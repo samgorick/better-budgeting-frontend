@@ -10,7 +10,7 @@ import {Formik} from 'formik';
 
 const mapDispatchToProps = dispatch => {
   return {
-    loginUser: username => dispatch(loginUser(username)),
+    loginUser: (username, navigation) => dispatch(loginUser(username, navigation)),
   };
 };
 
