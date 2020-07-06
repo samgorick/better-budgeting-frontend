@@ -5,6 +5,7 @@ import Summary from './components/Summary'
 import Savings from '../Savings/components/SavingsSummary'
 import AddBudget from '../Budgets/components/AddBudget'
 import EditBudget from '../Budgets/components/EditBudget'
+import Settings from './components/Settings'
 import { connect } from 'react-redux'
 
 const Tab = createBottomTabNavigator();
@@ -21,6 +22,7 @@ class Homepage extends React.Component {
           )}
           <Tab.Screen name="Transactions" component={AllTransactions} />
           <Tab.Screen name="Savings" component={Savings} />
+          <Tab.Screen name="Settings" component={Settings} />
         </Tab.Navigator>
     );
   }
