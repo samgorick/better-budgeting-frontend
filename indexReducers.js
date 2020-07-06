@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import {userReducer, errorReducer} from './src/User/reducers'
+import {userReducer, errorReducer, loadingReducer} from './src/User/reducers'
 import transactionsReducer from './src/Transactions/reducers'
 import budgetReducer from './src/Budgets/reducers'
 import savingReducer from './src/Savings/reducers'
@@ -9,7 +9,8 @@ const rootReducer = combineReducers({
   error: errorReducer,
   transactions: transactionsReducer,
   budget: budgetReducer,
-  savings: savingReducer
+  savings: savingReducer,
+  loading: loadingReducer
 })
 
 export default rootReducer

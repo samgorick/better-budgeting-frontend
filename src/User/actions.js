@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export function loginUser(user, navigation) {
   return dispatch => {
-    dispatch({type: 'START_USER_LOGIN'});
+    dispatch({type: 'START_LOADING'});
     fetch('http://localhost:3000/login', {
       method: 'POST',
       headers: {
@@ -13,10 +13,12 @@ export function loginUser(user, navigation) {
       .then(resp => resp.json())
       .then(userData => {
         if (userData.error) {
+          dispatch({type: 'END_LOADING'});
           dispatch({type: 'LOGIN_ERROR', error: userData.error});
           navigation.navigate('Login');
         } else {
           storeData(userData.jwt);
+          dispatch({type: 'END_LOADING'});
           dispatch({
             type: 'LOGIN_USER',
             user: {id: userData.id, email: userData.email},
@@ -36,7 +38,7 @@ export function getCurrentUser(navigation) {
   return async dispatch => {
     const token = await getData();
     if (token) {
-      dispatch({type: 'START_GET_USER'});
+      dispatch({type: 'START_LOADING'});
       fetch('http://localhost:3000/login', {
         method: 'GET',
         headers: {
@@ -46,6 +48,7 @@ export function getCurrentUser(navigation) {
         .then(resp => resp.json())
         .then(userData => {
           if (userData.error) {
+            dispatch({type: 'END_LOADING'});
             dispatch({type: 'LOGIN_ERROR', error: userData.error});
             navigation.navigate('Login');
           } else {
@@ -53,6 +56,7 @@ export function getCurrentUser(navigation) {
               type: 'LOGIN_USER',
               user: {id: userData.id, email: userData.email},
             });
+            dispatch({type: 'END_LOADING'});
             dispatch({type: 'SET_BUDGET', budget: userData.budgets});
             dispatch({
               type: 'SET_TRANSACTIONS',
@@ -61,6 +65,9 @@ export function getCurrentUser(navigation) {
             dispatch({type: 'SET_SAVINGS', savings: userData.savings});
           }
         });
+    }
+    else {
+      dispatch({type: 'END_LOADING'});
     }
   };
 }
