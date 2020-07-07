@@ -33,29 +33,6 @@ const pieDataCalc = savings => {
 
 const screenWidth = Dimensions.get('window').width;
 
-class CustomLabel extends React.Component {
-
-  render() {
-    return (
-      <>
-        <VictoryLabel {...this.props}/>
-        <VictoryTooltip
-          {...this.props}
-          x={screenWidth/2} y={200}
-          orientation="middle"
-          pointerLength={0}
-          cornerRadius={60}
-          flyoutWidth={120}
-          flyoutHeight={120}
-          flyoutStyle={{ fill: "white", borderWidth: 0 }}
-        />
-      </>
-    )
-  }
-}
-
-CustomLabel.defaultEvents = VictoryTooltip.defaultEvents;
-
 class SavingsSummary extends React.Component {
 
   state = {
@@ -94,8 +71,19 @@ class SavingsSummary extends React.Component {
             height={400}
             width={screenWidth}
             animate={{ duration: 2000 }}
-            labelComponent={<CustomLabel />}
-            colorScale={'cool'}
+            labelComponent={
+              <VictoryTooltip
+                x={screenWidth / 2}
+                y={200}
+                orientation="center"
+                cornerRadius={60}
+                flyoutWidth={120}
+                flyoutHeight={120}
+                flyoutStyle={{fill: '#f5f9ff', strokeWidth: 0}}
+                style={{fontSize: 20, fontFamily: '', fill: '#235789'}}
+              />
+            }
+            colorScale={['#235789', '#43C59E', '#228CDB', '#0B7189', '#e15554']}
             innerRadius={120}
             labelRadius={400}
             style={{labels: { fill: '#00b5ec', fontSize: 20 } }}

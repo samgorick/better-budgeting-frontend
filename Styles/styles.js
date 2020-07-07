@@ -96,5 +96,12 @@ export default StyleSheet.create({
     marginTop: 20,
     textTransform: 'uppercase',
     color: theme.SECONDARY_COLOR
+  },
+  listSpendingCategory: {
+    color: theme.SECONDARY_COLOR
+  },
+  listAmount: {
+    color: theme.SECONDARY_COLOR,
+    fontWeight: 'bold'
   }
 });

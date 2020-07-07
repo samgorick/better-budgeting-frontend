@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TextInput, Image, SafeAreaView} from 'react-native';
 import {connect} from 'react-redux';
 import {SavingsCategories} from '../../constants/SavingsCategories';
-import {Form, Item, Picker, Fab, Icon} from 'native-base';
+import {Form, Item, Picker, Icon} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import {addSaving} from '../actions';
@@ -35,12 +35,6 @@ class AddSavings extends React.Component {
         onSubmit={values => this.createSavings(values)}>
         {({handleChange, handleBlur, handleSubmit, values}) => (
           <SafeAreaView style={{...styles.container, justifyContent: 'center'}}>
-            <Fab
-              style={{backgroundColor: 'transparent' }}
-              position={'topLeft'}
-              onPress={() => this.props.navigation.navigate('Savings')}>
-              <Text style={{color: 'gray', marginTop: 20}}>Back</Text>
-            </Fab>
             <View style={styles.inputContainer}>
               <TextInput
                 onChangeText={handleChange('name')}

@@ -13,7 +13,7 @@ class Settings extends React.Component{
       <SafeAreaView style={styles.container}>
         <KeyboardAwareScrollView contentContainerStyle={{...styles.container, justifyContent: 'center'}}>
           <TouchableOpacity
-            style={{...styles.buttonContainer, backgroundColor: 'red'}}
+            style={{...styles.buttonContainer, backgroundColor: '#A22C29'}}
             onPress={() => this.props.logoutUser()}>
             <Text style={styles.buttonText}>Log Out</Text>
           </TouchableOpacity>

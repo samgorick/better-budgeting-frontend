@@ -4,6 +4,7 @@ import {Container, Content} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import {
+  VictoryContainer,
   VictoryBar,
   VictoryChart,
   VictoryTheme,
@@ -12,6 +13,7 @@ import {
   VictoryLabel,
   VictoryPie,
   VictoryTooltip,
+  VictoryAnimation,
 } from 'victory-native';
 import numeral from 'numeral';
 import styles from '../../../Styles/styles';
@@ -26,24 +28,24 @@ const sorted = transactionsArray => {
 
 // Group transactions by spending_category
 const groupTransactions = transactions => {
-  if(transactions.length > 0){
-  const holder = {};
-  const groupedTransactions = [];
-  transactions.forEach(function(d) {
-    if (holder.hasOwnProperty(d.spending_category)) {
-      holder[d.spending_category] = holder[d.spending_category] + d.amount;
-    } else {
-      holder[d.spending_category] = d.amount;
-    }
-  });
-
-  for (let txn in holder) {
-    groupedTransactions.push({
-      spending_category: txn,
-      amount: holder[txn],
+  if (transactions.length > 0) {
+    const holder = {};
+    const groupedTransactions = [];
+    transactions.forEach(function(d) {
+      if (holder.hasOwnProperty(d.spending_category)) {
+        holder[d.spending_category] = holder[d.spending_category] + d.amount;
+      } else {
+        holder[d.spending_category] = d.amount;
+      }
     });
-  }
-  return groupedTransactions;
+
+    for (let txn in holder) {
+      groupedTransactions.push({
+        spending_category: txn,
+        amount: holder[txn],
+      });
+    }
+    return groupedTransactions;
   }
 };
 
@@ -62,12 +64,12 @@ const pieDataCalc = transactions => {
   const other = {
     x: 'Other',
     y: otherAmount,
-    label: `Other\n${numeral(otherAmount).format('$0,0')}`
+    label: `Other\n${numeral(otherAmount).format('$0,0')}`,
   };
   const pieData = topFour.map((obj, index) => ({
     x: obj.spending_category,
     y: obj.amount,
-    label: `${obj.spending_category}\n${numeral(obj.amount).format('$0,0')}`
+    label: `${obj.spending_category}\n${numeral(obj.amount).format('$0,0')}`,
   }));
   pieData.push(other);
   return pieData;
@@ -98,7 +100,7 @@ const percentBudgetSpent = (transactions, budget) => {
     let txn = txnData.find(
       txn => txn.spendingCategory === budgetItem.spending_category,
     );
-    const spend = txn ? txn.amount / budgetItem.amount : 0
+    const spend = txn ? txn.amount / budgetItem.amount : 0;
     return {spendingCategory: budgetItem.spending_category, percent: spend};
   });
   const alphabetical = data.sort((a, b) =>
@@ -120,53 +122,40 @@ const percentBudgetRemaining = (transactions, budget) => {
   );
 };
 
-const progressDataCalc = (transactions, budget) => {
+const percentSpent = (transactions, budget) => {
   const total = getTotal(transactions);
   const income = budget.find(
     category => category.spending_category === 'Income',
   );
-  const final = total / income.amount;
+  return total / income.amount;
+};
+
+const progressDataCalc = (transactions, budget) => {
+  const percent = percentSpent(transactions, budget);
   return [
-    {x: 'Spent', y: Math.round(final * 100)},
-    {x: 'Remaining', y: 100 - Math.round(final * 100)},
+    {x: 'Spent', y: Math.round(percent * 100)},
+    {x: 'Remaining', y: 100 - Math.round(percent * 100)},
   ];
 };
 
-class CustomLabel extends React.Component {
-  render() {
-    return (
-      <>
-        <VictoryLabel {...this.props} />
-        <VictoryTooltip
-          {...this.props}
-          x={screenWidth / 2}
-          y={200}
-          orientation="center"
-          pointerLength={0}
-          cornerRadius={60}
-          flyoutWidth={120}
-          flyoutHeight={120}
-          flyoutStyle={{fill: 'white', borderWidth: 0}}
-        />
-      </>
-    );
-  }
-}
-
-CustomLabel.defaultEvents = VictoryTooltip.defaultEvents;
-
 class Summary extends React.Component {
   state = {
+    spent: 0,
     progressData: [{x: 'Spent', y: 0}, {x: 'Remaining', y: 100}],
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.transactions !== prevProps.transactions && this.props.budget.length > 0 && this.props.transactions.length > 0) {
+    if (
+      this.props.transactions !== prevProps.transactions &&
+      this.props.budget.length > 0 &&
+      this.props.transactions.length > 0
+    ) {
       this.setState({
         progressData: progressDataCalc(
           this.props.transactions,
           this.props.budget,
         ),
+        spent: percentSpent(this.props.transactions, this.props.budget),
       });
     }
   }
@@ -181,51 +170,81 @@ class Summary extends React.Component {
                 '$0,0',
               )}
             </Text>
-            <Text style={{...styles.chartHeader, marginTop: -20}}>
-              spent over the last month
-            </Text>
-            <Text style={styles.header}>
-              {
-                progressDataCalc(this.props.transactions, this.props.budget)[0]
-                  .y
-              }
-              %
-            </Text>
             <Text
               style={{
                 ...styles.chartHeader,
                 marginTop: -20,
-                marginBottom: -40,
+                marginBottom: -30,
               }}>
-              total budget
+              spent over the last month
             </Text>
-            <VictoryPie
-              data={this.state.progressData}
-              labelComponent={<CustomLabel />}
-              animate={{delay: 1000, duration: 1000}}
-              cornerRadius={25}
-              labelRadius={400}
-              innerRadius={120}
-              style={{
-                data: {
-                  fill: ({datum}) => {
-                    return datum.x === 'Spent' ? '#235789' : '#f0f4f7';
+            <VictoryContainer responsive={false} height={400}>
+              <VictoryAnimation duration={1000} delay={500} data={this.state}>
+                {newProps => {
+                  return (
+                    <VictoryLabel
+                      textAnchor="middle"
+                      verticalAnchor="middle"
+                      x={205}
+                      y={190}
+                      text={`${numeral(newProps.spent).format('0%')}`}
+                      style={{fontSize: 50, fontFamily: '', fill: '#235789'}}
+                    />
+                  );
+                }}
+              </VictoryAnimation>
+              <VictoryLabel
+                textAnchor="middle"
+                x={205}
+                y={230}
+                text={'total budget'}
+                style={{fontSize: 16, fontFamily: '', fill: '#235789'}}
+              />
+              <VictoryPie
+                data={this.state.progressData}
+                animate={{delay: 500, duration: 1000}}
+                cornerRadius={25}
+                labelRadius={400}
+                innerRadius={120}
+                style={{
+                  data: {
+                    fill: ({datum}) => {
+                      return datum.x === 'Spent' ? '#235789' : '#f0f4f7';
+                    },
                   },
-                },
-              }}
-            />
+                  zIndex: 0,
+                }}
+              />
+            </VictoryContainer>
             <Text style={{...styles.chartHeader, marginBottom: -30}}>
               Here's your top categories of spending
             </Text>
             <VictoryPie
               data={pieDataCalc(this.props.transactions)}
-              colorScale={'cool'}
+              colorScale={[
+                '#235789',
+                '#43C59E',
+                '#228CDB',
+                '#0B7189',
+                '#e15554',
+              ]}
               innerRadius={120}
-              labelComponent={<CustomLabel />}
+              labelComponent={
+                <VictoryTooltip
+                  x={screenWidth / 2}
+                  y={200}
+                  orientation="center"
+                  cornerRadius={60}
+                  flyoutWidth={120}
+                  flyoutHeight={120}
+                  flyoutStyle={{fill: '#f5f9ff', strokeWidth: 0}}
+                  style={{fontSize: 20, fontFamily: '', fill: '#235789'}}
+                />
+              }
               labelRadius={400}
             />
             <Text style={styles.chartHeader}>
-              You have spent ${Math.round(getTotal(this.props.transactions))} in
+              You have spent {numeral(getTotal(this.props.transactions)).format('$0,0')} in
               these categories:
             </Text>
             <VictoryChart
@@ -233,8 +252,7 @@ class Summary extends React.Component {
               width={screenWidth}
               theme={VictoryTheme.material}
               domainPadding={20}>
-              <VictoryAxis 
-              />
+              <VictoryAxis />
               <VictoryAxis
                 dependentAxis
                 tickFormat={x => `${x * 100}%`}
@@ -251,6 +269,13 @@ class Summary extends React.Component {
                   x="spendingCategory"
                   y="percent"
                   horizontal={true}
+                  labels={({datum}) => `Spent: ${numeral(datum.percent).format('0%')}`}
+                  labelComponent={
+                    <VictoryTooltip constrainToVisibleArea
+                      flyoutStyle={{stroke: '#235789', strokeWidth: 2}}
+                      style={{fontSize: 12, fontFamily: '', fill: '#235789'}}
+                    />
+                  }
                 />
                 <VictoryBar
                   data={percentBudgetRemaining(
@@ -260,6 +285,13 @@ class Summary extends React.Component {
                   x="spendingCategory"
                   y="percent"
                   horizontal={true}
+                  labels={({datum}) => `Remaining: ${numeral(datum.percent).format('0%')}`}
+                  labelComponent={
+                    <VictoryTooltip constrainToVisibleArea
+                      flyoutStyle={{stroke: '#43C59E', strokeWidth: 2}}
+                      style={{fontSize: 12, fontFamily: '', fill: '#235789'}}
+                    />
+                  }
                 />
               </VictoryStack>
             </VictoryChart>
@@ -272,16 +304,16 @@ class Summary extends React.Component {
             </Text>
             {this.props.budget.length === 0 ? (
               <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Add Budget')}
-              style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>Add Budget</Text>
-            </TouchableOpacity>
-            ): (
+                onPress={() => this.props.navigation.navigate('Add Budget')}
+                style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>Add Budget</Text>
+              </TouchableOpacity>
+            ) : (
               <TouchableOpacity
-              disabled={true}
-              style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
-              <Text style={styles.buttonText}>Budget Added</Text>
-            </TouchableOpacity>
+                disabled={true}
+                style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
+                <Text style={styles.buttonText}>Budget Added</Text>
+              </TouchableOpacity>
             )}
             {this.props.transactions.length === 0 ? (
               <TouchableOpacity
@@ -289,14 +321,14 @@ class Summary extends React.Component {
                 style={styles.buttonContainer}>
                 <Text style={styles.buttonText}>Add Transaction</Text>
               </TouchableOpacity>
-            ): (
+            ) : (
               <TouchableOpacity
-              disabled={true}
-              style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
-              <Text style={styles.buttonText}>Transaction Added</Text>
-            </TouchableOpacity>
+                disabled={true}
+                style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
+                <Text style={styles.buttonText}>Transaction Added</Text>
+              </TouchableOpacity>
             )}
-            
+
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('AddSavings')}
               style={styles.buttonContainer}>
@@ -310,7 +342,7 @@ class Summary extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {transactions: state.transactions, budget: state.budget };
+  return {transactions: state.transactions, budget: state.budget};
 };
 
 export default connect(mapStateToProps)(Summary);

@@ -82,7 +82,7 @@ class App extends React.Component {
                     ? 'ios-information-circle'
                     : 'ios-information-circle-outline';
                 } else if (route.name === 'Settings') {
-                  iconName = focused ? 'ios-list-box' : 'ios-list';
+                  iconName = focused ? 'ios-list' : 'ios-list';
                 } else if (route.name === 'Edit Budget') {
                   iconName = focused ? 'ios-create' : 'ios-create';
                 } else if (route.name === 'Transactions') {
