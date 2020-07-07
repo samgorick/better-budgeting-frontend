@@ -36,7 +36,6 @@ class Login extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.header}>BETTER BUDGETING</Text>
           <LottieView
             ref={animation => {
               this.animation = animation;
@@ -74,7 +73,7 @@ class Login extends React.Component {
                   <TextInput
                     style={styles.input}
                     name="password"
-                    placeholder="Enter Password"
+                    placeholder="Enter Password..."
                     secureTextEntry={true}
                     onChangeText={handleChange(`password`)}
                   />
@@ -89,7 +88,7 @@ class Login extends React.Component {
                   onPress={handleSubmit}
                   disabled={
                     values.email && values.password ? false : true }
-                  style={styles.buttonContainer}>
+                  style={styles.loginButtonContainer}>
                   <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
               </>
@@ -98,11 +97,7 @@ class Login extends React.Component {
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Signup')}>
             <Text
-              style={{
-                marginTop: 20,
-                textTransform: 'uppercase',
-                color: '#00b5ec',
-              }}>
+              style={styles.signupText}>
               New User? Sign up here
             </Text>
           </TouchableOpacity>

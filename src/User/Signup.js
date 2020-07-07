@@ -67,7 +67,6 @@ class Signup extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.header}>BETTER BUDGETING</Text>
           <LottieView
             ref={animation => {
               this.animation = animation;
@@ -76,7 +75,9 @@ class Signup extends React.Component {
             source={require('./appLogo.json')}
           />
           {this.state.email.length === 0 ? (
-            <Text style={{...styles.chartHeader, color: 'red'}}>Email cannot be blank</Text>
+            <Text style={{...styles.chartHeader, color: 'red'}}>
+              Email cannot be blank
+            </Text>
           ) : null}
           <View style={styles.inputContainer}>
             <TextInput
@@ -94,7 +95,9 @@ class Signup extends React.Component {
             />
           </View>
           {this.state.password.length === 0 ? (
-            <Text style={{...styles.chartHeader, color: 'red'}}>Password cannot be blank</Text>
+            <Text style={{...styles.chartHeader, color: 'red'}}>
+              Password cannot be blank
+            </Text>
           ) : null}
           <View style={styles.inputContainer}>
             <TextInput
@@ -110,7 +113,9 @@ class Signup extends React.Component {
             />
           </View>
           {this.state.password !== this.state.passwordConfirmation ? (
-            <Text style={{...styles.chartHeader, color: 'red'}}>Password must match</Text>
+            <Text style={{...styles.chartHeader, color: 'red'}}>
+              Password must match
+            </Text>
           ) : null}
           <View style={styles.inputContainer}>
             <TextInput
@@ -126,7 +131,7 @@ class Signup extends React.Component {
             />
           </View>
           <TouchableOpacity
-            style={[styles.buttonContainer, styles.signupButton]}
+            style={styles.loginButtonContainer}
             onPress={this.handleSignup}
             disabled={
               this.state.password === this.state.passwordConfirmation &&
@@ -138,14 +143,7 @@ class Signup extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Login')}>
-            <Text
-              style={{
-                marginTop: 20,
-                textTransform: 'uppercase',
-                color: '#00b5ec',
-              }}>
-              I've already signed up
-            </Text>
+            <Text style={styles.signupText}>I've already signed up</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
       </SafeAreaView>

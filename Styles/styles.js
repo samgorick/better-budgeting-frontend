@@ -9,7 +9,7 @@ export default StyleSheet.create({
     flex: 1
   },
   nativeContainer: {
-    backgroundColor: '#f5f9ff'
+    backgroundColor: theme.PRIMARY_COLOR
   },
   header: {
     textAlign: 'center',
@@ -21,7 +21,8 @@ export default StyleSheet.create({
   animation: {
     width: 200,
     height: 200,
-    marginBottom: theme.STANDARD_SPACING
+    marginTop: 20,
+    marginBottom: 150
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',
@@ -59,24 +60,41 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: theme.STANDARD_SPACING,
+    marginBottom: theme.SMALL_SPACING,
     width: theme.FORM_WIDTH,
     borderRadius:30,
-    backgroundColor: theme.SECONDARY_COLOR,
+    backgroundColor: theme.ACCENT_COLOR,
+  },
+  loginButtonContainer: {
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: theme.LARGE_SPACING,
+    marginBottom: theme.SMALL_SPACING,
+    width: theme.FORM_WIDTH,
+    borderRadius:30,
+    backgroundColor: theme.ACCENT_COLOR,
   },
   buttonText: {
     color: 'white',
     textTransform: 'uppercase'
   },
   fab: {
-    backgroundColor: theme.SECONDARY_COLOR
+    backgroundColor: theme.ACCENT_COLOR
   },
   picker: {
     marginBottom: theme.STANDARD_SPACING
   },
   chartHeader: {
     textAlign: 'center',
+    color: theme.SECONDARY_COLOR,
     fontSize: theme.FONT_SIZE_STANDARD,
     marginBottom: theme.STANDARD_SPACING
+  },
+  signupText: {
+    marginTop: 20,
+    textTransform: 'uppercase',
+    color: theme.SECONDARY_COLOR
   }
 });

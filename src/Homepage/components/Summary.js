@@ -209,7 +209,7 @@ class Summary extends React.Component {
               style={{
                 data: {
                   fill: ({datum}) => {
-                    return datum.x === 'Spent' ? '#00b5ec' : '#f0f4f7';
+                    return datum.x === 'Spent' ? '#235789' : '#f0f4f7';
                   },
                 },
               }}
@@ -242,7 +242,7 @@ class Summary extends React.Component {
                   grid: {stroke: ({tick}) => (tick > 0.5 ? 'grey' : 'grey')},
                 }}
               />
-              <VictoryStack colorScale={['red', 'green']}>
+              <VictoryStack colorScale={['#235789', '#43C59E']}>
                 <VictoryBar
                   data={percentBudgetSpent(
                     this.props.transactions,
@@ -279,7 +279,7 @@ class Summary extends React.Component {
             ): (
               <TouchableOpacity
               disabled={true}
-              style={{...styles.buttonContainer, backgroundColor: 'green'}}>
+              style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
               <Text style={styles.buttonText}>Budget Added</Text>
             </TouchableOpacity>
             )}
@@ -292,7 +292,7 @@ class Summary extends React.Component {
             ): (
               <TouchableOpacity
               disabled={true}
-              style={{...styles.buttonContainer, backgroundColor: 'green'}}>
+              style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
               <Text style={styles.buttonText}>Transaction Added</Text>
             </TouchableOpacity>
             )}

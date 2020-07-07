@@ -6,7 +6,9 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Form, Item, Picker, Icon, Fab} from 'native-base';
 import {editBudget} from '../actions';
 import styles from '../../../Styles/styles';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import numeral from 'numeral';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const mapStateToProps = state => {
   return {user: state.user, budget: state.budget};
@@ -68,13 +70,16 @@ class EditBudget extends React.Component {
 
   render() {
     return (
+      <KeyboardAwareScrollView contentContainerStyle={{...styles.container}}>
+      <Ionicons name="arrow-back" color='gray' 
+      onPress={() => this.props.navigation.navigate('Summary')}/>
       <View style={{...styles.container, justifyContent: 'center'}}>
-        <Fab
+        {/* <Fab
           style={{backgroundColor: 'transparent'}}
           position={'topLeft'}
           onPress={() => this.props.navigation.navigate('Summary')}>
           <Text style={{color: 'gray', marginTop: 20}}>Back</Text>
-        </Fab>
+        </Fab> */}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -121,6 +126,7 @@ class EditBudget extends React.Component {
           {numeral(this.remaining()).format('$0,0')} income still to assign
         </Text>
       </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
