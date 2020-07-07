@@ -1,26 +1,60 @@
-import 'react-native-gesture-handler';
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
-import { Text } from 'react-native'
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Login from './src/User/Login';
 import Signup from './src/User/Signup';
-import Homepage from './src/Homepage/index.js';
 import AddTransaction from './src/Transactions/components/AddTransaction';
 import EditTransaction from './src/Transactions/components/EditTransaction';
 import AddSavings from './src/Savings/components/AddSavings';
 import ShowSavings from './src/Savings/components/ShowSavings';
-import Loading from './src/User/Loading'
+import Loading from './src/User/Loading';
 import {createStackNavigator} from '@react-navigation/stack';
 import {getCurrentUser} from './src/User/actions';
-import AsyncStorage from '@react-native-community/async-storage';
+import AllTransactions from './src/Transactions/components/AllTransactions';
+import Summary from './src/Homepage/components/Summary';
+import Savings from './src/Savings/components/SavingsSummary';
+import AddBudget from './src/Budgets/components/AddBudget';
+import EditBudget from './src/Budgets/components/EditBudget';
+import Settings from './src/Homepage/components/Settings';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const SavingsStack = createStackNavigator();
+const TransactionsStack = createStackNavigator();
 
-// Add to StackNavigator to remove header: screenOptions={{ title: "", headerShown: false }}
+function SavingsStackScreen() {
+  return (
+    <SavingsStack.Navigator screenOptions={{title: '', headerShown: false}}>
+      <SavingsStack.Screen name="Savings" component={Savings} />
+      <SavingsStack.Screen name="AddSavings" component={AddSavings} />
+      <SavingsStack.Screen name="ShowSavings" component={ShowSavings} />
+    </SavingsStack.Navigator>
+  );
+}
+
+function TransactionsStackScreen() {
+  return (
+    <TransactionsStack.Navigator
+      screenOptions={{title: '', headerShown: false}}>
+      <TransactionsStack.Screen
+        name="Transactions"
+        component={AllTransactions}
+      />
+      <TransactionsStack.Screen
+        name="AddTransaction"
+        component={AddTransaction}
+      />
+      <TransactionsStack.Screen
+        name="EditTransaction"
+        component={EditTransaction}
+      />
+    </TransactionsStack.Navigator>
+  );
+}
 
 class App extends React.Component {
-
   componentDidMount() {
     this.props.getCurrentUser(this.props.navigation);
   }
@@ -28,55 +62,66 @@ class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{title: '', headerShown: false}}>
-          {this.props.loading ? (
-            <Stack.Screen 
-              name="Loading"
-              component={Loading} 
+        {this.props.loading ? (
+          <Stack.Navigator screenOptions={{title: '', headerShown: false}}>
+            <Stack.Screen name="Loading" component={Loading} />
+          </Stack.Navigator>
+        ) : !this.props.user ? (
+          <Stack.Navigator screenOptions={{title: '', headerShown: false}}>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Signup" component={Signup} />
+          </Stack.Navigator>
+        ) : (
+          <Tab.Navigator
+            screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                let iconName;
+
+                if (route.name === 'Summary') {
+                  iconName = focused
+                    ? 'ios-information-circle'
+                    : 'ios-information-circle-outline';
+                } else if (route.name === 'Settings') {
+                  iconName = focused ? 'ios-list-box' : 'ios-list';
+                } else if (route.name === 'Edit Budget') {
+                  iconName = focused ? 'ios-create' : 'ios-create';
+                } else if (route.name === 'Transactions') {
+                  iconName = focused ? 'ios-card' : 'ios-card';
+                } else if (route.name === 'Savings') {
+                  iconName = focused ? 'ios-cash' : 'ios-cash';
+                } else if (route.name === 'Add Budget') {
+                  iconName = focused
+                    ? 'ios-add-circle'
+                    : 'ios-add-circle-outline';
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: '#43C59E',
+              inactiveTintColor: 'gray',
+            }}>
+            <Tab.Screen name="Summary" component={Summary} />
+            {this.props.budget.length > 0 ? (
+              <Tab.Screen name="Edit Budget" component={EditBudget} />
+            ) : (
+              <Tab.Screen name="Add Budget" component={AddBudget} />
+            )}
+            <Tab.Screen
+              name="Transactions"
+              component={TransactionsStackScreen}
             />
-          ) : !this.props.user ? (
-            <>
-              <Stack.Screen
-                name="Login"
-                component={Login}
-              />
-              <Stack.Screen
-                name="Signup"
-                component={Signup}
-              />
-            </>
-          ) : (
-            <>
-              <Stack.Screen
-                name="Homepage"
-                component={Homepage}
-              />
-              <Stack.Screen
-                name="AddTransaction"
-                component={AddTransaction}
-              />
-              <Stack.Screen
-                name="EditTransaction"
-                component={EditTransaction}
-              />
-              <Stack.Screen
-                name="AddSavings"
-                component={AddSavings}
-              />
-              <Stack.Screen
-                name="ShowSavings"
-                component={ShowSavings}
-              />
-            </>
-          )}
-        </Stack.Navigator>
+            <Tab.Screen name="Savings" component={SavingsStackScreen} />
+            <Tab.Screen name="Settings" component={Settings} />
+          </Tab.Navigator>
+        )}
       </NavigationContainer>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {user: state.user, loading: state.loading};
+  return {user: state.user, loading: state.loading, budget: state.budget};
 };
 
 const mapDispatchToProps = dispatch => {
