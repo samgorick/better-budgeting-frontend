@@ -18,6 +18,8 @@
 		A1DF7F629542CDE52F4F694E /* libPods-frontendBetterBudgeting-frontendBetterBudgetingTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6420EA2827C7976492625D /* libPods-frontendBetterBudgeting-frontendBetterBudgetingTests.a */; };
 		AA6534A3DE3F7EC0FF66CE6A /* libPods-frontendBetterBudgeting.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F1EF9BA1DFBB4610AB660D7 /* libPods-frontendBetterBudgeting.a */; };
 		C82E8606F2B13F992B64337B /* libPods-frontendBetterBudgeting-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD5B40DC79767750D86D264E /* libPods-frontendBetterBudgeting-tvOSTests.a */; };
+		FBA1444824B4B4BF007F3651 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		FBA1444924B4B53A007F3651 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -272,9 +274,9 @@
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
-				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				3A933EC74293460CC7A5A88F /* [CP] Copy Pods Resources */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -383,6 +385,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBA1444924B4B53A007F3651 /* LaunchScreen.xib in Resources */,
+				FBA1444824B4B4BF007F3651 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,7 +420,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		0CE595ED9ADE7F3CBFB8644A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
