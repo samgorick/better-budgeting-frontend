@@ -98,8 +98,8 @@ class AddTransaction extends React.Component {
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({category: itemValue})
               }>
-              {SpendingCategories.map(cat => (
-                <Picker.Item label={cat} value={cat} />
+              {SpendingCategories.map((cat, index) => (
+                <Picker.Item key={index} label={cat} value={cat} />
               ))}
             </Picker>
           </Item>

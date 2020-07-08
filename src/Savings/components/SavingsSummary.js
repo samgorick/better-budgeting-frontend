@@ -76,6 +76,7 @@ class SavingsSummary extends React.Component {
                 x={screenWidth / 2}
                 y={200}
                 orientation="center"
+                renderInPortal={false}
                 cornerRadius={60}
                 flyoutWidth={120}
                 flyoutHeight={120}

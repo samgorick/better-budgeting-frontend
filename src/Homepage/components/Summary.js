@@ -234,6 +234,7 @@ class Summary extends React.Component {
                   x={screenWidth / 2}
                   y={200}
                   orientation="center"
+                  renderInPortal={false}
                   cornerRadius={60}
                   flyoutWidth={120}
                   flyoutHeight={120}
@@ -274,6 +275,7 @@ class Summary extends React.Component {
                     <VictoryTooltip constrainToVisibleArea
                       flyoutStyle={{stroke: '#235789', strokeWidth: 2}}
                       style={{fontSize: 12, fontFamily: '', fill: '#235789'}}
+                      renderInPortal={false}
                     />
                   }
                 />
@@ -290,6 +292,7 @@ class Summary extends React.Component {
                     <VictoryTooltip constrainToVisibleArea
                       flyoutStyle={{stroke: '#43C59E', strokeWidth: 2}}
                       style={{fontSize: 12, fontFamily: '', fill: '#235789'}}
+                      renderInPortal={false}
                     />
                   }
                 />

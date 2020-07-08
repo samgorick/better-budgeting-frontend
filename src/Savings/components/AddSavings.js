@@ -76,8 +76,8 @@ class AddSavings extends React.Component {
                   placeholderIconColor="#007aff"
                   selectedValue={values.category}
                   onValueChange={handleChange('category')}>
-                  {SavingsCategories.map(cat => (
-                    <Picker.Item label={cat} value={cat} />
+                  {SavingsCategories.map((category, index) => (
+                    <Picker.Item key={index} label={category} value={category} />
                   ))}
                 </Picker>
               </Item>

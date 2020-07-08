@@ -106,8 +106,8 @@ class EditBudget extends React.Component {
                   amount: numeral(match.amount).format('$0,0'),
                 });
               }}>
-              {AllCategories.map(cat => (
-                <Picker.Item label={cat} value={cat} style={{color: 'blue'}}/>
+              {AllCategories.map((cat, index) => (
+                <Picker.Item key={index} label={cat} value={cat} style={{color: 'blue'}}/>
               ))}
             </Picker>
           </Item>

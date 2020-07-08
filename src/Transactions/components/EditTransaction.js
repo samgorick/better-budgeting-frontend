@@ -115,8 +115,8 @@ class EditTransaction extends React.Component {
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({category: itemValue})
               }>
-              {SpendingCategories.map(cat => (
-                <Picker.Item label={cat} value={cat} />
+              {SpendingCategories.map((category, index) => (
+                <Picker.Item key={index} label={category} value={category} />
               ))}
             </Picker>
           </Item>
