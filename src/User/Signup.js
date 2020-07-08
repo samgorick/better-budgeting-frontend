@@ -143,7 +143,7 @@ class Signup extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Login')}>
-            <Text style={styles.signupText}>I've already signed up</Text>
+            <Text style={styles.signupText}>Signed up already?</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
       </SafeAreaView>

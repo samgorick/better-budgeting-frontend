@@ -109,7 +109,7 @@ export function logoutUser() {
 
 export function signUpUser(state) {
   return dispatch => {
-    dispatch({type: 'START_USER_SIGNUP'});
+    dispatch({type: 'START_LOADING'});
     fetch('http://localhost:3000/signup', {
       method: 'POST',
       headers: {
@@ -120,9 +120,11 @@ export function signUpUser(state) {
       .then(resp => resp.json())
       .then(userData => {
         if (userData.error) {
-          alert(userData.error);
+          dispatch({type: 'END_LOADING'});
+          dispatch({type: 'LOGIN_ERROR', error: userData.error});
         } else {
           storeData(userData.jwt);
+          dispatch({type: 'END_LOADING'});
           dispatch({type: 'LOGIN_USER', user: userData});
         }
       });

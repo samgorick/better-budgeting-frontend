@@ -217,7 +217,7 @@ class Summary extends React.Component {
               />
             </VictoryContainer>
             <Text style={{...styles.chartHeader, marginBottom: -30}}>
-              Here's your top categories of spending
+              Here are your top categories of spending
             </Text>
             <VictoryPie
               data={pieDataCalc(this.props.transactions)}
