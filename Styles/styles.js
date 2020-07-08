@@ -49,6 +49,7 @@ export default StyleSheet.create({
     marginLeft:16,
     borderBottomColor: '#FFFFFF',
     flex:1,
+    fontSize: theme.FONT_SIZE_STANDARD
   },
   inputIcon:{
     width:30,

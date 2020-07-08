@@ -1,12 +1,11 @@
 import React from 'react';
 import {View, Text, TextInput, Image} from 'react-native';
 import {connect} from 'react-redux';
-import {SpendingCategories} from '../../constants/SpendingCategories';
+import {AllCategories} from '../../constants/AllCategories';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Form, Item, Picker, Icon, Fab} from 'native-base';
+import {Form, Item, Picker, Icon} from 'native-base';
 import {editBudget} from '../actions';
 import styles from '../../../Styles/styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import numeral from 'numeral';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -29,7 +28,8 @@ class EditBudget extends React.Component {
   };
 
   updateBudget = () => {
-    this.props.editBudget(this.state, this.props.navigation);
+    const update = {...this.state, amount: numeral(this.state.amount).value()}
+    this.props.editBudget(update, this.props.navigation);
     this.setState({
       id: '',
       category: '',
@@ -45,13 +45,13 @@ class EditBudget extends React.Component {
     this.setState({
       id: id,
       category: spending_category,
-      amount: amount.toString(),
+      amount: numeral(amount).format('$0,0'),
     });
   }
 
   handleAmount = e => {
     this.setState({
-      amount: e.nativeEvent.text,
+      amount: numeral(e.nativeEvent.text).format('$0,0'),
     });
   };
 
@@ -71,8 +71,6 @@ class EditBudget extends React.Component {
   render() {
     return (
       <KeyboardAwareScrollView contentContainerStyle={{...styles.container}}>
-      <Ionicons name="arrow-back" color='gray' 
-      onPress={() => this.props.navigation.navigate('Summary')}/>
       <View style={{...styles.container, justifyContent: 'center'}}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -92,8 +90,10 @@ class EditBudget extends React.Component {
           <Item picker>
             <Picker
               style={styles.picker}
+              textStyle={{ color: "#235789" }}
               mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
+              iosIcon={<Icon name="arrow-down" style={{color: '#235789'}}/>}
+              itemTextStyle={{ color: '#235789' }}
               selectedValue={this.state.category}
               onValueChange={(itemValue, itemIndex) => {
                 const match = this.props.budget.find(
@@ -102,10 +102,10 @@ class EditBudget extends React.Component {
                 this.setState({
                   id: match.id,
                   category: itemValue,
-                  amount: match.amount.toString(),
+                  amount: numeral(match.amount).format('$0,0'),
                 });
               }}>
-              {SpendingCategories.map(cat => (
+              {AllCategories.map(cat => (
                 <Picker.Item label={cat} value={cat} style={{color: 'blue'}}/>
               ))}
             </Picker>

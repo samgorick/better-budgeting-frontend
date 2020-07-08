@@ -1,17 +1,17 @@
 import React from 'react';
-import {View, Text, TextInput, Image} from 'react-native';
+import {View, TextInput, Image, Dimensions} from 'react-native';
 import {
   Container,
   Content,
   Separator,
   ListItem,
   Body,
-  Right, Fab
+  Right, Text
 } from 'native-base';
 import {connect} from 'react-redux';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import moment from 'moment';
-import {VictoryChart, VictoryLine, VictoryTheme} from 'victory-native';
+import {VictoryChart, VictoryLine, VictoryTheme, VictoryAxis} from 'victory-native';
 import {updateSavingValue} from '../actions';
 import styles from '../../../Styles/styles';
 import numeral from 'numeral';
@@ -23,6 +23,8 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const screenWidth = Dimensions.get('window').width;
+
 class ShowSavings extends React.Component {
   state = {
     id: '',
@@ -33,7 +35,7 @@ class ShowSavings extends React.Component {
     const {id, saving_values} = this.props.route.params.item;
     this.setState({
       id: id,
-      amount: this.findFirst(saving_values).value.toString(),
+      amount: numeral(this.findFirst(saving_values).value).format('$0,0'),
     });
   }
 
@@ -61,12 +63,13 @@ class ShowSavings extends React.Component {
 
   handleAmount = e => {
     this.setState({
-      amount: e.nativeEvent.text,
+      amount: numeral(e.nativeEvent.text).format('$0,0'),
     });
   };
 
   handleSubmit = () => {
-    this.props.updateSavingValue(this.state, this.props.navigation);
+    const value = {...this.state, amount: numeral(this.state.amount).value()}
+    this.props.updateSavingValue(value, this.props.navigation);
     this.setState({
       id: '',
       amount: '',
@@ -80,10 +83,14 @@ class ShowSavings extends React.Component {
       <Container style={styles.nativeContainer}>
         <Content>
           <Text style={styles.header}>{`${name}\n (${saving_category})`}</Text>
-          <VictoryChart theme={VictoryTheme.material}> 
+          <VictoryChart theme={VictoryTheme.material}
+          padding={{left: 60, right: 25, bottom: 40}}>
+          <VictoryAxis/>
+          <VictoryAxis dependentAxis 
+          tickFormat={x => numeral(x).format('$0,0')}/> 
             <VictoryLine
               style={{
-                data: {stroke: '#c43a31'},
+                data: {stroke: '#235789'},
                 parent: {border: '1px solid #ccc'},
               }}
               data={this.getData(saving_values)}
@@ -101,7 +108,7 @@ class ShowSavings extends React.Component {
               </Text>
             </Body>
             <Right>
-              <Text>
+              <Text style={styles.listAmount}>
                 {numeral(this.findFirst(saving_values).value).format('$0,0')}
               </Text>
             </Right>
@@ -115,7 +122,9 @@ class ShowSavings extends React.Component {
                 <Text>{moment(saving.created_at).format('MMM Do')}</Text>
               </Body>
               <Right>
-                <Text>{numeral(saving.value).format('$0,0')}</Text>
+                <Text style={styles.listAmount}>
+                  {numeral(saving.value).format('$0,0')}
+                </Text>
               </Right>
             </ListItem>
           ))}

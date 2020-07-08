@@ -100,7 +100,7 @@ const percentBudgetSpent = (transactions, budget) => {
     let txn = txnData.find(
       txn => txn.spendingCategory === budgetItem.spending_category,
     );
-    const spend = txn ? txn.amount / budgetItem.amount : 0;
+    const spend = txn && budgetItem.amount > 0 ? txn.amount / budgetItem.amount : 0;
     return {spendingCategory: budgetItem.spending_category, percent: spend};
   });
   const alphabetical = data.sort((a, b) =>
