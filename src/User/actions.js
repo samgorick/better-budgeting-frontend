@@ -65,8 +65,7 @@ export function getCurrentUser(navigation) {
             dispatch({type: 'SET_SAVINGS', savings: userData.savings});
           }
         });
-    }
-    else {
+    } else {
       dispatch({type: 'END_LOADING'});
     }
   };
@@ -104,6 +103,9 @@ export function logoutUser() {
   return dispatch => {
     removeValue();
     dispatch({type: 'LOGOUT_USER'});
+    dispatch({type: 'LOGOUT_BUDGETS'});
+    dispatch({type: 'LOGOUT_TRANSACTIONS'});
+    dispatch({type: 'LOGOUT_SAVINGS'});
   };
 }
 
@@ -123,9 +125,19 @@ export function signUpUser(state) {
           dispatch({type: 'END_LOADING'});
           dispatch({type: 'LOGIN_ERROR', error: userData.error});
         } else {
+          console.log(userData);
           storeData(userData.jwt);
           dispatch({type: 'END_LOADING'});
-          dispatch({type: 'LOGIN_USER', user: userData});
+          dispatch({
+            type: 'LOGIN_USER',
+            user: {id: userData.id, email: userData.email},
+          });
+          dispatch({type: 'SET_BUDGET', budget: userData.budgets});
+          dispatch({
+            type: 'SET_TRANSACTIONS',
+            transactions: userData.transactions,
+          });
+          dispatch({type: 'SET_SAVINGS', savings: userData.savings});
         }
       });
   };

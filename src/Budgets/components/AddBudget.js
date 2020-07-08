@@ -6,6 +6,7 @@ import {IncomeCategories} from '../../constants/IncomeCategories';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Formik} from 'formik';
+import * as Yup from 'yup';
 import {addBudget} from '../actions';
 import styles from '../../../Styles/styles';
 

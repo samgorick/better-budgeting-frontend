@@ -88,6 +88,16 @@ export default StyleSheet.create({
     borderRadius:30,
     backgroundColor: theme.NEGATIVE_COLOR,
   },
+  disabledButton: {
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: theme.SMALL_SPACING,
+    width: theme.FORM_WIDTH,
+    borderRadius:30,
+    backgroundColor: '#E0E0E2',
+  },
   buttonText: {
     color: 'white',
     textTransform: 'uppercase'

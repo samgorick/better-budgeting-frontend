@@ -17,12 +17,23 @@ import Savings from './src/Savings/components/SavingsSummary';
 import AddBudget from './src/Budgets/components/AddBudget';
 import EditBudget from './src/Budgets/components/EditBudget';
 import Settings from './src/Homepage/components/Settings';
+import NewUserHomepage from './src/Homepage/components/NewUserHomepage'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const SavingsStack = createStackNavigator();
 const TransactionsStack = createStackNavigator();
+const SummaryStack = createStackNavigator();
+
+function SummaryStackScreen() {
+  return(
+    <SummaryStack.Navigator screenOptions={{title: '', headerShown: false}}>
+      <SummaryStack.Screen name="Summary" component={Summary} />
+      <SummaryStack.Screen name="NewUserHomepage" component={NewUserHomepage} />
+    </SummaryStack.Navigator>
+  )
+}
 
 function SavingsStackScreen() {
   return (
@@ -101,7 +112,7 @@ class App extends React.Component {
               activeTintColor: '#43C59E',
               inactiveTintColor: 'gray',
             }}>
-            <Tab.Screen name="Summary" component={Summary} />
+            <Tab.Screen name="Summary" component={SummaryStackScreen} />
             {this.props.budget.length > 0 ? (
               <Tab.Screen name="Edit Budget" component={EditBudget} />
             ) : (

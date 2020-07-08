@@ -9,6 +9,9 @@ export default function budgetReducer(state=[], action) {
     case 'EDIT_BUDGET_SUCCESS':
       return state.map(budgetCategory => budgetCategory.id === action.budget.id ? action.budget : budgetCategory)
 
+    case 'LOGOUT_BUDGETS':
+      return []
+
     default:
       return state;
   }

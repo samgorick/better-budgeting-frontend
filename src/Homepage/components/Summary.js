@@ -1,7 +1,6 @@
 import React from 'react';
-import {Text, Dimensions} from 'react-native';
-import {Container, Content} from 'native-base';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Dimensions} from 'react-native';
+import {Container, Content, Text} from 'native-base';
 import {connect} from 'react-redux';
 import {
   VictoryContainer,
@@ -17,6 +16,7 @@ import {
 } from 'victory-native';
 import numeral from 'numeral';
 import styles from '../../../Styles/styles';
+import NewUserHomepage from './NewUserHomepage'
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -297,44 +297,7 @@ class Summary extends React.Component {
             </VictoryChart>
           </Content>
         ) : (
-          <Content contentContainerStyle={styles.container}>
-            <Text style={styles.header}>Welcome!</Text>
-            <Text style={styles.chartHeader}>
-              Get started by clicking an option below:
-            </Text>
-            {this.props.budget.length === 0 ? (
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Add Budget')}
-                style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>Add Budget</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                disabled={true}
-                style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
-                <Text style={styles.buttonText}>Budget Added</Text>
-              </TouchableOpacity>
-            )}
-            {this.props.transactions.length === 0 ? (
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('AddTransaction')}
-                style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>Add Transaction</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                disabled={true}
-                style={{...styles.buttonContainer, backgroundColor: '#43C59E'}}>
-                <Text style={styles.buttonText}>Transaction Added</Text>
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('AddSavings')}
-              style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>Add Savings</Text>
-            </TouchableOpacity>
-          </Content>
+          <NewUserHomepage navigation={this.props.navigation}/>
         )}
       </Container>
     );
@@ -342,7 +305,7 @@ class Summary extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {transactions: state.transactions, budget: state.budget};
+  return {transactions: state.transactions, budget: state.budget, savings: state.savings};
 };
 
 export default connect(mapStateToProps)(Summary);

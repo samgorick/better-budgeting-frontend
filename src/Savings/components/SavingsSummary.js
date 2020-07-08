@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Saving from './Saving';
 import { Dimensions } from 'react-native'
-import { VictoryPie, VictoryLabel, VictoryTooltip } from 'victory-native';
+import { VictoryPie, VictoryTooltip } from 'victory-native';
 import {Container, Content, List, Fab, Icon, Text} from 'native-base';
 import styles from '../../../Styles/styles';
 import numeral from 'numeral'

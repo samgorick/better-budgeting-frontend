@@ -9,6 +9,9 @@ export default function savingReducer(state=[], action) {
     case 'UPDATE_SAVING_SUCCESS':
       return state.map(saving => saving.id === action.saving.id ? action.saving : saving)
 
+    case 'LOGOUT_SAVINGS':
+      return []
+
     default:
       return state;
   }
