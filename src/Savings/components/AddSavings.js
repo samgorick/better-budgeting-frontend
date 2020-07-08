@@ -45,10 +45,7 @@ class AddSavings extends React.Component {
               />
               <Image
                 style={styles.inputIcon}
-                source={{
-                  uri:
-                    'https://img.icons8.com/ios/50/000000/document-header.png',
-                }}
+                source={require('../../../Assets/savings-pot-icon.png')}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -61,7 +58,7 @@ class AddSavings extends React.Component {
               />
               <Image
                 style={styles.inputIcon}
-                source={{uri: 'https://img.icons8.com/ios/50/000000/money.png'}}
+                source={require('../../../Assets/money-icon.png')}
               />
             </View>
             <Form>
@@ -69,7 +66,11 @@ class AddSavings extends React.Component {
                 <Picker
                   style={styles.picker}
                   mode="dropdown"
-                  iosIcon={<Icon name="arrow-down" />}
+                  textStyle={{color: '#235789'}}
+                  iosIcon={
+                    <Icon name="arrow-down" style={{color: '#235789'}} />
+                  }
+                  itemTextStyle={{color: '#235789'}}
                   placeholder="Select a category..."
                   placeholderStyle={{color: '#bfc6ea'}}
                   placeholderIconColor="#007aff"

@@ -176,7 +176,7 @@ class Summary extends React.Component {
                 marginTop: -20,
                 marginBottom: -30,
               }}>
-              spent over the last month
+              spent since the start of the month
             </Text>
             <VictoryContainer responsive={false} height={400}>
               <VictoryAnimation duration={1000} delay={500} data={this.state}>

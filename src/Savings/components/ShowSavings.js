@@ -141,7 +141,7 @@ class ShowSavings extends React.Component {
               />
               <Image
                 style={styles.inputIcon}
-                source={{uri: 'https://img.icons8.com/ios/50/000000/money.png'}}
+                source={require('../../../Assets/money-icon.png')}
               />
             </View>
             <TouchableOpacity

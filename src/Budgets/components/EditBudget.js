@@ -91,9 +91,10 @@ class EditBudget extends React.Component {
             <Picker
               style={styles.picker}
               textStyle={{ color: "#235789" }}
-              mode="dropdown"
               iosIcon={<Icon name="arrow-down" style={{color: '#235789'}}/>}
               itemTextStyle={{ color: '#235789' }}
+              placeholder="Select a category..."
+              mode="dropdown"
               selectedValue={this.state.category}
               onValueChange={(itemValue, itemIndex) => {
                 const match = this.props.budget.find(

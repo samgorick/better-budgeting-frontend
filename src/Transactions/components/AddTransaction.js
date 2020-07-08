@@ -88,7 +88,9 @@ class AddTransaction extends React.Component {
             <Picker
               style={styles.picker}
               mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
+              textStyle={{ color: "#235789" }}
+              iosIcon={<Icon name="arrow-down" style={{color: '#235789'}}/>}
+              itemTextStyle={{ color: '#235789' }}
               placeholder="Select a category..."
               placeholderStyle={{color: '#bfc6ea'}}
               placeholderIconColor="#007aff"
