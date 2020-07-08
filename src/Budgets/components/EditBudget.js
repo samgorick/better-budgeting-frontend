@@ -74,12 +74,6 @@ class EditBudget extends React.Component {
       <Ionicons name="arrow-back" color='gray' 
       onPress={() => this.props.navigation.navigate('Summary')}/>
       <View style={{...styles.container, justifyContent: 'center'}}>
-        {/* <Fab
-          style={{backgroundColor: 'transparent'}}
-          position={'topLeft'}
-          onPress={() => this.props.navigation.navigate('Summary')}>
-          <Text style={{color: 'gray', marginTop: 20}}>Back</Text>
-        </Fab> */}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -91,7 +85,7 @@ class EditBudget extends React.Component {
           />
           <Image
             style={styles.inputIcon}
-            source={{uri: 'https://img.icons8.com/ios/50/000000/money.png'}}
+            source={require('../../../Assets/money-icon.png')}
           />
         </View>
         <Form>
@@ -112,7 +106,7 @@ class EditBudget extends React.Component {
                 });
               }}>
               {SpendingCategories.map(cat => (
-                <Picker.Item label={cat} value={cat} />
+                <Picker.Item label={cat} value={cat} style={{color: 'blue'}}/>
               ))}
             </Picker>
           </Item>

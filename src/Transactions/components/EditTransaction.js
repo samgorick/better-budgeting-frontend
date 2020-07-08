@@ -125,7 +125,7 @@ class EditTransaction extends React.Component {
           <Text style={styles.buttonText}>Update Transaction</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{...styles.buttonContainer, backgroundColor: '#A22C29'}}
+          style={styles.negativeButtonContainer}
           onPress={this.handleDelete}>
           <Text style={styles.buttonText}>Delete Transaction</Text>
         </TouchableOpacity>

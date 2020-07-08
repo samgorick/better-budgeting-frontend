@@ -45,6 +45,7 @@ export default StyleSheet.create({
   },
   input:{
     height:45,
+    color: theme.SECONDARY_COLOR,
     marginLeft:16,
     borderBottomColor: '#FFFFFF',
     flex:1,
@@ -76,6 +77,17 @@ export default StyleSheet.create({
     borderRadius:30,
     backgroundColor: theme.ACCENT_COLOR,
   },
+  negativeButtonContainer: {
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: theme.SMALL_SPACING,
+    marginBottom: theme.SMALL_SPACING,
+    width: theme.FORM_WIDTH,
+    borderRadius:30,
+    backgroundColor: theme.NEGATIVE_COLOR,
+  },
   buttonText: {
     color: 'white',
     textTransform: 'uppercase'
@@ -103,5 +115,10 @@ export default StyleSheet.create({
   listAmount: {
     color: theme.SECONDARY_COLOR,
     fontWeight: 'bold'
+  },
+  error: {
+    color: theme.NEGATIVE_COLOR,
+    fontSize: theme.FONT_SIZE_STANDARD,
+    marginBottom: theme.SMALL_SPACING
   }
 });

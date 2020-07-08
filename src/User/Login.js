@@ -64,9 +64,7 @@ class Login extends React.Component {
                   />
                   <Image
                     style={styles.inputIcon}
-                    source={{
-                      uri: 'https://img.icons8.com/nolan/40/000000/email.png',
-                    }}
+                    source={require('../../Assets/email-logo.png')}
                   />
                 </View>
                 <View style={styles.inputContainer}>
@@ -79,9 +77,7 @@ class Login extends React.Component {
                   />
                   <Image
                     style={styles.inputIcon}
-                    source={{
-                      uri: 'https://img.icons8.com/nolan/40/000000/key.png',
-                    }}
+                    source={require('../../Assets/password-icon.png')}
                   />
                 </View>
                 <TouchableOpacity

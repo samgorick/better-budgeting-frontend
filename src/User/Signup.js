@@ -7,6 +7,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LottieView from 'lottie-react-native';
 import {Formik} from 'formik';
+import * as Yup from 'yup';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -14,11 +15,17 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const SignupSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Email cannot be blank'),
+  password: Yup.string().required('Password cannot be blank'),
+  passwordConfirmation: Yup.string()
+  .oneOf([Yup.ref('password'), null], 'Passwords must match')
+});
+
 class Signup extends React.Component {
-
-
   handleSignup = values => {
-    console.log(values)
     this.props.signUpUser(values, this.props.navigation);
   };
 
@@ -47,26 +54,40 @@ class Signup extends React.Component {
               password: '',
               passwordConfirmation: '',
             }}
+            validationSchema={SignupSchema}
             onSubmit={values => this.handleSignup(values)}>
-            {({handleChange, handleSubmit, values}) => (
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
               <>
+                {errors.email && touched.email ? (
+                  <Text style={styles.error}>{errors.email}</Text>
+                ) : null}
                 <View style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
                     name="email"
                     placeholder="Enter email..."
                     keyboardType="email-address"
+                    onBlur={handleBlur('email')}
                     autoCapitalize="none"
                     onChangeText={handleChange('email')}
                     value={values.email}
                   />
                   <Image
                     style={styles.inputIcon}
-                    source={{
-                      uri: 'https://img.icons8.com/nolan/40/000000/email.png',
-                    }}
+                    source={require('../../Assets/email-logo.png')}
+                    
                   />
                 </View>
+                {errors.password && touched.password ? (
+                  <Text style={styles.error}>{errors.password}</Text>
+                ) : null}
                 <View style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
@@ -77,11 +98,12 @@ class Signup extends React.Component {
                   />
                   <Image
                     style={styles.inputIcon}
-                    source={{
-                      uri: 'https://img.icons8.com/nolan/40/000000/key.png',
-                    }}
+                    source={require('../../Assets/password-icon.png')}
                   />
                 </View>
+                {errors.passwordConfirmation && touched.passwordConfirmation ? (
+                  <Text style={styles.error}>{errors.passwordConfirmation}</Text>
+                ) : null}
                 <View style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
@@ -92,9 +114,7 @@ class Signup extends React.Component {
                   />
                   <Image
                     style={styles.inputIcon}
-                    source={{
-                      uri: 'https://img.icons8.com/nolan/40/000000/key.png',
-                    }}
+                    source={require('../../Assets/password-icon.png')}
                   />
                 </View>
                 <TouchableOpacity
@@ -119,96 +139,3 @@ export default connect(
   null,
   mapDispatchToProps,
 )(Signup);
-
-{
-  /* <SafeAreaView style={styles.container}>
-<KeyboardAwareScrollView contentContainerStyle={styles.container}>
-  <LottieView
-    ref={animation => {
-      this.animation = animation;
-    }}
-    style={styles.animation}
-    source={require('./appLogo.json')}
-  />
-  <Formik
-    initialValues={{
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-    }}
-    onSubmit={values => this.loginUser(values)}
-  />
-  {this.state.email.length === 0 ? (
-    <Text style={{...styles.chartHeader, color: 'red'}}>
-      Email cannot be blank
-    </Text>
-  ) : null}
-  <View style={styles.inputContainer}>
-    <TextInput
-      style={styles.input}
-      name="email"
-      placeholder="Enter email..."
-      keyboardType="email-address"
-      autoCapitalize="none"
-      onChange={this.handleEmail}
-      value={this.state.email}
-    />
-    <Image
-      style={styles.inputIcon}
-      source={{uri: 'https://img.icons8.com/nolan/40/000000/email.png'}}
-    />
-  </View>
-  {this.state.password.length === 0 ? (
-    <Text style={{...styles.chartHeader, color: 'red'}}>
-      Password cannot be blank
-    </Text>
-  ) : null}
-  <View style={styles.inputContainer}>
-    <TextInput
-      style={styles.input}
-      name="password"
-      placeholder="Enter Password"
-      secureTextEntry={true}
-      onChange={this.handlePassword}
-    />
-    <Image
-      style={styles.inputIcon}
-      source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
-    />
-  </View>
-  {this.state.password !== this.state.passwordConfirmation ? (
-    <Text style={{...styles.chartHeader, color: 'red'}}>
-      Password must match
-    </Text>
-  ) : null}
-  <View style={styles.inputContainer}>
-    <TextInput
-      style={styles.input}
-      name="password confirmation"
-      placeholder="Confirm Password"
-      secureTextEntry={true}
-      onChange={this.handlePasswordConfirmation}
-    />
-    <Image
-      style={styles.inputIcon}
-      source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}
-    />
-  </View>
-  <TouchableOpacity
-    style={styles.loginButtonContainer}
-    onPress={this.handleSignup}
-    disabled={
-      this.state.password === this.state.passwordConfirmation &&
-      this.state.password.length > 0
-        ? false
-        : true
-    }>
-    <Text style={styles.buttonText}>Sign Up</Text>
-  </TouchableOpacity>
-  <TouchableOpacity
-    onPress={() => this.props.navigation.navigate('Login')}>
-    <Text style={styles.signupText}>Signed up already?</Text>
-  </TouchableOpacity>
-</KeyboardAwareScrollView>
-</SafeAreaView> */
-}
