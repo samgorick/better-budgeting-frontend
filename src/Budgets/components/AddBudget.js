@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, TextInput, Switch, SafeAreaView, Dimensions} from 'react-native';
+import {View, TextInput, Switch, SafeAreaView, Dimensions, Image} from 'react-native';
 import {connect} from 'react-redux';
-import {Text} from 'native-base'
+import {Text} from 'native-base';
 import {SpendingCategories} from '../../constants/SpendingCategories';
 import {IncomeCategories} from '../../constants/IncomeCategories';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -10,7 +10,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {addBudget} from '../actions';
 import styles from '../../../Styles/styles';
-import numeral from 'numeral'
+import numeral from 'numeral';
 
 const mapStateToProps = state => {
   return {user: state.user};
@@ -26,61 +26,82 @@ const mapDispatchToProps = dispatch => {
 const screenWidth = Dimensions.get('window').width;
 
 const AddBudgetSchema = Yup.object().shape({
-  Income: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Bills: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Dining: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Groceries: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Holiday: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Housing: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Leisure: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Personal: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Savings: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Shopping: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
-  Transport: Yup.string().required('Required').matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Income: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Bills: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Dining: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Groceries: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Holiday: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Housing: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Leisure: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Personal: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Savings: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Shopping: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+  Transport: Yup.string()
+    .required('Required')
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
 });
 
 class AddBudget extends React.Component {
-
-  constructor(){
-    super()
+  constructor() {
+    super();
     this.state = {
-      isEnabled: false
-    }
+      isEnabled: false,
+    };
   }
-  
+
   createBudget = values => {
-    values['Income'] = numeral(values['Income']).value()
-    values['Bills'] = numeral(values['Bills']).value()
-    values['Dining'] = numeral(values['Dining']).value()
-    values['Groceries'] = numeral(values['Groceries']).value()
-    values['Holiday'] = numeral(values['Holiday']).value()
-    values['Housing'] = numeral(values['Housing']).value()
-    values['Leisure'] = numeral(values['Leisure']).value()
-    values['Personal'] = numeral(values['Personal']).value()
-    values['Savings'] = numeral(values['Savings']).value()
-    values['Shopping'] = numeral(values['Shopping']).value()
-    values['Transport'] = numeral(values['Transport']).value()
+    values['Income'] = numeral(values['Income']).value();
+    values['Bills'] = numeral(values['Bills']).value();
+    values['Dining'] = numeral(values['Dining']).value();
+    values['Groceries'] = numeral(values['Groceries']).value();
+    values['Holiday'] = numeral(values['Holiday']).value();
+    values['Housing'] = numeral(values['Housing']).value();
+    values['Leisure'] = numeral(values['Leisure']).value();
+    values['Personal'] = numeral(values['Personal']).value();
+    values['Savings'] = numeral(values['Savings']).value();
+    values['Shopping'] = numeral(values['Shopping']).value();
+    values['Transport'] = numeral(values['Transport']).value();
 
     const budgetObj = {budget: values, user_id: this.props.user.id};
     this.props.addBudget(budgetObj, this.props.navigation);
   };
 
- toggleSwitch = values => {
-   if(!this.state.isEnabled){
-      const income = numeral(values['Income']).value()
-      values['Bills'] = numeral(income * 0.03).format('$0,0')
-      values['Dining'] = numeral(income * 0.05).format('$0,0')
-      values['Groceries'] = numeral(income * 0.15).format('$0,0')
-      values['Holiday'] = numeral(income * 0.1).format('$0,0')
-      values['Housing'] = numeral(income * 0.3).format('$0,0')
-      values['Leisure'] = numeral(income * 0.05).format('$0,0')
-      values['Personal'] = numeral(income * 0.02).format('$0,0')
-      values['Savings'] = numeral(income * 0.1).format('$0,0')
-      values['Shopping'] = numeral(income * 0.12).format('$0,0')
-      values['Transport'] = numeral(income * 0.08).format('$0,0')
-   }
-   this.setState({isEnabled: !this.state.isEnabled})
- }
+  toggleSwitch = values => {
+    if (!this.state.isEnabled) {
+      const income = numeral(values['Income']).value();
+      values['Bills'] = numeral(income * 0.03).format('$0,0');
+      values['Dining'] = numeral(income * 0.05).format('$0,0');
+      values['Groceries'] = numeral(income * 0.15).format('$0,0');
+      values['Holiday'] = numeral(income * 0.1).format('$0,0');
+      values['Housing'] = numeral(income * 0.3).format('$0,0');
+      values['Leisure'] = numeral(income * 0.05).format('$0,0');
+      values['Personal'] = numeral(income * 0.02).format('$0,0');
+      values['Savings'] = numeral(income * 0.1).format('$0,0');
+      values['Shopping'] = numeral(income * 0.12).format('$0,0');
+      values['Transport'] = numeral(income * 0.08).format('$0,0');
+    }
+    this.setState({isEnabled: !this.state.isEnabled});
+  };
 
   render() {
     return (
@@ -102,40 +123,52 @@ class AddBudget extends React.Component {
             }}
             validationSchema={AddBudgetSchema}
             onSubmit={values => this.createBudget(values)}>
-            {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
               <View style={{...styles.container, justifyContent: 'center'}}>
                 <Text style={styles.chartHeader}>Set up template budget?</Text>
-                <Switch 
-                        trackColor={{ false: "#E0E0E2", true: "#43C59E" }}
-                        thumbColor="#f4f3f4"
-                        ios_backgroundColor="#E0E0E2"
-                        onValueChange={() => this.toggleSwitch(values)}
-                        value={this.state.isEnabled}/>
+                <Switch
+                  trackColor={{false: '#E0E0E2', true: '#43C59E'}}
+                  thumbColor="#f4f3f4"
+                  ios_backgroundColor="#E0E0E2"
+                  onValueChange={() => this.toggleSwitch(values)}
+                  value={this.state.isEnabled}
+                />
                 {IncomeCategories.map((category, index) => {
                   return (
                     <>
-                    <View key={index}>
-                      <Text
-                        style={{
-                          ...styles.chartHeader,
-                          marginTop: 10,
-                          marginBottom: 5,
-                        }}> 
-                        {category}
-                      </Text>
-                      {errors[category] && touched[category] ? (
-                      <Text style={styles.error}>{errors[category]}</Text>
-                    ) : null}
-                    <View style={styles.inputContainer}>
-                      <TextInput
-                        style={styles.input}
-                        onChangeText={handleChange(`${category}`)}
-                        onBlur={handleBlur(`${category}`)}
-                        value={numeral(values[category]).format('$0,0')}
-                        placeholder={`Enter ${category}...`}
-                      />
-                    </View>
-                    </View>
+                      <View key={index}>
+                        <Text
+                          style={{
+                            ...styles.chartHeader,
+                            marginTop: 10,
+                            marginBottom: 5,
+                          }}>
+                          {category}
+                        </Text>
+                        {errors[category] && touched[category] ? (
+                          <Text style={styles.error}>{errors[category]}</Text>
+                        ) : null}
+                        <View style={styles.inputContainer}>
+                          <TextInput
+                            style={styles.input}
+                            onChangeText={handleChange(`${category}`)}
+                            onBlur={handleBlur(`${category}`)}
+                            value={numeral(values[category]).format('$0,0')}
+                            placeholder={`Enter ${category}...`}
+                          />
+                          <Image
+                            style={styles.inputIcon}
+                            source={require('../../../Assets/money-icon.png')}
+                          />
+                        </View>
+                      </View>
                     </>
                   );
                 })}
@@ -146,17 +179,21 @@ class AddBudget extends React.Component {
                         {category}
                       </Text>
                       {errors[category] && touched[category] ? (
-                      <Text style={styles.error}>{errors[category]}</Text>
-                    ) : null}
-                    <View style={styles.inputContainer}>
-                      <TextInput
-                        style={styles.input}
-                        onChangeText={handleChange(`${category}`)}
-                        onBlur={handleBlur(`${category}`)}
-                        value={numeral(values[category]).format('$0,0')}
-                        placeholder={`Enter ${category}...`}
-                      />
-                    </View>
+                        <Text style={styles.error}>{errors[category]}</Text>
+                      ) : null}
+                      <View style={styles.inputContainer}>
+                        <TextInput
+                          style={styles.input}
+                          onChangeText={handleChange(`${category}`)}
+                          onBlur={handleBlur(`${category}`)}
+                          value={numeral(values[category]).format('$0,0')}
+                          placeholder={`Enter ${category}...`}
+                        />
+                        <Image
+                          style={styles.inputIcon}
+                          source={require('../../../Assets/money-icon.png')}
+                        />
+                      </View>
                     </View>
                   );
                 })}

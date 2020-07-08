@@ -67,7 +67,7 @@ class AddTransaction extends React.Component {
           />
           <Image
             style={styles.inputIcon}
-            source={{uri: 'https://img.icons8.com/ios/50/000000/shop.png'}}
+            source={require('../../../Assets/shop-icon.png')}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -80,7 +80,7 @@ class AddTransaction extends React.Component {
           />
           <Image
             style={styles.inputIcon}
-            source={{uri: 'https://img.icons8.com/ios/50/000000/money.png'}}
+            source={require('../../../Assets/money-icon.png')}
           />
         </View>
         <Form>
