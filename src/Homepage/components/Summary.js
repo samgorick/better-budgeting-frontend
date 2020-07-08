@@ -127,7 +127,7 @@ const percentSpent = (transactions, budget) => {
   const income = budget.find(
     category => category.spending_category === 'Income',
   );
-  return total / income.amount;
+  return income.amount > 0 ? total / income.amount : 1;
 };
 
 const progressDataCalc = (transactions, budget) => {
@@ -162,7 +162,7 @@ class Summary extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         {this.props.transactions.length > 0 && this.props.budget.length > 0 ? (
           <Content style={styles.nativeContainer}>
             <Text style={styles.header}>
