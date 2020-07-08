@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, TextInput, Image, SafeAreaView} from 'react-native';
+import {View, TextInput, Image, SafeAreaView} from 'react-native';
 import {connect} from 'react-redux';
 import {SavingsCategories} from '../../constants/SavingsCategories';
-import {Form, Item, Picker, Icon} from 'native-base';
+import {Text, Form, Item, Picker, Icon} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Formik} from 'formik';
 import {addSaving} from '../actions';

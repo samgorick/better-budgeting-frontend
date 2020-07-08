@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, TextInput, Image} from 'react-native';
+import {View, TextInput, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {AllCategories} from '../../constants/AllCategories';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Form, Item, Picker, Icon} from 'native-base';
+import {Form, Item, Picker, Icon, Text} from 'native-base';
 import {editBudget} from '../actions';
 import styles from '../../../Styles/styles';
 import numeral from 'numeral';

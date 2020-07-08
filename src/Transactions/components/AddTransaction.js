@@ -1,11 +1,12 @@
 import React from 'react';
-import {View, Text, TextInput, Image} from 'react-native';
+import {View, TextInput, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {addTransaction} from '../actions';
 import {SpendingCategories} from '../../constants/SpendingCategories';
-import {Form, Item, Picker, Icon} from 'native-base';
+import {Form, Item, Picker, Icon, Text} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from '../../../Styles/styles';
+import numeral from 'numeral'
 
 const mapStateToProps = state => {
   return {user: state.user};

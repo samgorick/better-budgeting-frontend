@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, View, TextInput, Image, Text} from 'react-native';
+import {SafeAreaView, View, TextInput, Image} from 'react-native';
+import {Text} from 'native-base'
 import styles from '../../Styles/styles';
 import {connect} from 'react-redux';
 import {loginUser} from './actions';

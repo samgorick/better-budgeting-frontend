@@ -1,7 +1,8 @@
 import React from 'react';
-import {Text, SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from '../../../Styles/styles';
+import {Text} from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {logoutUser} from '../../User/actions'
 import {connect} from 'react-redux';
