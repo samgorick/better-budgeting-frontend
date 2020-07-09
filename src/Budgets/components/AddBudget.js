@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, TextInput, Switch, SafeAreaView, Dimensions, Image} from 'react-native';
+import {
+  View,
+  TextInput,
+  Switch,
+  SafeAreaView,
+  Dimensions,
+  Image,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {Text} from 'native-base';
 import {SpendingCategories} from '../../constants/SpendingCategories';
@@ -160,6 +167,7 @@ class AddBudget extends React.Component {
                             style={styles.input}
                             onChangeText={handleChange(`${category}`)}
                             onBlur={handleBlur(`${category}`)}
+                            keyboardType="numeric"
                             value={numeral(values[category]).format('$0,0')}
                             placeholder={`Enter ${category}...`}
                           />
@@ -187,6 +195,7 @@ class AddBudget extends React.Component {
                           onChangeText={handleChange(`${category}`)}
                           onBlur={handleBlur(`${category}`)}
                           value={numeral(values[category]).format('$0,0')}
+                          keyboardType="numeric"
                           placeholder={`Enter ${category}...`}
                         />
                         <Image

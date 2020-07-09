@@ -136,6 +136,7 @@ class ShowSavings extends React.Component {
               <TextInput
                 style={styles.input}
                 name="amount"
+                keyboardType="numeric"
                 onChange={this.handleAmount}
                 value={this.state.amount}
               />

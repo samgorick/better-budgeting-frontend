@@ -75,6 +75,7 @@ class AddTransaction extends React.Component {
             style={styles.input}
             name="amount"
             placeholder="Enter Amount..."
+            keyboardType="numeric"
             onChange={this.handleAmount}
             value={this.state.amount}
           />

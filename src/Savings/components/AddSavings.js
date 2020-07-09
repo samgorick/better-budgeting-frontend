@@ -54,6 +54,7 @@ class AddSavings extends React.Component {
                 onBlur={handleBlur('balance')}
                 value={values.balance}
                 placeholder="Enter balance..."
+                keyboardType="numeric"
                 style={styles.input}
               />
               <Image
