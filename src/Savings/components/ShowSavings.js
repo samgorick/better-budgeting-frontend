@@ -23,19 +23,17 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const screenWidth = Dimensions.get('window').width;
-
 class ShowSavings extends React.Component {
   state = {
     id: '',
-    amount: '',
+    value: '',
   };
 
   componentDidMount() {
     const {id, saving_values} = this.props.route.params.item;
     this.setState({
       id: id,
-      amount: numeral(this.findFirst(saving_values).value).format('$0,0'),
+      value: numeral(this.findFirst(saving_values).value).format('$0,0'),
     });
   }
 
@@ -61,18 +59,18 @@ class ShowSavings extends React.Component {
     }));
   };
 
-  handleAmount = e => {
+  handleValue = e => {
     this.setState({
-      amount: numeral(e.nativeEvent.text).format('$0,0'),
+      value: numeral(e.nativeEvent.text).format('$0,0'),
     });
   };
 
   handleSubmit = () => {
-    const value = {...this.state, amount: numeral(this.state.amount).value()}
+    const value = {saving_id: this.state.id, value: numeral(this.state.value).value()}
     this.props.updateSavingValue(value, this.props.navigation);
     this.setState({
       id: '',
-      amount: '',
+      value: '',
     });
   };
 
@@ -135,10 +133,10 @@ class ShowSavings extends React.Component {
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                name="amount"
+                name="value"
                 keyboardType="numeric"
-                onChange={this.handleAmount}
-                value={this.state.amount}
+                onChange={this.handleValue}
+                value={this.state.value}
               />
               <Image
                 style={styles.inputIcon}

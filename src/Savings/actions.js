@@ -9,7 +9,7 @@ export function addSaving(saving, navigation) {
       headers: {
         "content-type": "application/json"
       },
-      body: JSON.stringify(saving)
+      body: JSON.stringify({saving: saving})
     })
       .then(resp => resp.json())
       .then(savingData => {
@@ -28,7 +28,7 @@ export function updateSavingValue(saving, navigation) {
       headers: {
         "content-type": "application/json"
       },
-      body: JSON.stringify(saving)
+      body: JSON.stringify({saving: saving})
     })
       .then(resp => resp.json())
       .then(savingData => {
