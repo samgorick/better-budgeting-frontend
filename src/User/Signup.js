@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, TextInput, Image, SafeAreaView} from 'react-native';
-import {Text} from 'native-base'
+import {Text} from 'native-base';
 import {connect} from 'react-redux';
 import {signUpUser} from './actions';
 import styles from '../../Styles/styles';
@@ -21,13 +21,25 @@ const SignupSchema = Yup.object().shape({
     .email('Invalid email')
     .required('Email cannot be blank'),
   password: Yup.string().required('Password cannot be blank'),
-  passwordConfirmation: Yup.string()
-  .oneOf([Yup.ref('password'), null], 'Passwords must match')
+  passwordConfirmation: Yup.string().oneOf(
+    [Yup.ref('password'), null],
+    'Passwords must match',
+  ),
 });
 
 class Signup extends React.Component {
   handleSignup = values => {
-    this.props.signUpUser(values, this.props.navigation);
+    // Filter out password confirmation, not needed in back-end
+    const allowed = ['email', 'password'];
+
+    const filtered = Object.keys(values)
+      .filter(key => allowed.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = values[key];
+        return obj;
+      }, {});
+
+    this.props.signUpUser(filtered, this.props.navigation);
   };
 
   componentDidMount() {
@@ -83,7 +95,6 @@ class Signup extends React.Component {
                   <Image
                     style={styles.inputIcon}
                     source={require('../../Assets/email-logo.png')}
-                    
                   />
                 </View>
                 {errors.password && touched.password ? (
@@ -103,7 +114,9 @@ class Signup extends React.Component {
                   />
                 </View>
                 {errors.passwordConfirmation && touched.passwordConfirmation ? (
-                  <Text style={styles.error}>{errors.passwordConfirmation}</Text>
+                  <Text style={styles.error}>
+                    {errors.passwordConfirmation}
+                  </Text>
                 ) : null}
                 <View style={styles.inputContainer}>
                   <TextInput

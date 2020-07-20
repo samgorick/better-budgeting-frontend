@@ -16,6 +16,9 @@ export function errorReducer(state=null, action) {
     case 'LOGIN_ERROR':
       return action.error
 
+    case 'LOGOUT_USER':
+      return null
+
     default:
       return state;
   }

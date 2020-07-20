@@ -8,7 +8,7 @@ export function loginUser(user, navigation) {
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify({user: user}),
     })
       .then(resp => resp.json())
       .then(userData => {
@@ -93,7 +93,7 @@ const getData = async () => {
 const removeValue = async () => {
   try {
     await AsyncStorage.removeItem('jwt');
-  } catch (e) {
+  } catch (err) {
     console.log(err);
   }
   console.log('Done.');
@@ -109,7 +109,7 @@ export function logoutUser() {
   };
 }
 
-export function signUpUser(state) {
+export function signUpUser(user) {
   return dispatch => {
     dispatch({type: 'START_LOADING'});
     fetch('http://localhost:3000/signup', {
@@ -117,7 +117,7 @@ export function signUpUser(state) {
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(state),
+      body: JSON.stringify({user: user}),
     })
       .then(resp => resp.json())
       .then(userData => {

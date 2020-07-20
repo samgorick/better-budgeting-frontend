@@ -77,19 +77,13 @@ class AddBudget extends React.Component {
   }
 
   createBudget = values => {
-    values['Income'] = numeral(values['Income']).value();
-    values['Bills'] = numeral(values['Bills']).value();
-    values['Dining'] = numeral(values['Dining']).value();
-    values['Groceries'] = numeral(values['Groceries']).value();
-    values['Holiday'] = numeral(values['Holiday']).value();
-    values['Housing'] = numeral(values['Housing']).value();
-    values['Leisure'] = numeral(values['Leisure']).value();
-    values['Personal'] = numeral(values['Personal']).value();
-    values['Savings'] = numeral(values['Savings']).value();
-    values['Shopping'] = numeral(values['Shopping']).value();
-    values['Transport'] = numeral(values['Transport']).value();
+    const numericValues = {};
+    //Convert each string into a valid numeric value
+    for (const category in values) {
+      numericValues[category] = numeral(values[category]).value();
+    }
 
-    const budgetObj = {budget: values, user_id: this.props.user.id};
+    const budgetObj = {budget: numericValues, user_id: this.props.user.id};
     this.props.addBudget(budgetObj, this.props.navigation);
   };
 

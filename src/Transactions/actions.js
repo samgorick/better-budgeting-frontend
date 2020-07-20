@@ -8,7 +8,7 @@ export function addTransaction(transaction, navigation) {
       headers: {
         "content-type": "application/json"
       },
-      body: JSON.stringify(transaction)
+      body: JSON.stringify({transaction: transaction})
     })
       .then(resp => resp.json())
       .then(txnData => {
@@ -27,7 +27,7 @@ export function editTransaction(transaction, navigation) {
       headers: {
         "content-type": "application/json"
       },
-      body: JSON.stringify(transaction)
+      body: JSON.stringify({transaction: transaction})
     })
       .then(resp => resp.json())
       .then(txnData => {
