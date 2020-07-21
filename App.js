@@ -126,7 +126,7 @@ class App extends React.Component {
             )}
             <Tab.Screen name="Transactions" component={TransactionsStackScreen} />
             <Tab.Screen name="Savings" component={SavingsStackScreen} />
-            <Tab.Screen name="Settings" component={Settings} />
+            <Tab.Screen name="Settings" component={Settings}/>
           </Tab.Navigator>
         )}
       </NavigationContainer>
