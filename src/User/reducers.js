@@ -1,9 +1,11 @@
+import {LOGIN_USER, LOGOUT_USER, LOGIN_ERROR, START_LOADING, END_LOADING} from '../constants/Types'
+
 export function userReducer(state=null, action) {
   switch (action.type) {
-    case 'LOGIN_USER':
+    case LOGIN_USER:
       return action.user
 
-    case 'LOGOUT_USER':
+    case LOGOUT_USER:
       return null
 
     default:
@@ -13,10 +15,10 @@ export function userReducer(state=null, action) {
 
 export function errorReducer(state=null, action) {
   switch (action.type) {
-    case 'LOGIN_ERROR':
+    case LOGIN_ERROR:
       return action.error
 
-    case 'LOGOUT_USER':
+    case LOGOUT_USER:
       return null
 
     default:
@@ -26,10 +28,10 @@ export function errorReducer(state=null, action) {
 
 export function loadingReducer(state=true, action) {
   switch (action.type) {
-    case 'START_LOADING': 
+    case START_LOADING: 
       return true
 
-    case 'END_LOADING':
+    case END_LOADING:
       return false
 
     default: 
