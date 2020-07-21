@@ -4,10 +4,6 @@ import Transaction from './Transaction';
 import {Container, Content, List, Fab, Icon} from 'native-base';
 import styles from '../../../Styles/styles';
 
-const mapStateToProps = state => {
-  return {transactions: state.transactions};
-};
-
 const AllTransactions = props => (
   <Container style={{backgroundColor: '#f5f9ff'}}>
     {props.transactions ? (
@@ -30,4 +26,4 @@ const AllTransactions = props => (
     </Fab>
   </Container>
 );
-export default connect(mapStateToProps)(AllTransactions);
+export default connect(state => ({transactions: state.transactions}))(AllTransactions);

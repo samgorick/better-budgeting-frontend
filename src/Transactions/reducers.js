@@ -1,12 +1,26 @@
+import {
+  SET_TRANSACTIONS,
+  ADD_TRANSACTION_SUCCESS,
+  EDIT_TRANSACTION_SUCCESS,
+  DELETE_TRANSACTION_SUCCESS,
+  LOGOUT_TRANSACTIONS
+} from '../constants/Types';
+
+function sorted(transactionsArray) {
+  return transactionsArray.sort((a, b) =>
+    a.created_at < b.created_at ? 1 : -1,
+  );
+}
+
 export default function transactionsReducer(state = [], action) {
   switch (action.type) {
-    case 'SET_TRANSACTIONS':
+    case SET_TRANSACTIONS:
       return sorted(action.transactions);
 
-    case 'ADD_TRANSACTION_SUCCESS':
+    case ADD_TRANSACTION_SUCCESS:
       return sorted([...state, action.transaction]);
 
-    case 'EDIT_TRANSACTION_SUCCESS':
+    case EDIT_TRANSACTION_SUCCESS:
       return sorted(
         state.map(transaction =>
           transaction.id === action.transaction.id
@@ -15,21 +29,15 @@ export default function transactionsReducer(state = [], action) {
         ),
       );
 
-    case 'DELETE_TRANSACTION_SUCCESS':
+    case DELETE_TRANSACTION_SUCCESS:
       return sorted(
         state.filter(transaction => transaction.id !== action.transactionId),
       );
 
-    case 'LOGOUT_TRANSACTIONS':
+    case LOGOUT_TRANSACTIONS:
       return [];
 
     default:
       return state;
   }
-}
-
-function sorted(transactionsArray) {
-  return transactionsArray.sort((a, b) =>
-    a.created_at < b.created_at ? 1 : -1,
-  );
 }

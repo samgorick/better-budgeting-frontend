@@ -5,20 +5,7 @@ import {editTransaction, deleteTransaction} from '../actions';
 import {SpendingCategories} from '../../constants/SpendingCategories';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Form, Item, Picker, Icon, Text} from 'native-base';
-import styles from '../../../Styles/styles';
-
-const mapStateToProps = state => {
-  return {user: state.user};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    editTransaction: (transaction, navigation) =>
-      dispatch(editTransaction(transaction, navigation)),
-    deleteTransaction: (transactionId, navigation) =>
-      dispatch(deleteTransaction(transactionId, navigation)),
-  };
-};
+import styles from '../../../Styles/styles'
 
 class EditTransaction extends React.Component {
   state = {
@@ -137,6 +124,6 @@ class EditTransaction extends React.Component {
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  state => ({user: state.user}),
+  {editTransaction, deleteTransaction},
 )(EditTransaction);
