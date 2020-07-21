@@ -78,9 +78,9 @@ const pieDataCalc = transactions => {
     label: `Other\n${numeral(otherAmount).format('$0,0')}`
   };
   const pieData = topFour.map((obj, index) => ({
-    x: obj.spending_category,
+    x: obj.spendingCategory,
     y: obj.amount,
-    label: `${obj.spending_category}\n${numeral(obj.amount).format('$0,0')}`
+    label: `${obj.spendingCategory}\n${numeral(obj.amount).format('$0,0')}`
   }));
   // Add 'other' key/value pair into pieData object
   pieData.push(other);
