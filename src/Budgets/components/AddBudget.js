@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  TextInput,
-  Switch,
-  SafeAreaView,
-  Dimensions,
-  Image,
-} from 'react-native';
+import {View, TextInput, Switch, SafeAreaView, Dimensions, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {Text} from 'native-base';
 import {SpendingCategories} from '../../constants/SpendingCategories';
@@ -19,19 +12,9 @@ import {addBudget} from '../actions';
 import styles from '../../../Styles/styles';
 import numeral from 'numeral';
 
-const mapStateToProps = state => {
-  return {user: state.user};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addBudget: (budgetObj, navigation) =>
-      dispatch(addBudget(budgetObj, navigation)),
-  };
-};
-
 const screenWidth = Dimensions.get('window').width;
 
+// Each budget is required and must be a valid number
 const AddBudgetSchema = Yup.object().shape({
   Income: Yup.string()
     .required('Required')
@@ -65,28 +48,18 @@ const AddBudgetSchema = Yup.object().shape({
     .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
   Transport: Yup.string()
     .required('Required')
-    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number'),
+    .matches(/^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/, 'Must be a valid number')
 });
 
 class AddBudget extends React.Component {
   constructor() {
     super();
     this.state = {
-      isEnabled: false,
+      isEnabled: false
     };
   }
 
-  createBudget = values => {
-    const numericValues = {};
-    //Convert each string into a valid numeric value
-    for (const category in values) {
-      numericValues[category] = numeral(values[category]).value();
-    }
-
-    const budgetObj = {budget: numericValues, user_id: this.props.user.id};
-    this.props.addBudget(budgetObj, this.props.navigation);
-  };
-
+  // Set up template budget based on income. User can change values once generated
   toggleSwitch = values => {
     if (!this.state.isEnabled) {
       const income = numeral(values['Income']).value();
@@ -102,6 +75,16 @@ class AddBudget extends React.Component {
       values['Transport'] = numeral(income * 0.08).format('$0,0');
     }
     this.setState({isEnabled: !this.state.isEnabled});
+  };
+
+  createBudget = values => {
+    const numericValues = {};
+    //Convert each string into a valid numeric value
+    for (const category in values) {
+      numericValues[category] = numeral(values[category]).value();
+    }
+    const budgetObj = {budget: numericValues, user_id: this.props.user.id};
+    this.props.addBudget(budgetObj, this.props.navigation);
   };
 
   render() {
@@ -120,18 +103,11 @@ class AddBudget extends React.Component {
               Personal: '0',
               Savings: '0',
               Shopping: '0',
-              Transport: '0',
+              Transport: '0'
             }}
             validationSchema={AddBudgetSchema}
             onSubmit={values => this.createBudget(values)}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
+            {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
               <View style={{...styles.container, justifyContent: 'center'}}>
                 <Text style={styles.chartHeader}>Set up template budget?</Text>
                 <Switch
@@ -149,7 +125,7 @@ class AddBudget extends React.Component {
                           style={{
                             ...styles.chartHeader,
                             marginTop: 10,
-                            marginBottom: 5,
+                            marginBottom: 5
                           }}>
                           {category}
                         </Text>
@@ -177,9 +153,7 @@ class AddBudget extends React.Component {
                 {SpendingCategories.map((category, index) => {
                   return (
                     <View key={index}>
-                      <Text style={{...styles.chartHeader, marginBottom: 5}}>
-                        {category}
-                      </Text>
+                      <Text style={{...styles.chartHeader, marginBottom: 5}}>{category}</Text>
                       {errors[category] && touched[category] ? (
                         <Text style={styles.error}>{errors[category]}</Text>
                       ) : null}
@@ -200,9 +174,7 @@ class AddBudget extends React.Component {
                     </View>
                   );
                 })}
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={styles.buttonContainer}>
+                <TouchableOpacity onPress={handleSubmit} style={styles.buttonContainer}>
                   <Text style={styles.buttonText}>Add Budget</Text>
                 </TouchableOpacity>
               </View>
@@ -215,6 +187,6 @@ class AddBudget extends React.Component {
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  state => ({user: state.user}),
+  {addBudget}
 )(AddBudget);

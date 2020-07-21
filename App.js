@@ -17,8 +17,18 @@ import Savings from './src/Savings/components/SavingsSummary';
 import AddBudget from './src/Budgets/components/AddBudget';
 import EditBudget from './src/Budgets/components/EditBudget';
 import Settings from './src/Homepage/components/Settings';
-import NewUserHomepage from './src/Homepage/components/NewUserHomepage'
+import NewUserHomepage from './src/Homepage/components/NewUserHomepage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const mapStateToProps = state => {
+  return {user: state.user, loading: state.loading, budget: state.budget};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getCurrentUser: (token, navigation) => dispatch(getCurrentUser(token, navigation))
+  };
+};
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,12 +37,12 @@ const TransactionsStack = createStackNavigator();
 const SummaryStack = createStackNavigator();
 
 function SummaryStackScreen() {
-  return(
+  return (
     <SummaryStack.Navigator screenOptions={{title: '', headerShown: false}}>
       <SummaryStack.Screen name="Summary" component={Summary} />
       <SummaryStack.Screen name="NewUserHomepage" component={NewUserHomepage} />
     </SummaryStack.Navigator>
-  )
+  );
 }
 
 function SavingsStackScreen() {
@@ -47,20 +57,10 @@ function SavingsStackScreen() {
 
 function TransactionsStackScreen() {
   return (
-    <TransactionsStack.Navigator
-      screenOptions={{title: '', headerShown: false}}>
-      <TransactionsStack.Screen
-        name="Transactions"
-        component={AllTransactions}
-      />
-      <TransactionsStack.Screen
-        name="AddTransaction"
-        component={AddTransaction}
-      />
-      <TransactionsStack.Screen
-        name="EditTransaction"
-        component={EditTransaction}
-      />
+    <TransactionsStack.Navigator screenOptions={{title: '', headerShown: false}}>
+      <TransactionsStack.Screen name="Transactions" component={AllTransactions} />
+      <TransactionsStack.Screen name="AddTransaction" component={AddTransaction} />
+      <TransactionsStack.Screen name="EditTransaction" component={EditTransaction} />
     </TransactionsStack.Navigator>
   );
 }
@@ -87,30 +87,36 @@ class App extends React.Component {
             screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
                 let iconName;
-
-                if (route.name === 'Summary') {
-                  iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
-                } else if (route.name === 'Settings') {
-                  iconName = focused ? 'ios-list' : 'ios-list';
-                } else if (route.name === 'Edit Budget') {
-                  iconName = focused ? 'ios-create' : 'ios-create';
-                } else if (route.name === 'Transactions') {
-                  iconName = focused ? 'ios-card' : 'ios-card';
-                } else if (route.name === 'Savings') {
-                  iconName = focused ? 'ios-cash' : 'ios-cash';
-                } else if (route.name === 'Add Budget') {
-                  iconName = focused
-                    ? 'ios-add-circle'
-                    : 'ios-add-circle-outline';
+                switch (route.name) {
+                  case 'Summary':
+                    iconName = focused
+                      ? 'ios-information-circle'
+                      : 'ios-information-circle-outline';
+                    break;
+                  case 'Settings':
+                    iconName = 'ios-list';
+                    break;
+                  case 'Edit Budget':
+                    iconName = 'ios-create';
+                    break;
+                  case 'Transactions':
+                    iconName = 'ios-card';
+                    break;
+                  case 'Savings':
+                    iconName = 'ios-cash';
+                    break;
+                  case 'Add Budget':
+                    iconName = focused ? 'ios-add-circle' : 'ios-add-circle-outline';
+                    break;
+                  default:
+                    iconName = 'ios-information-circle';
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
-              },
+              }
             })}
             tabBarOptions={{
               activeTintColor: '#43C59E',
-              inactiveTintColor: 'gray',
+              inactiveTintColor: 'gray'
             }}>
             <Tab.Screen name="Summary" component={SummaryStackScreen} />
             {this.props.budget.length > 0 ? (
@@ -118,10 +124,7 @@ class App extends React.Component {
             ) : (
               <Tab.Screen name="Add Budget" component={AddBudget} />
             )}
-            <Tab.Screen
-              name="Transactions"
-              component={TransactionsStackScreen}
-            />
+            <Tab.Screen name="Transactions" component={TransactionsStackScreen} />
             <Tab.Screen name="Savings" component={SavingsStackScreen} />
             <Tab.Screen name="Settings" component={Settings} />
           </Tab.Navigator>
@@ -131,18 +134,7 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {user: state.user, loading: state.loading, budget: state.budget};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    getCurrentUser: (token, navigation) =>
-      dispatch(getCurrentUser(token, navigation)),
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(App);

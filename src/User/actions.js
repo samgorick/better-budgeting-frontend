@@ -1,3 +1,5 @@
+import { SET_BUDGET } from '../constants/Types'
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 export function loginUser(user, navigation) {
@@ -103,7 +105,7 @@ export function logoutUser() {
   return dispatch => {
     removeValue();
     dispatch({type: 'LOGOUT_USER'});
-    dispatch({type: 'LOGOUT_BUDGETS'});
+    dispatch({type: 'LOGOUT_BUDGET'});
     dispatch({type: 'LOGOUT_TRANSACTIONS'});
     dispatch({type: 'LOGOUT_SAVINGS'});
   };

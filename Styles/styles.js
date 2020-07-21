@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import theme from './themes'
+import {StyleSheet} from 'react-native';
+import theme from './themes';
 
 export default StyleSheet.create({
   container: {
@@ -26,78 +26,78 @@ export default StyleSheet.create({
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',
-    backgroundColor: '#FFFFFF',
-    borderRadius:30,
+    backgroundColor: 'white',
+    borderRadius: 30,
     width: theme.FORM_WIDTH,
     height: 45,
     marginBottom: theme.STANDARD_SPACING,
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center',
 
-    shadowColor: "#808080",
+    shadowColor: '#808080',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 5
   },
-  input:{
-    height:45,
+  input: {
+    height: 45,
     color: theme.SECONDARY_COLOR,
-    marginLeft:16,
-    borderBottomColor: '#FFFFFF',
-    flex:1,
+    marginLeft: 16,
+    borderBottomColor: 'white',
+    flex: 1,
     fontSize: theme.FONT_SIZE_STANDARD
   },
-  inputIcon:{
-    width:30,
-    height:30,
-    marginRight:15,
+  inputIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 15,
     justifyContent: 'center'
   },
   buttonContainer: {
-    height:45,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: theme.SMALL_SPACING,
     width: theme.FORM_WIDTH,
-    borderRadius:30,
-    backgroundColor: theme.ACCENT_COLOR,
+    borderRadius: 30,
+    backgroundColor: theme.ACCENT_COLOR
   },
   loginButtonContainer: {
-    height:45,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: theme.LARGE_SPACING,
     marginBottom: theme.SMALL_SPACING,
     width: theme.FORM_WIDTH,
-    borderRadius:30,
-    backgroundColor: theme.ACCENT_COLOR,
+    borderRadius: 30,
+    backgroundColor: theme.ACCENT_COLOR
   },
   negativeButtonContainer: {
-    height:45,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: theme.SMALL_SPACING,
     marginBottom: theme.SMALL_SPACING,
     width: theme.FORM_WIDTH,
-    borderRadius:30,
-    backgroundColor: theme.NEGATIVE_COLOR,
+    borderRadius: 30,
+    backgroundColor: theme.NEGATIVE_COLOR
   },
   disabledButton: {
-    height:45,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: theme.SMALL_SPACING,
     width: theme.FORM_WIDTH,
-    borderRadius:30,
-    backgroundColor: '#E0E0E2',
+    borderRadius: 30,
+    backgroundColor: '#E0E0E2'
   },
   buttonText: {
     color: 'white',
