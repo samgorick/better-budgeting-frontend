@@ -52,7 +52,7 @@ class Login extends React.Component {
             onSubmit={values => this.loginUser(values)}>
             {({handleChange, handleSubmit, values}) => (
               <>
-              {this.props.error ? <Text style={{...styles.chartHeader, color: 'red'}}>{this.props.error}</Text> : null}
+              {this.props.error ? <Text style={{...styles.error}}>{this.props.error}</Text> : null}
                 <View style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}

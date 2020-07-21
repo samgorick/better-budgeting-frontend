@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, Image, Dimensions} from 'react-native';
+import {View, TextInput, Image} from 'react-native';
 import {
   Container,
   Content,
@@ -16,13 +16,6 @@ import {updateSavingValue} from '../actions';
 import styles from '../../../Styles/styles';
 import numeral from 'numeral';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateSavingValue: (savingObj, navigation) =>
-      dispatch(updateSavingValue(savingObj, navigation)),
-  };
-};
-
 class ShowSavings extends React.Component {
   state = {
     id: '',
@@ -37,18 +30,22 @@ class ShowSavings extends React.Component {
     });
   }
 
+  // Helper method returns saving values in date order
   order = values => {
     return values.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
   };
 
+  // Returns most recent savings value
   findFirst = values => {
     return this.order(values)[0];
   };
 
+  // Returns all savings values except most recent
   findPrevious = values => {
     return this.order(values).slice(1);
   };
 
+  // Returns data for line graph of values over time
   getData = values => {
     const ordered = values.sort((a, b) =>
       a.created_at > b.created_at ? 1 : -1,
@@ -157,5 +154,5 @@ class ShowSavings extends React.Component {
 
 export default connect(
   null,
-  mapDispatchToProps,
+  {updateSavingValue},
 )(ShowSavings);

@@ -4,6 +4,10 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import styles from '../../../Styles/styles';
 
+const mapStateToProps = state => {
+  return {transactions: state.transactions, budget: state.budget, savings: state.savings};
+};
+
 // Shows key actions for new user to complete to get value from app - add budget, add transaction, add saving
 // Once action has been completed, option to complete is greyed out
 class NewUserHomepage extends React.Component {
@@ -51,9 +55,5 @@ class NewUserHomepage extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {transactions: state.transactions, budget: state.budget, savings: state.savings};
-};
 
 export default connect(mapStateToProps)(NewUserHomepage);

@@ -8,17 +8,8 @@ import {Formik} from 'formik';
 import {addSaving} from '../actions';
 import styles from '../../../Styles/styles';
 
-const mapStateToProps = state => {
-  return {user: state.user};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addSaving: (saving, navigation) => dispatch(addSaving(saving, navigation)),
-  };
-};
-
 class AddSavings extends React.Component {
+  
   createSavings = values => {
     const savingsObj = {...values, user_id: this.props.user.id};
     this.props.addSaving(savingsObj, this.props.navigation);
@@ -95,7 +86,6 @@ class AddSavings extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default connect(state => ({user: state.user}),
+  {addSaving},
 )(AddSavings);

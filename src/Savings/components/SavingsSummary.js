@@ -7,12 +7,9 @@ import {Container, Content, List, Fab, Icon, Text} from 'native-base';
 import styles from '../../../Styles/styles';
 import numeral from 'numeral'
 
-const mapStateToProps = state => {
-  return {savings: state.savings};
-};
-
 const totalInvested = savings => {
   const totals = savings.map(saving => {
+    // Sorted to return the latest value of each savings pot
     const order = saving.saving_values.sort((a, b) =>
       a.created_at < b.created_at ? 1 : -1,
     );
@@ -21,6 +18,7 @@ const totalInvested = savings => {
   return totals.reduce((acc, curr) => acc + curr);
 };
 
+// Method returns data for savings pie chart
 const pieDataCalc = savings => {
   return savings.map(saving => {
     const order = saving.saving_values.sort((a, b) =>
@@ -39,12 +37,14 @@ class SavingsSummary extends React.Component {
     data: [{x: 0, y: 0}]
   }
 
+  // Required for animation - starting all values at 0 and then updating to true value
   componentDidMount() {
       this.setState({
         data: pieDataCalc(this.props.savings)
       });
     }
 
+    // Updates pie chart value if savings values update
   componentDidUpdate(prevProps){
     if(this.props.savings !== prevProps.savings){
       this.setState({
@@ -113,4 +113,4 @@ class SavingsSummary extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(SavingsSummary);
+export default connect(state => ({savings: state.savings}))(SavingsSummary);

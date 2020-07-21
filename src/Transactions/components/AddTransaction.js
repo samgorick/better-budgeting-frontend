@@ -6,116 +6,100 @@ import {SpendingCategories} from '../../constants/SpendingCategories';
 import {Form, Item, Picker, Icon, Text} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from '../../../Styles/styles';
-import numeral from 'numeral'
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 
-const mapStateToProps = state => {
-  return {user: state.user};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addTransaction: (transaction, navigation) =>
-      dispatch(addTransaction(transaction, navigation)),
-  };
-};
+const AddBudgetSchema = Yup.object().shape({
+  merchant: Yup.string()
+    .required('Merchant cannot be blank'),
+  amount: Yup.string()
+    .required('Amount cannot be blank')
+    .matches(/^[0-9]*$/, 'Must be a valid number'),
+  category: Yup.string()
+    .required('Category cannot be blank')
+});
 
 class AddTransaction extends React.Component {
-  state = {
-    merchant: '',
-    category: '',
-    amount: '',
-  };
-
-  handleMerchant = e => {
-    this.setState({
-      merchant: e.nativeEvent.text,
-    });
-  };
-
-  handleAmount = e => {
-    this.setState({
-      amount: e.nativeEvent.text,
-    });
-  };
-
-  handleCategory = e => {
-    this.setState({
-      category: e.nativeEvent.text,
-    });
-  };
-
-  handleSubmit = () => {
-    const txnObj = {...this.state, user_id: this.props.user.id};
+  createTransaction = values => {
+    const txnObj = {...values, user_id: this.props.user.id};
     this.props.addTransaction(txnObj, this.props.navigation);
-    this.setState({
-      merchant: '',
-      category: '',
-      amount: '',
-    });
   };
 
   render() {
     return (
-      <View style={{...styles.container, justifyContent: 'center'}}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            name="merchant"
-            placeholder="Enter merchant..."
-            onChange={this.handleMerchant}
-            value={this.state.merchant}
-          />
-          <Image
-            style={styles.inputIcon}
-            source={require('../../../Assets/shop-icon.png')}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            name="amount"
-            placeholder="Enter Amount..."
-            keyboardType="numeric"
-            onChange={this.handleAmount}
-            value={this.state.amount}
-          />
-          <Image
-            style={styles.inputIcon}
-            source={require('../../../Assets/money-icon.png')}
-          />
-        </View>
-        <Form>
-          <Item picker>
-            <Picker
-              style={styles.picker}
-              mode="dropdown"
-              textStyle={{ color: "#235789" }}
-              iosIcon={<Icon name="arrow-down" style={{color: '#235789'}}/>}
-              itemTextStyle={{ color: '#235789' }}
-              placeholder="Select a category..."
-              placeholderStyle={{color: '#bfc6ea'}}
-              placeholderIconColor="#007aff"
-              selectedValue={this.state.category}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({category: itemValue})
-              }>
-              {SpendingCategories.map((cat, index) => (
-                <Picker.Item key={index} label={cat} value={cat} />
-              ))}
-            </Picker>
-          </Item>
-        </Form>
-        <TouchableOpacity
-          style={[styles.buttonContainer]}
-          onPress={this.handleSubmit}>
-          <Text style={styles.buttonText}>Add Transaction</Text>
-        </TouchableOpacity>
-      </View>
+      <Formik
+        initialValues={{
+          merchant: '',
+          category: '',
+          amount: ''
+        }}
+        validationSchema={AddBudgetSchema}
+        onSubmit={values => this.createTransaction(values)}>
+        {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+          <View style={{...styles.container, justifyContent: 'center'}}>
+            {errors.merchant && touched.merchant ? (
+              <Text style={styles.error}>{errors.merchant}</Text>
+              ) : null}
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                name="merchant"
+                placeholder="Enter merchant..."
+                onChangeText={handleChange('merchant')}
+                onBlur={handleBlur('merchant')}
+                value={values.merchant}
+              />
+              <Image style={styles.inputIcon} source={require('../../../Assets/shop-icon.png')} />
+            </View>
+            {errors.amount && touched.amount ? (
+              <Text style={styles.error}>{errors.amount}</Text>
+              ) : null}
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                name="amount"
+                placeholder="Enter Amount..."
+                keyboardType="numeric"
+                onChangeText={handleChange('amount')}
+                onBlur={handleBlur('amount')}
+                value={values.amount}
+              />
+              <Image style={styles.inputIcon} source={require('../../../Assets/money-icon.png')} />
+            </View>
+            <Form>
+            {errors.category && touched.category ? (
+              <Text style={styles.error}>{errors.category}</Text>
+              ) : null}
+              <Item picker>
+                <Picker
+                  style={styles.picker}
+                  name="category"
+                  mode="dropdown"
+                  textStyle={{color: '#235789'}}
+                  iosIcon={<Icon name="arrow-down" style={{color: '#235789'}} />}
+                  itemTextStyle={{color: '#235789'}}
+                  placeholder="Select a category..."
+                  placeholderStyle={{color: '#bfc6ea'}}
+                  placeholderIconColor="#007aff"
+                  selectedValue={values.category}
+                  onValueChange={handleChange('category')}>
+                  {SpendingCategories.map((cat, index) => (
+                    <Picker.Item key={index} label={cat} value={cat} />
+                  ))}
+                </Picker>
+              </Item>
+            </Form>
+            <TouchableOpacity style={[styles.buttonContainer]} onPress={handleSubmit}>
+              <Text style={styles.buttonText}>Add Transaction</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </Formik>
     );
   }
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  state => ({user: state.user}),
+  {addTransaction}
 )(AddTransaction);
