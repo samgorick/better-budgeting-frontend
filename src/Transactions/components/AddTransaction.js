@@ -14,7 +14,7 @@ const AddBudgetSchema = Yup.object().shape({
     .required('Merchant cannot be blank'),
   amount: Yup.string()
     .required('Amount cannot be blank')
-    .matches(/^[0-9]*$/, 'Must be a valid number'),
+    .matches(/^\d+(\.\d{1,2})?$/, 'Must be a valid number'),
   category: Yup.string()
     .required('Category cannot be blank')
 });
