@@ -3,6 +3,8 @@
 - Budgeting is important and super useful, but also repetitive and painful to do manually
 - Budget Better takes the pain out of keeping track of your day-to-day spending, and gives you an overview of your savings, so you can see everything in one place!
 
+[Video walkthrough](https://youtu.be/rXsxRk8N7XY)
+
 Rails API Github [here](https://github.com/samgorick/better-budgeting-backend)
 
 ## Features
@@ -26,4 +28,20 @@ Rails API Github [here](https://github.com/samgorick/better-budgeting-backend)
 
 ## Screenshots
 
+Budget Better homepage:
 
+![Budget Better Homepage](https://user-images.githubusercontent.com/33881692/89080794-7ceceb00-d34f-11ea-8f63-5bc24449d44e.png)
+
+![Budget Better Homepage](https://user-images.githubusercontent.com/33881692/89080813-88401680-d34f-11ea-95f6-48e57df7b45e.png)
+
+Transactions:
+
+![Transactions](https://user-images.githubusercontent.com/33881692/89080818-8b3b0700-d34f-11ea-8249-87789d485344.png)
+
+Savings:
+
+![Savings](https://user-images.githubusercontent.com/33881692/89080826-8fffbb00-d34f-11ea-9fe9-843ab87a7ba6.png)
+
+New User Set-Up:
+
+![New User Set Up](https://user-images.githubusercontent.com/33881692/89080831-93934200-d34f-11ea-91d4-fc6ff3273616.png)
