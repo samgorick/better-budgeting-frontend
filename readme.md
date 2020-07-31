@@ -3,6 +3,8 @@
 - Budgeting is important and super useful, but also repetitive and painful to do manually
 - Budget Better takes the pain out of keeping track of your day-to-day spending, and gives you an overview of your savings, so you can see everything in one place!
 
+Rails API Github [here](https://github.com/samgorick/better-budgeting-backend)
+
 ## Features
 
 - Simple data visualizations track how much user has spent this month, how much they have remaining, and where their money has gone
