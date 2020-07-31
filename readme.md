@@ -30,7 +30,7 @@ Rails API Github [here](https://github.com/samgorick/better-budgeting-backend)
 
 Budget Better homepage:
 
-![Budget Better Homepage](https://user-images.githubusercontent.com/33881692/89080794-7ceceb00-d34f-11ea-8f63-5bc24449d44e.png)
+![Budget Better Homepage](https://user-images.githubusercontent.com/33881692/89080794-7ceceb00-d34f-11ea-8f63-5bc24449d44e.png | height=100)
 
 ![Budget Better Homepage](https://user-images.githubusercontent.com/33881692/89080813-88401680-d34f-11ea-95f6-48e57df7b45e.png)
 
